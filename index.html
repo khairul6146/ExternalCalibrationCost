@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calibration & Pressure — Live Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0B1622;--surf:#111E2E;--card:#162333;--bord:#1D3047;--bord2:#244060;
+  --teal:#00B4C6;--teal2:#00D4E8;--teal-a:rgba(0,180,198,.12);
+  --amber:#F5A623;--amber-a:rgba(245,166,35,.12);
+  --violet:#9B6DFF;--violet-a:rgba(155,109,255,.12);
+  --green:#22D3A5;--green-a:rgba(34,211,165,.12);
+  --rose:#FF5C7D;--rose-a:rgba(255,92,125,.12);
+  --sky:#38BDF8;--sky-a:rgba(56,189,248,.12);
+  --t1:#E2EDF5;--t2:#7AAABE;--t3:#3D6880;
+  --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);min-height:100vh;font-size:13px}
+
+/* ── HEADER ── */
+.hdr{
+  position:sticky;top:0;z-index:200;
+  background:rgba(11,22,34,.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--bord2);padding:0 24px;height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 20px rgba(0,0,0,.5);
+}
+.hdr-left{display:flex;align-items:center;gap:14px}
+.hdr-badge{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;
+  padding:4px 10px;border-radius:4px;background:var(--teal);color:#000}
+.hdr-title{font-size:14px;font-weight:600;color:var(--t1)}
+.hdr-sub{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.filt{display:flex;align-items:center;gap:7px;background:var(--surf);border:1px solid var(--bord);
+  border-radius:7px;padding:5px 10px;transition:border-color .15s}
+.filt:hover{border-color:var(--teal)}
+.filt-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap}
+select{background:transparent;border:none;color:var(--t1);font-family:var(--font);font-size:12px;
+  font-weight:500;cursor:pointer;outline:none;padding:0 2px}
+select option{background:#162333}
+.btn{font-family:var(--font);font-size:11px;padding:5px 12px;border-radius:7px;cursor:pointer;
+  transition:all .15s;border:1px solid}
+.btn-reset{background:transparent;border-color:var(--bord2);color:var(--t2)}
+.btn-reset:hover{border-color:var(--rose);color:var(--rose)}
+.btn-upload{background:var(--teal);border-color:var(--teal);color:#000;font-weight:600}
+.btn-upload:hover{background:var(--teal2)}
+.live-chip{display:flex;align-items:center;gap:5px;font-size:9px;
+  padding:4px 8px;border-radius:20px;border:1px solid var(--bord2);color:var(--t2)}
+.dot{width:6px;height:6px;border-radius:50%}
+.dot-green{background:var(--green);animation:blink 2s infinite}
+.dot-amber{background:var(--amber)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── DROP ZONE OVERLAY ── */
+.drop-overlay{
+  display:none;position:fixed;inset:0;z-index:999;
+  background:rgba(0,20,35,.92);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;flex-direction:column;gap:20px;
+}
+.drop-overlay.active{display:flex}
+.drop-box{
+  border:2px dashed var(--teal);border-radius:16px;
+  padding:60px 80px;text-align:center;
+  background:rgba(0,180,198,.06);
+  animation:pulse-border 1.5s infinite;
+}
+@keyframes pulse-border{0%,100%{border-color:var(--teal)}50%{border-color:var(--teal2)}}
+.drop-icon{font-size:56px;margin-bottom:16px}
+.drop-title{font-size:22px;font-weight:700;color:var(--teal2);margin-bottom:8px}
+.drop-sub{font-size:13px;color:var(--t2)}
+.drop-close{font-size:11px;color:var(--t3);cursor:pointer;padding:8px 16px;
+  border:1px solid var(--bord2);border-radius:6px;transition:all .15s}
+.drop-close:hover{color:var(--rose);border-color:var(--rose)}
+
+/* ── UPLOAD PANEL (collapsed bar) ── */
+.upload-bar{
+  background:var(--surf);border-bottom:1px solid var(--bord);
+  padding:10px 24px;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+}
+.upload-bar.hidden{display:none}
+.upload-steps{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t2)}
+.step-num{width:20px;height:20px;border-radius:50%;background:var(--teal);color:#000;
+  font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-arrow{color:var(--t3);font-size:10px}
+.upload-status{font-size:11px;color:var(--t3);font-family:var(--mono)}
+.upload-status.ok{color:var(--green)}
+.upload-status.err{color:var(--rose)}
+
+/* ── FILE INPUT ── */
+#fileInput{display:none}
+
+/* ── MAIN ── */
+.main{padding:20px 24px;display:flex;flex-direction:column;gap:18px}
+
+/* ── KPI ROW ── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:var(--card);border:1px solid var(--bord);border-radius:10px;
+  padding:18px;position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s;cursor:default;animation:fadeUp .4s ease both}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:10px 10px 0 0}
+.kpi.c-teal::before{background:var(--teal)}
+.kpi.c-amber::before{background:var(--amber)}
+.kpi.c-violet::before{background:var(--violet)}
+.kpi.c-green::before{background:var(--green)}
+.kpi-icon{font-size:20px;margin-bottom:10px}
+.kpi-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+.kpi-val{font-size:26px;font-weight:700;color:var(--t1);line-height:1;font-family:var(--mono);margin-bottom:7px}
+.kpi-sub{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.chip{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px}
+.chip-teal{background:var(--teal-a);color:var(--teal2)}
+.chip-green{background:var(--green-a);color:var(--green)}
+.chip-amber{background:var(--amber-a);color:var(--amber)}
+
+/* ── DATA-SOURCE BANNER ── */
+.source-banner{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surf);border:1px solid var(--bord);border-radius:8px;
+  padding:10px 16px;font-size:11px;
+}
+.source-info{display:flex;align-items:center;gap:10px;color:var(--t2)}
+.source-file{font-family:var(--mono);color:var(--teal2);font-weight:500}
+.source-actions{display:flex;gap:8px}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--bord)}
+.tab{padding:8px 18px;font-size:12px;font-weight:500;color:var(--t3);
+  border-bottom:2px solid transparent;cursor:pointer;transition:all .15s;margin-bottom:-1px}
+.tab.active{color:var(--teal);border-color:var(--teal)}
+.tab:hover:not(.active){color:var(--t2)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ── CHART GRID ── */
+.chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chart-grid-3{display:grid;grid-template-columns:1fr 1fr 300px;gap:14px}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--bord);border-radius:10px;overflow:hidden;animation:fadeUp .4s ease both}
+.card-hdr{padding:14px 18px 10px;border-bottom:1px solid var(--bord);
+  display:flex;justify-content:space-between;align-items:flex-start}
+.card-title{font-size:12px;font-weight:600;color:var(--t1)}
+.card-sub{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+.card-body{padding:16px 18px}
+.badge{font-size:9px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.badge-teal{background:var(--teal-a);color:var(--teal2)}
+.badge-amber{background:var(--amber-a);color:var(--amber)}
+
+/* ── BAR CHART ── */
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar-row{display:flex;flex-direction:column;gap:3px}
+.bar-meta{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.bar-name{font-size:11px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:50%}
+.bar-nums{display:flex;align-items:baseline;gap:7px}
+.bar-val{font-size:11px;font-weight:600;color:var(--t1);font-family:var(--mono)}
+.bar-cnt{font-size:9px;color:var(--t3);font-family:var(--mono)}
+.bar-pct{font-size:9px;color:var(--t3)}
+.bar-track{height:6px;background:var(--surf);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .7s cubic-bezier(.34,1.56,.64,1)}
+
+/* ── DONUT ── */
+.donut-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+.donut-svg{overflow:visible}
+.legend{display:flex;flex-direction:column;gap:7px;width:100%}
+.leg-row{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.leg-name{font-size:10px;color:var(--t2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.leg-val{font-size:10px;font-weight:600;color:var(--t1);font-family:var(--mono)}
+.leg-pct{font-size:9px;color:var(--t3);min-width:30px;text-align:right}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-y:auto;max-height:320px}
+.tbl-wrap::-webkit-scrollbar{width:3px}
+.tbl-wrap::-webkit-scrollbar-thumb{background:var(--bord2);border-radius:2px}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;
+  padding:8px 12px;border-bottom:1px solid var(--bord);white-space:nowrap;
+  position:sticky;top:0;background:var(--card);z-index:1}
+thead th.r{text-align:right}
+tbody tr{border-bottom:1px solid rgba(29,48,71,.5);transition:background .12s}
+tbody tr:hover{background:rgba(0,180,198,.04)}
+tbody tr:last-child{border-bottom:none}
+td{padding:8px 12px;font-size:11px;color:var(--t2);vertical-align:middle}
+td.first{color:var(--t1);font-weight:500}
+td.r{text-align:right;font-family:var(--mono)}
+td.dim{color:var(--t3)}
+.pill{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;letter-spacing:.03em}
+.mini-bar-wrap{display:flex;align-items:center;gap:5px;justify-content:flex-end}
+.mini-bar{width:44px;height:3px;background:var(--surf);border-radius:2px;overflow:hidden}
+.mini-fill{height:100%;border-radius:2px}
+
+/* ── TREEMAP ── */
+.treemap{display:flex;flex-wrap:wrap;gap:3px;padding:14px 18px;min-height:160px}
+.tm-cell{border-radius:5px;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:2px;cursor:pointer;transition:opacity .15s;overflow:hidden;padding:6px}
+.tm-cell:hover{opacity:.8}
+.tm-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.9);text-align:center;line-height:1.2}
+.tm-val{font-size:8px;color:rgba(255,255,255,.6);font-family:var(--mono)}
+
+/* ── SEARCH ── */
+.search-wrap{padding:10px 18px;border-bottom:1px solid var(--bord)}
+.search-inp{width:100%;background:var(--surf);border:1px solid var(--bord);color:var(--t1);
+  font-family:var(--font);font-size:11px;padding:6px 10px;border-radius:6px;outline:none}
+.search-inp:focus{border-color:var(--teal)}
+.search-inp::placeholder{color:var(--t3)}
+
+/* ── COLUMN MAP MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(4px);align-items:center;justify-content:center}
+.modal-bg.active{display:flex}
+.modal{background:var(--card);border:1px solid var(--bord2);border-radius:12px;
+  padding:28px;max-width:480px;width:90%}
+.modal-title{font-size:15px;font-weight:700;color:var(--t1);margin-bottom:6px}
+.modal-sub{font-size:11px;color:var(--t3);margin-bottom:20px}
+.map-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.map-lbl{font-size:11px;color:var(--t2);width:120px;flex-shrink:0}
+.map-select{flex:1;background:var(--surf);border:1px solid var(--bord2);color:var(--t1);
+  font-family:var(--font);font-size:11px;padding:6px 8px;border-radius:6px;outline:none}
+.map-select:focus{border-color:var(--teal)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.btn-primary{background:var(--teal);border:1px solid var(--teal);color:#000;font-weight:600;
+  font-family:var(--font);font-size:12px;padding:7px 18px;border-radius:7px;cursor:pointer}
+.btn-primary:hover{background:var(--teal2)}
+.btn-secondary{background:transparent;border:1px solid var(--bord2);color:var(--t2);
+  font-family:var(--font);font-size:12px;padding:7px 18px;border-radius:7px;cursor:pointer}
+.btn-secondary:hover{border-color:var(--t2);color:var(--t1)}
+
+/* ── NO DATA ── */
+.no-data{padding:32px;text-align:center;color:var(--t3);font-size:11px}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.kpi:nth-child(1){animation-delay:.05s}
+.kpi:nth-child(2){animation-delay:.10s}
+.kpi:nth-child(3){animation-delay:.15s}
+.kpi:nth-child(4){animation-delay:.20s}
+
+/* ── FOOTER ── */
+.footer{padding:14px 24px;border-top:1px solid var(--bord);
+  display:flex;justify-content:space-between;align-items:center}
+.footer-txt{font-size:9px;color:var(--t3)}
+
+@media(max-width:1100px){.chart-grid-3{grid-template-columns:1fr 1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.chart-grid-2,.chart-grid-3{grid-template-columns:1fr}.kpi-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- ═══ DRAG-AND-DROP OVERLAY ═══ -->
+<div class="drop-overlay" id="dropOverlay">
+  <div class="drop-box" id="dropBox">
+    <div class="drop-icon">📂</div>
+    <div class="drop-title">Drop your CSV file here</div>
+    <div class="drop-sub">Export your Excel sheet as CSV, then drop it onto this window</div>
+    <div style="margin-top:16px;font-size:10px;color:var(--t3)">
+      Accepted format: .csv with columns — Description, Equipment Type, Cal By, Cost
+    </div>
+  </div>
+  <div class="drop-close" onclick="closeDropZone()">✕ Cancel</div>
+</div>
+
+<!-- ═══ COLUMN MAP MODAL ═══ -->
+<div class="modal-bg" id="mapModal">
+  <div class="modal">
+    <div class="modal-title">📋 Map Your Columns</div>
+    <div class="modal-sub">Your CSV has different column names. Match them to the dashboard fields below.</div>
+    <div class="map-row">
+      <span class="map-lbl">Description</span>
+      <select class="map-select" id="map-desc"></select>
+    </div>
+    <div class="map-row">
+      <span class="map-lbl">Equipment Type</span>
+      <select class="map-select" id="map-type"></select>
+    </div>
+    <div class="map-row">
+      <span class="map-lbl">Vendor (Cal By)</span>
+      <select class="map-select" id="map-vendor"></select>
+    </div>
+    <div class="map-row">
+      <span class="map-lbl">Cost</span>
+      <select class="map-select" id="map-cost"></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="applyMapping()">Load Data →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HEADER ═══ -->
+<header class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-badge">CAL · PRESSURE</div>
+    <div>
+      <div class="hdr-title">Calibration &amp; Pressure Combined Dashboard</div>
+      <div class="hdr-sub" id="hdr-sub">Built-in data · 489 records</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="filt">
+      <span class="filt-lbl">Equipment Type</span>
+      <select id="fEq" onchange="render()"><option value="">All Types</option></select>
+    </div>
+    <div class="filt">
+      <span class="filt-lbl">Vendor</span>
+      <select id="fVn" onchange="render()"><option value="">All Vendors</option></select>
+    </div>
+    <button class="btn btn-reset" onclick="resetFilters()">✕ Reset</button>
+
+    <!-- LOAD CSV BUTTON -->
+    <button class="btn btn-upload" onclick="openDropZone()">⬆ Load CSV</button>
+    <input type="file" id="fileInput" accept=".csv" onchange="handleFileSelect(event)">
+
+    <div class="live-chip" id="liveChip">
+      <div class="dot dot-green" id="statusDot"></div>
+      <span id="statusText">Built-in data</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ HOW-TO BAR (shown on first load) ═══ -->
+<div class="upload-bar" id="howToBar">
+  <div class="upload-steps">
+    <div class="step"><div class="step-num">1</div><span>Open your Excel file</span></div>
+    <div class="step-arrow">→</div>
+    <div class="step"><div class="step-num">2</div><span>File → Save As → CSV UTF-8</span></div>
+    <div class="step-arrow">→</div>
+    <div class="step"><div class="step-num">3</div><span>Click <strong style="color:var(--teal)">Load CSV</strong> above or drag &amp; drop</span></div>
+    <div class="step-arrow">→</div>
+    <div class="step"><div class="step-num">4</div><span>Dashboard updates instantly ✓</span></div>
+  </div>
+  <span class="upload-status" id="uploadStatus">No file loaded — showing built-in data</span>
+</div>
+
+<!-- ═══ SOURCE BANNER (shown after file loaded) ═══ -->
+<div class="upload-bar hidden" id="sourceBanner">
+  <div class="source-info">
+    <span>📄 Active file:</span>
+    <span class="source-file" id="sourceFileName">—</span>
+    <span style="color:var(--t3)">·</span>
+    <span id="sourceRecords" style="color:var(--t2)">—</span>
+    <span style="color:var(--t3)">·</span>
+    <span id="sourceLoaded" style="color:var(--green)">—</span>
+  </div>
+  <div class="source-actions">
+    <button class="btn btn-reset" onclick="reloadBuiltin()">← Restore built-in data</button>
+    <button class="btn btn-upload" onclick="openDropZone()">⬆ Load new CSV</button>
+  </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main">
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi c-teal">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-lbl">Total Calibration Cost</div>
+      <div class="kpi-val" id="k-cost">—</div>
+      <div class="kpi-sub">Avg per record: <strong id="k-avg" style="color:var(--teal2);font-family:var(--mono)">—</strong></div>
+    </div>
+    <div class="kpi c-amber">
+      <div class="kpi-icon">🔧</div>
+      <div class="kpi-lbl">Total Records</div>
+      <div class="kpi-val" id="k-count">—</div>
+      <div class="kpi-sub"><span class="chip chip-amber" id="k-pct">—%</span> of full dataset</div>
+    </div>
+    <div class="kpi c-violet">
+      <div class="kpi-icon">📐</div>
+      <div class="kpi-lbl">Equipment Types</div>
+      <div class="kpi-val" id="k-types">—</div>
+      <div class="kpi-sub">Unique categories in selection</div>
+    </div>
+    <div class="kpi c-green">
+      <div class="kpi-icon">🏢</div>
+      <div class="kpi-lbl">Active Vendors</div>
+      <div class="kpi-val" id="k-vendors">—</div>
+      <div class="kpi-sub">Highest spend: <strong id="k-top-vendor" style="color:var(--green);font-family:var(--mono);font-size:10px">—</strong></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('overview',this)">📊 Overview</div>
+      <div class="tab" onclick="switchTab('equipment',this)">📐 By Equipment</div>
+      <div class="tab" onclick="switchTab('vendor',this)">🏢 By Vendor</div>
+      <div class="tab" onclick="switchTab('detail',this)">📋 Detail Table</div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="tab-overview" class="tab-content active" style="padding-top:14px">
+      <div class="chart-grid-3">
+        <div class="card">
+          <div class="card-hdr">
+            <div><div class="card-title">Cost by Equipment Type</div><div class="card-sub">Top 10 by spend</div></div>
+            <span class="badge badge-teal" id="badge-type-count">—</span>
+          </div>
+          <div class="card-body"><div class="bars" id="chart-type"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr">
+            <div><div class="card-title">Cost by Vendor</div><div class="card-sub">All vendors ranked</div></div>
+            <span class="badge badge-amber" id="badge-vendor-count">—</span>
+          </div>
+          <div class="card-body"><div class="bars" id="chart-vendor"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr">
+            <div><div class="card-title">Cost Distribution</div><div class="card-sub">Top 8 types</div></div>
+          </div>
+          <div class="card-body">
+            <div class="donut-wrap">
+              <svg class="donut-svg" id="donut-svg" width="150" height="150" viewBox="0 0 150 150"></svg>
+              <div class="legend" id="donut-legend"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="card-hdr">
+          <div><div class="card-title">Spend Heatmap — Equipment Types</div><div class="card-sub">Area proportional to total cost</div></div>
+        </div>
+        <div class="treemap" id="treemap"></div>
+      </div>
+    </div>
+
+    <!-- BY EQUIPMENT -->
+    <div id="tab-equipment" class="tab-content" style="padding-top:14px">
+      <div class="chart-grid-2">
+        <div class="card">
+          <div class="card-hdr"><div><div class="card-title">Equipment Type — Full Ranking</div><div class="card-sub">All types sorted by cost</div></div></div>
+          <div class="card-body" style="max-height:380px;overflow-y:auto"><div class="bars" id="chart-type-full"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr"><div><div class="card-title">Summary by Equipment Type</div><div class="card-sub">Cost · Count · Avg</div></div></div>
+          <div class="tbl-wrap">
+            <table><thead><tr>
+              <th>#</th><th>Equipment Type</th>
+              <th class="r">Total Cost</th><th class="r">Count</th>
+              <th class="r">Avg Cost</th><th class="r">% Share</th>
+            </tr></thead><tbody id="eq-summary-body"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BY VENDOR -->
+    <div id="tab-vendor" class="tab-content" style="padding-top:14px">
+      <div class="chart-grid-2">
+        <div class="card">
+          <div class="card-hdr"><div><div class="card-title">Vendor Spend Ranking</div><div class="card-sub">Total cost per vendor</div></div></div>
+          <div class="card-body"><div class="bars" id="chart-vendor-full"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr"><div><div class="card-title">Vendor Summary</div><div class="card-sub">Records · Cost · Avg</div></div></div>
+          <div class="tbl-wrap">
+            <table><thead><tr>
+              <th>#</th><th>Vendor</th>
+              <th class="r">Total Cost</th><th class="r">Records</th>
+              <th class="r">Avg Cost</th><th class="r">% Share</th>
+            </tr></thead><tbody id="vn-summary-body"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAIL TABLE -->
+    <div id="tab-detail" class="tab-content" style="padding-top:14px">
+      <div class="card">
+        <div class="card-hdr">
+          <div><div class="card-title">Full Calibration Register</div><div class="card-sub">All records</div></div>
+          <span class="badge badge-teal" id="detail-count-badge">—</span>
+        </div>
+        <div class="search-wrap">
+          <input class="search-inp" id="searchInp" placeholder="Search description, type or vendor…" oninput="renderDetailTable()">
+        </div>
+        <div class="tbl-wrap" style="max-height:460px">
+          <table><thead><tr>
+            <th>#</th><th>Description</th><th>Equipment Type</th><th>Vendor</th><th class="r">Cost (RM)</th>
+          </tr></thead><tbody id="detail-body"></tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <span class="footer-txt" id="footer-left">Calibration_Pressure_Combined · 489 records built-in</span>
+  <span class="footer-txt" style="font-family:var(--mono)">Dashboard v2.0 · CSV Live-Reload enabled</span>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// BUILT-IN DATA
+// ════════════════════════════════════════════════════════════
+const BUILTIN_DATA = [{"desc": "Digital Caliper", "type": "CALIPER", "vendor": "Sendi Mahir", "cost": 37.8}, {"desc": "Digital Caliper", "type": "CALIPER", "vendor": "Sendi Mahir", "cost": 37.8}, {"desc": "Digital Caliper", "type": "CALIPER", "vendor": "Sendi Mahir", "cost": 37.8}, {"desc": "Digital Caliper", "type": "CALIPER", "vendor": "Sendi Mahir", "cost": 37.8}, {"desc": "Digital Caliper", "type": "CALIPER", "vendor": "Sendi Mahir", "cost": 37.8}, {"desc": "Protractor", "type": "PROTRACTOR", "vendor": "Trescal", "cost": 187.92}, {"desc": "Counting Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Counting Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Counting Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Hardness Tester", "type": "HARDNESS TESTER", "vendor": "Sendi Mahir", "cost": 702.0}, {"desc": "Crane Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 1272.0}, {"desc": "Torque Wrench (Dial)", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Dansa Gauge", "type": "DANSA GAUGE", "vendor": "Sendi Mahir", "cost": 64.8}, {"desc": "Gauge Block  (T-Carbide)", "type": "GAUGE BLOCK", "vendor": "Sendi Mahir", "cost": 237.6}, {"desc": "Data Acquisition Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5800.0}, {"desc": "Data Acquisition Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5800.0}, {"desc": "Data Acquisition Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5800.0}, {"desc": "Data Acquisition Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5800.0}, {"desc": "Data Acquisition Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5800.0}, {"desc": "Data Acquisition Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5800.0}, {"desc": "Data Acquisition Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5800.0}, {"desc": "Profile Projector", "type": "OTHERS", "vendor": "Mitutoyo", "cost": 551.0}, {"desc": "Granite Surface Plate", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 345.6}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Tensile Machine (5-Ton Load Cell)", "type": "TENSILE", "vendor": "Trescal", "cost": 471.96}, {"desc": "VC Accelerometer", "type": "ACCELEROMETER", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "VC Accelerometer", "type": "ACCELEROMETER", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Hot Chamber", "type": "OVEN", "vendor": "Trescal", "cost": 430.92}, {"desc": "Rubber Hardness Tester", "type": "HARDNESS TESTER", "vendor": "Sendi Mahir", "cost": 149.04}, {"desc": "Surface Resistance Checker", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Thermometer with thermocouple", "type": "THERMOMETER", "vendor": "Sendi Mahir", "cost": 118.8}, {"desc": "Torque Driver", "type": "TORQUE DRIVER", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Torque Driver", "type": "TORQUE DRIVER", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Time Output Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5700.0}, {"desc": "Time Output Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5700.0}, {"desc": "Time Output Module", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 5700.0}, {"desc": "Digital Phosphor Oscilloscope", "type": "OTHERS", "vendor": "Trescal", "cost": 714.96}, {"desc": "Rack System", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 1700.0}, {"desc": "Rack System", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 1700.0}, {"desc": "Digital Pressure Indicator", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 183.6}, {"desc": "Digital Thermo-Anemometer", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 345.6}, {"desc": "Digital protractor", "type": "PROTRACTOR", "vendor": "Trescal", "cost": 173.88}, {"desc": "Temp. & Humid. Chamber (B)", "type": "HUMIDITY CHAMBER", "vendor": "Trescal", "cost": 1166.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Salt Spray Machine", "type": "OTHERS", "vendor": "Trescal", "cost": 410.4}, {"desc": "Gauge Block", "type": "GAUGE BLOCK", "vendor": "Sendi Mahir", "cost": 151.2}, {"desc": "Gauge Block", "type": "GAUGE BLOCK", "vendor": "Sendi Mahir", "cost": 108.0}, {"desc": "Multimeter", "type": "MULTIMETER", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Micro Meter", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 183.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 270.0}, {"desc": "Melt Flow Indexer", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 421.2}, {"desc": "Infrared Thermometer", "type": "THERMOMETER", "vendor": "Sendi Mahir", "cost": 216.0}, {"desc": "Platform Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Load Cell", "type": "LOAD CELL", "vendor": "Trescal", "cost": 402.84}, {"desc": "Micro Tri-Gloss", "type": "OTHERS", "vendor": "Plasmost", "cost": 788.4}, {"desc": "Sound Measurement (DA)", "type": "DATA ACQUISITION", "vendor": "First Instrument", "cost": 6330.0}, {"desc": "Sound Measurement (Mic)", "type": "OTHERS", "vendor": "First Instrument", "cost": 2730.0}, {"desc": "Temp. & Humid. Chamber (S)", "type": "HUMIDITY CHAMBER", "vendor": "Trescal", "cost": 1117.8}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Radius Gauge", "type": "RADIUS GAUGE", "vendor": "Sendi Mahir", "cost": 83.16}, {"desc": "Radius Gauge", "type": "RADIUS GAUGE", "vendor": "Sendi Mahir", "cost": 83.16}, {"desc": "Radius Gauge", "type": "RADIUS GAUGE", "vendor": "Sendi Mahir", "cost": 83.16}, {"desc": "Radius Gauge", "type": "RADIUS GAUGE", "vendor": "Sendi Mahir", "cost": 83.16}, {"desc": "Radius Gauge", "type": "RADIUS GAUGE", "vendor": "Sendi Mahir", "cost": 83.16}, {"desc": "Screw Ring Gauge", "type": "RING GAUGE", "vendor": "Sendi Mahir", "cost": 43.2}, {"desc": "Screw Ring Gauge", "type": "RING GAUGE", "vendor": "Sendi Mahir", "cost": 43.2}, {"desc": "Screw Ring Gauge", "type": "RING GAUGE", "vendor": "Sendi Mahir", "cost": 43.2}, {"desc": "Thread Plug Gauge", "type": "RING GAUGE", "vendor": "Sendi Mahir", "cost": 43.2}, {"desc": "Thread Plug Gauge", "type": "RING GAUGE", "vendor": "Sendi Mahir", "cost": 43.2}, {"desc": "Thread Plug Gauge", "type": "RING GAUGE", "vendor": "Sendi Mahir", "cost": 43.2}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Taper Gauge", "type": "TAPER GAUGE", "vendor": "Trescal", "cost": 89.64}, {"desc": "Taper Gauge", "type": "TAPER GAUGE", "vendor": "Trescal", "cost": 89.64}, {"desc": "Taper Gauge", "type": "TAPER GAUGE", "vendor": "Trescal", "cost": 89.64}, {"desc": "Taper Gauge", "type": "TAPER GAUGE", "vendor": "Trescal", "cost": 89.64}, {"desc": "Balance Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Center 309 Datalogger", "type": "THERMOMETER", "vendor": "Sendi Mahir", "cost": 97.2}, {"desc": "Digital protractor", "type": "PROTRACTOR", "vendor": "Trescal", "cost": 173.88}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Torque Driver", "type": "TORQUE DRIVER", "vendor": "Trescal", "cost": 132.84}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Accelerometer", "type": "ACCELEROMETER", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Digimatic Indicator", "type": "DEPTH GAUGE", "vendor": "Trescal", "cost": 88.56}, {"desc": "Accelerometer", "type": "ACCELEROMETER", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Dansa Gauge", "type": "DANSA GAUGE", "vendor": "Sendi Mahir", "cost": 64.8}, {"desc": "Dansa Gauge", "type": "DANSA GAUGE", "vendor": "Sendi Mahir", "cost": 64.8}, {"desc": "Torque Wrench (Dial)", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Measuring Tape", "type": "MEASURING TAPE", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Temp. & Humidity Chamber", "type": "HUMIDITY CHAMBER", "vendor": "Trescal", "cost": 1240.92}, {"desc": "Infrared Thermometer", "type": "THERMOMETER", "vendor": "Sendi Mahir", "cost": 216.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 183.6}, {"desc": "Torque Tester", "type": "TORQUE METER", "vendor": "Trescal", "cost": 536.76}, {"desc": "Load Cell S-Type", "type": "LOAD CELL", "vendor": "Trescal", "cost": 1354.32}, {"desc": "Taper Gauge", "type": "TAPER GAUGE", "vendor": "Trescal", "cost": 89.64}, {"desc": "Standard Scale 50mm", "type": "OTHERS", "vendor": "Trescal", "cost": 451.44}, {"desc": "Leather Softness Tester", "type": "OTHERS", "vendor": "GMA International", "cost": 1250.0}, {"desc": "Digital Light Meter", "type": "OTHERS", "vendor": "Micro Precision", "cost": 594.0}, {"desc": "Platform Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 1378.0}, {"desc": "Digital Force Gauge", "type": "FORCE GAUGE", "vendor": "Trescal", "cost": 251.64}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Multimeter", "type": "MULTIMETER", "vendor": "Sendi Mahir", "cost": 118.8}, {"desc": "6 1/2 Digital Precision Multimeter", "type": "MULTIMETER", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Multimeter", "type": "MULTIMETER", "vendor": "Sendi Mahir", "cost": 118.8}, {"desc": "Insulation Multimeter", "type": "MULTIMETER", "vendor": "Sendi Mahir", "cost": 324.0}, {"desc": "Accelerometer", "type": "ACCELEROMETER", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Accelerometer", "type": "ACCELEROMETER", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Torque Meter", "type": "TORQUE METER", "vendor": "Trescal", "cost": 536.76}, {"desc": "Resistance Meter (Resistance Transducer)", "type": "ELECTRICAL TEST", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 4320.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Pressure Sensor", "type": "OTHERS", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Pressure Sensor", "type": "OTHERS", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Square Rule", "type": "OTHERS", "vendor": "Trescal", "cost": 340.2}, {"desc": "Thermohygrometer", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 129.6}, {"desc": "Temp. & Humidity Chamber", "type": "HUMIDITY CHAMBER", "vendor": "Trescal", "cost": 1175.04}, {"desc": "VC Accelerometer", "type": "ACCELEROMETER", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Hardness Tester (Type-C)", "type": "HARDNESS TESTER", "vendor": "Sendi Mahir", "cost": 149.04}, {"desc": "Torque Meter", "type": "TORQUE METER", "vendor": "Trescal", "cost": 536.76}, {"desc": "Resistance Meter", "type": "RESISTANCE METER", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Depth Gauge", "type": "DEPTH GAUGE", "vendor": "Sendi Mahir", "cost": 64.8}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Rack System", "type": "DATA ACQUISITION", "vendor": "DTS", "cost": 1700.0}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Laser Based Speed Meter", "type": "OTHERS", "vendor": "SABO", "cost": 845.0}, {"desc": "Off Center Load Cell", "type": "BALANCE", "vendor": "Sendi Mahir", "cost": 162.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Electrical Test Station", "type": "ELECTRICAL TEST", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Electrical Test Station", "type": "ELECTRICAL TEST", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Radius Gauge", "type": "RADIUS GAUGE", "vendor": "Sendi Mahir", "cost": 83.16}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "CAL500 Tension Gauge & Meter", "type": "OTHERS", "vendor": "Micro Precision", "cost": 1947.0}, {"desc": "Digimatic Indicator (depth gauge)", "type": "DEPTH GAUGE", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Torque Tester", "type": "TORQUE METER", "vendor": "Trescal", "cost": 536.76}, {"desc": "CAL500 Tension Gauge & Meter", "type": "OTHERS", "vendor": "Micro Precision", "cost": 1947.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Digital protractor", "type": "PROTRACTOR", "vendor": "Trescal", "cost": 173.88}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Source Meter", "type": "RESISTANCE METER", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Source Meter", "type": "RESISTANCE METER", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Source Meter", "type": "RESISTANCE METER", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Data Logger", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 140.4}, {"desc": "Off Center Load Cell", "type": "BALANCE", "vendor": "Sendi Mahir", "cost": 162.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Sendi Mahir", "cost": 162.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Sendi Mahir", "cost": 162.0}, {"desc": "Stopwatch #2", "type": "STOPWATCH", "vendor": "Trescal", "cost": 91.8}, {"desc": "Stopwatch #3", "type": "STOPWATCH", "vendor": "Trescal", "cost": 91.8}, {"desc": "Measuring Tape", "type": "MEASURING TAPE", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Measuring Tape", "type": "MEASURING TAPE", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Torque Tester", "type": "TORQUE METER", "vendor": "Trescal", "cost": 536.76}, {"desc": "Multimeter", "type": "MULTIMETER", "vendor": "Sendi Mahir", "cost": 118.8}, {"desc": "Multimeter", "type": "MULTIMETER", "vendor": "Sendi Mahir", "cost": 118.8}, {"desc": "Stopwatch", "type": "STOPWATCH", "vendor": "Trescal", "cost": 116.64}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Stopwatch with countdown", "type": "STOPWATCH", "vendor": "Trescal", "cost": 116.64}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Electrical Test Station", "type": "ELECTRICAL TEST", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 48.6}, {"desc": "Measuring Tape", "type": "MEASURING TAPE", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Platform Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 296.8}, {"desc": "Electrical Test Station", "type": "ELECTRICAL TEST", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Counting Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Torque Tightening", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Pin Gauge", "type": "PIN GAUGE", "vendor": "Sendi Mahir", "cost": 183.6}, {"desc": "Multimeter", "type": "MULTIMETER", "vendor": "Sendi Mahir", "cost": 118.8}, {"desc": "Spectrophotometer", "type": "OTHERS", "vendor": "X-Rite", "cost": 6200.0}, {"desc": "Multimeter", "type": "MULTIMETER", "vendor": "Sendi Mahir", "cost": 118.8}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Torque Meter", "type": "TORQUE METER", "vendor": "Sendi Mahir", "cost": 432.0}, {"desc": "Digital Dansa Gauge", "type": "DANSA GAUGE", "vendor": "Sendi Mahir", "cost": 64.8}, {"desc": "Digital Dansa Gauge", "type": "DANSA GAUGE", "vendor": "Sendi Mahir", "cost": 64.8}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Accelerometer", "type": "ACCELEROMETER", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Accelerometer", "type": "ACCELEROMETER", "vendor": "Autoliv Sweden AB", "cost": 500.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Steel Ruler", "type": "RULER", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Steel Ruler", "type": "RULER", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Measuring Tape", "type": "MEASURING TAPE", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Measuring Tape", "type": "MEASURING TAPE", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Standard Weights", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 464.4}, {"desc": "Weighing Scale", "type": "BALANCE", "vendor": "Multitech", "cost": 108.0}, {"desc": "Infrared Thermometer", "type": "THERMOMETER", "vendor": "Sendi Mahir", "cost": 216.0}, {"desc": "Digital Angle Protractor", "type": "PROTRACTOR", "vendor": "Trescal", "cost": 394.2}, {"desc": "Impact Hammer", "type": "OTHERS", "vendor": "WEST CALDWELL", "cost": 6040.0}, {"desc": "Uniaxial Accelerometer", "type": "ACCELEROMETER", "vendor": "WEST CALDWELL", "cost": 1360.0}, {"desc": "Uniaxial Accelerometer", "type": "ACCELEROMETER", "vendor": "WEST CALDWELL", "cost": 1360.0}, {"desc": "Pen pH Meter", "type": "OTHERS", "vendor": "Trescal", "cost": 376.92}, {"desc": "Digital Hardness Tester Type A", "type": "HARDNESS TESTER", "vendor": "Sendi Mahir", "cost": 149.04}, {"desc": "Hardness Tester Type A", "type": "HARDNESS TESTER", "vendor": "Sendi Mahir", "cost": 149.04}, {"desc": "Hardness Tester Type C", "type": "HARDNESS TESTER", "vendor": "Sendi Mahir", "cost": 149.04}, {"desc": "Torque Tightening Tools", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Torque Tightening Tools", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 216.0}, {"desc": "Off Center Load Cell", "type": "BALANCE", "vendor": "Sendi Mahir", "cost": 162.0}, {"desc": "Off Center Load Cell", "type": "BALANCE", "vendor": "Sendi Mahir", "cost": 162.0}, {"desc": "Digital Indicator (depth)", "type": "DEPTH GAUGE", "vendor": "Sendi Mahir", "cost": 54.0}, {"desc": "Torque Tightening Tools", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Source Meter", "type": "RESISTANCE METER", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Force Gauge", "type": "FORCE GAUGE", "vendor": "Sendi Mahir", "cost": 86.4}, {"desc": "Torque Wrench", "type": "TORQUE WRENCH", "vendor": "Sendi Mahir", "cost": 156.6}, {"desc": "Torque Tightening Tools", "type": "TORQUE TOOL", "vendor": "Indpro", "cost": 2160.0}, {"desc": "Data Logger", "type": "OTHERS", "vendor": "Sendi Mahir", "cost": 259.2}, {"desc": "WP 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "A 32", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 07", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 46", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 41", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "WP 04", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "L 10", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 21", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Tongue Stopper (L19)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 33", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 20", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "R 17", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "L 07", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 39", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "ST 04-1", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "WP 09", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "L 14", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "CPA 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "SL 05", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 16", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TL 20", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "CPA 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "CPA 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "R13", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "WP 11", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "L 21", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "G16", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "G17", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "L22", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "R16", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "WP 13", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "L 23", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "L 15", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "WP 02", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 15", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "R11", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "L16", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TL 13", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Tongue Stopper (L17)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 26", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "WP 03", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TL 18", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "WP 06", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "L 20", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 32", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 33", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TL 12", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 13", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 31", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "R12", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "N 03", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "WP 05", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "L 09", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TL 17", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 38", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 01", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 23", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 08", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "MPC 02", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "G 13", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 01", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 01", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "TLW 35", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 09", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "G 09", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFT 09", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 09", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 09", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 09", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 09", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 09", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 27", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "G11", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "MPC 08", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFT 10", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 10", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 10", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 10", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 10", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 15", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 05", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "MPC 09", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFT 11", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 11", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 11", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 11", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 11", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 27", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 28", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 48", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "G15", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 03", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 03", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "G16", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "MPC 10", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 04", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 04", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "G17", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 05", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 05", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "MPC 11", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "MPC 03", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFT 03", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 03", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 03", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 03", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 03", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 03", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 18", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "MPC 04", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "N 16", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "G 14", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 02", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 02", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "G 07", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "G 08", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFT 05", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 05", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 05", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 05", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 05", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 05", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 06", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 06", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 06", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 06", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 06", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 06", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 06", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "MPC 05", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "G 10", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFT 04", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 04", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 04", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 04", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 04", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 04", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 47", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "N 24", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 19", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "G 06", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "MPC 06", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFT 08", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 08", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 08", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 08", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 08", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "BFT 08", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Band-It Ring Clamping", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Band-It Ring Clamping", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cover Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cover Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cover Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Damper Crimping", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Horn Spring Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cover Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Horn Spring", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Emblem Assy (Cover Assy)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Emblem Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Sewing (A)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Sewing (B)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Sewing (C)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Sewing (D)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cover Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cover Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cover Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 04 (pillar loop)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 21", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Colour Tank", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Colour Tank", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Colour Tank", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Max Air Inlet", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Poly Tank", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Poly Tank", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Poly Tank", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Poly Tank", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Iso Tank", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Power Pack", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Power Pack", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Colour Tank", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Vaccum & Double Pin Cleaning", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Inflator & Deflector Harness Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cushion Folding", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cover Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Inflator & Deflector Harness Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Inflator & Deflector Harness Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Inflator & Deflector Harness Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cushion Folding", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Cover Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Buckle Load Durability", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Rapid Durability Test Machine", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Bending & Torsional Fatique Test Machine No. 1", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Bending & Torsional Fatique Test Machine No. 2", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Bending & Torsional Fatique Test Machine No. 3", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Load Durability Test", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Load Durability Test", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TL 12 (Dust)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TL 18 (P.Gauge at Salt Spray)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "G-Lock (Lab acceleration sled)", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "TLW 44", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "TLW 44", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "Band-It Ring Clamping", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Band-It Ring Clamping", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Inflator & Deflector Harness Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Inflator & Deflector Harness Assy", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "Inflator & Deflector Harness Assy", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "Horn Test", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "Horn Test", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "R18", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "WP 15", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "L24", "type": "PRESSURE", "vendor": "Multitech", "cost": 72.9}, {"desc": "G18", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "MPC 12", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 06", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}, {"desc": "BFL 06", "type": "LOAD CELL", "vendor": "Multitech", "cost": 466.56}];
+
+const TYPE_COLORS = {
+  'DATA ACQUISITION':'#00B4C6','TORQUE TOOL':'#F5A623','OTHERS':'#9B6DFF',
+  'LOAD CELL':'#22D3A5','PRESSURE':'#38BDF8','ACCELEROMETER':'#FF5C7D',
+  'BALANCE':'#A78BFA','HUMIDITY CHAMBER':'#34D399','TORQUE METER':'#FBBF24',
+  'TORQUE WRENCH':'#60A5FA','FORCE GAUGE':'#F472B6','PIN GAUGE':'#FB923C',
+  'MULTIMETER':'#4ADE80','HARDNESS TESTER':'#E879F9','ELECTRICAL TEST':'#F87171',
+  'RESISTANCE METER':'#67E8F9','PROTRACTOR':'#A3E635','THERMOMETER':'#FDE68A',
+  'RADIUS GAUGE':'#C4B5FD','GAUGE BLOCK':'#6EE7B7','TENSILE':'#FCA5A5',
+  'TAPER GAUGE':'#93C5FD','TORQUE DRIVER':'#D8B4FE','OVEN':'#86EFAC',
+  'STOPWATCH':'#FCD34D','DANSA GAUGE':'#F9A8D4','MEASURING TAPE':'#BAE6FD',
+  'DEPTH GAUGE':'#BBF7D0','RING GAUGE':'#FEF08A','CALIPER':'#FDBA74','RULER':'#CBD5E1',
+};
+const VENDOR_COLORS = [
+  '#00B4C6','#F5A623','#9B6DFF','#22D3A5','#FF5C7D',
+  '#38BDF8','#A78BFA','#34D399','#FBBF24','#60A5FA',
+  '#F472B6','#FB923C','#4ADE80','#E879F9',
+];
+const PILL_CLASSES = ['pill-teal','pill-amber','pill-violet','pill-green','pill-rose','pill-sky'];
+
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+let ACTIVE_DATA = [...BUILTIN_DATA];
+let GRAND_TOTAL  = ACTIVE_DATA.reduce((s,r)=>s+r.cost,0);
+let GRAND_COUNT  = ACTIVE_DATA.length;
+let _filtered    = [];
+let _csvHeaders  = [];   // raw CSV column headers for mapping modal
+let _csvRows     = [];   // raw CSV rows before mapping
+
+// ════════════════════════════════════════════════════════════
+// DRAG AND DROP
+// ════════════════════════════════════════════════════════════
+// Intercept drag over the entire window
+window.addEventListener('dragover', e => { e.preventDefault(); openDropZone(); });
+window.addEventListener('dragleave', e => {
+  if (e.relatedTarget === null) closeDropZone();
+});
+window.addEventListener('drop', e => {
+  e.preventDefault();
+  closeDropZone();
+  const file = e.dataTransfer.files[0];
+  if (file) processFile(file);
+});
+
+document.getElementById('dropBox').addEventListener('dragover', e => e.preventDefault());
+document.getElementById('dropBox').addEventListener('drop', e => {
+  e.preventDefault();
+  closeDropZone();
+  const file = e.dataTransfer.files[0];
+  if (file) processFile(file);
+});
+
+function openDropZone()  { document.getElementById('dropOverlay').classList.add('active'); }
+function closeDropZone() { document.getElementById('dropOverlay').classList.remove('active'); }
+
+// ════════════════════════════════════════════════════════════
+// FILE PICKER
+// ════════════════════════════════════════════════════════════
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (file) processFile(file);
+  e.target.value = ''; // reset so same file can be re-selected
+}
+
+// ════════════════════════════════════════════════════════════
+// CSV PARSING
+// ════════════════════════════════════════════════════════════
+function parseCSV(text) {
+  // Handle BOM
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  const lines = text.split(/\r?\n/).filter(l => l.trim());
+  if (lines.length < 2) return { headers: [], rows: [] };
+
+  function splitLine(line) {
+    const result = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { result.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    result.push(cur.trim());
+    return result;
+  }
+
+  const headers = splitLine(lines[0]);
+  const rows = lines.slice(1).map(l => splitLine(l));
+  return { headers, rows };
+}
+
+function autoDetectMapping(headers) {
+  const norm = h => h.toLowerCase().replace(/[\s_\-\.]/g,'');
+  const map = {};
+  const targets = {
+    desc:   ['description','desc','item','equipment','name','equipmentname','equipmentdesc'],
+    type:   ['equipmenttype','type','category','equiptype','cat'],
+    vendor: ['calby','vendor','calibratedby','supplier','contractor','by','calibrator'],
+    cost:   ['cost','price','amount','fee','rm','totalcost','calibrationcost'],
+  };
+  headers.forEach((h,i) => {
+    const n = norm(h);
+    for (const [field, patterns] of Object.entries(targets)) {
+      if (!map[field] && patterns.some(p => n.includes(p))) map[field] = i;
+    }
+  });
+  return map;
+}
+
+function processFile(file) {
+  if (!file.name.toLowerCase().endsWith('.csv')) {
+    setStatus('❌ Please use a CSV file (.csv). In Excel: File → Save As → CSV UTF-8', 'err');
+    return;
+  }
+  setStatus('⏳ Reading file…', '');
+  const reader = new FileReader();
+  reader.onload = e => {
+    const { headers, rows } = parseCSV(e.target.result);
+    if (!headers.length) { setStatus('❌ Could not read CSV — file appears empty', 'err'); return; }
+
+    _csvHeaders = headers;
+    _csvRows    = rows;
+
+    const autoMap = autoDetectMapping(headers);
+    const allMapped = ['desc','type','vendor','cost'].every(k => autoMap[k] !== undefined);
+
+    if (allMapped) {
+      applyData(autoMap, file.name);
+    } else {
+      openMappingModal(headers, autoMap, file.name);
+    }
+  };
+  reader.onerror = () => setStatus('❌ Could not read file', 'err');
+  reader.readAsText(file, 'UTF-8');
+}
+
+// ════════════════════════════════════════════════════════════
+// COLUMN MAPPING MODAL
+// ════════════════════════════════════════════════════════════
+let _pendingFileName = '';
+
+function openMappingModal(headers, autoMap, fileName) {
+  _pendingFileName = fileName;
+  ['desc','type','vendor','cost'].forEach(field => {
+    const sel = document.getElementById('map-'+field);
+    sel.innerHTML = headers.map((h,i) =>
+      `<option value="${i}" ${autoMap[field]===i?'selected':''}>${h}</option>`
+    ).join('');
+  });
+  document.getElementById('mapModal').classList.add('active');
+}
+
+function closeModal() { document.getElementById('mapModal').classList.remove('active'); }
+
+function applyMapping() {
+  const map = {
+    desc:   parseInt(document.getElementById('map-desc').value),
+    type:   parseInt(document.getElementById('map-type').value),
+    vendor: parseInt(document.getElementById('map-vendor').value),
+    cost:   parseInt(document.getElementById('map-cost').value),
+  };
+  closeModal();
+  applyData(map, _pendingFileName);
+}
+
+// ════════════════════════════════════════════════════════════
+// APPLY PARSED DATA TO DASHBOARD
+// ════════════════════════════════════════════════════════════
+function applyData(map, fileName) {
+  const parsed = [];
+  let skipped = 0;
+  _csvRows.forEach(row => {
+    const desc   = (row[map.desc]   || '').trim();
+    const type   = (row[map.type]   || '').trim().toUpperCase();
+    const vendor = (row[map.vendor] || '').trim();
+    const raw    = (row[map.cost]   || '').replace(/[RM,\s]/gi,'');
+    const cost   = parseFloat(raw);
+    if (!desc && !type) { skipped++; return; }
+    parsed.push({ desc: desc||'(unnamed)', type: type||'UNKNOWN', vendor: vendor||'Unknown', cost: isNaN(cost)?0:cost });
+  });
+
+  if (!parsed.length) { setStatus('❌ No valid rows found — check column mapping', 'err'); return; }
+
+  ACTIVE_DATA  = parsed;
+  GRAND_TOTAL  = parsed.reduce((s,r)=>s+r.cost,0);
+  GRAND_COUNT  = parsed.length;
+
+  // Update UI state
+  document.getElementById('howToBar').classList.add('hidden');
+  document.getElementById('sourceBanner').classList.remove('hidden');
+  document.getElementById('sourceFileName').textContent = fileName;
+  document.getElementById('sourceRecords').textContent  = parsed.length + ' records';
+  document.getElementById('sourceLoaded').textContent   = '✓ Loaded ' + new Date().toLocaleTimeString();
+  document.getElementById('hdr-sub').textContent        = fileName + ' · ' + parsed.length + ' records';
+  document.getElementById('statusDot').className        = 'dot dot-amber';
+  document.getElementById('statusText').textContent     = 'CSV loaded';
+  document.getElementById('footer-left').textContent    = fileName + ' · ' + parsed.length + ' records · RM ' + GRAND_TOTAL.toLocaleString('en-MY',{minimumFractionDigits:2});
+  if (skipped) setStatus(`⚠ Loaded ${parsed.length} records (${skipped} rows skipped)`, 'ok');
+  else setStatus(`✓ Loaded ${parsed.length} records from ${fileName}`, 'ok');
+
+  rebuildFilters();
+  render();
+}
+
+function reloadBuiltin() {
+  ACTIVE_DATA  = [...BUILTIN_DATA];
+  GRAND_TOTAL  = ACTIVE_DATA.reduce((s,r)=>s+r.cost,0);
+  GRAND_COUNT  = ACTIVE_DATA.length;
+  document.getElementById('howToBar').classList.remove('hidden');
+  document.getElementById('sourceBanner').classList.add('hidden');
+  document.getElementById('hdr-sub').textContent  = 'Built-in data · 489 records';
+  document.getElementById('statusDot').className  = 'dot dot-green';
+  document.getElementById('statusText').textContent = 'Built-in data';
+  document.getElementById('footer-left').textContent = 'Calibration_Pressure_Combined · 489 records built-in';
+  setStatus('Built-in data restored', '');
+  rebuildFilters();
+  render();
+}
+
+function setStatus(msg, cls) {
+  const el = document.getElementById('uploadStatus');
+  el.textContent = msg;
+  el.className   = 'upload-status' + (cls ? ' '+cls : '');
+}
+
+// ════════════════════════════════════════════════════════════
+// FILTERS
+// ════════════════════════════════════════════════════════════
+function rebuildFilters() {
+  const types   = [...new Set(ACTIVE_DATA.map(r=>r.type))].sort();
+  const vendors = [...new Set(ACTIVE_DATA.map(r=>r.vendor))].sort();
+  const eq = document.getElementById('fEq');
+  const vn = document.getElementById('fVn');
+  eq.innerHTML = '<option value="">All Types</option>'   + types.map(t=>`<option value="${t}">${t}</option>`).join('');
+  vn.innerHTML = '<option value="">All Vendors</option>' + vendors.map(v=>`<option value="${v}">${v}</option>`).join('');
+}
+
+function getFiltered() {
+  const eq = document.getElementById('fEq').value;
+  const vn = document.getElementById('fVn').value;
+  return ACTIVE_DATA.filter(r=>(eq===''||r.type===eq)&&(vn===''||r.vendor===vn));
+}
+
+function resetFilters() {
+  document.getElementById('fEq').value = '';
+  document.getElementById('fVn').value = '';
+  document.getElementById('searchInp').value = '';
+  render();
+}
+
+// ════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════
+function agg(data,key){
+  const m={};
+  data.forEach(r=>{ if(!m[r[key]]) m[r[key]]={cost:0,count:0}; m[r[key]].cost+=r.cost; m[r[key]].count++; });
+  return Object.entries(m).map(([k,v])=>({name:k,...v})).sort((a,b)=>b.cost-a.cost);
+}
+function fmt(n)  { return 'RM '+n.toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtK(n) { return n>=1000 ? 'RM '+(n/1000).toFixed(1)+'K' : 'RM '+n.toFixed(2); }
+function typeColor(name) { return TYPE_COLORS[name] || '#00B4C6'; }
+function vendorColor(idx) { return VENDOR_COLORS[idx % VENDOR_COLORS.length]; }
+function pillClass(idx)   { return PILL_CLASSES[idx % PILL_CLASSES.length]; }
+
+// ════════════════════════════════════════════════════════════
+// RENDERERS
+// ════════════════════════════════════════════════════════════
+function renderBars(id, items, total, colorFn, limit) {
+  const el = document.getElementById(id);
+  const shown = limit ? items.slice(0,limit) : items;
+  const maxV  = shown[0]?.cost || 1;
+  el.innerHTML = shown.map(d=>{
+    const pct = total>0 ? (d.cost/total*100).toFixed(1) : '0.0';
+    const w   = (d.cost/maxV*100).toFixed(1);
+    const col = colorFn(d.name);
+    return `<div class="bar-row">
+      <div class="bar-meta">
+        <span class="bar-name" title="${d.name}">${d.name}</span>
+        <div class="bar-nums">
+          <span class="bar-val">${fmtK(d.cost)}</span>
+          <span class="bar-cnt">(${d.count})</span>
+          <span class="bar-pct">${pct}%</span>
+        </div>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${col}"></div></div>
+    </div>`;
+  }).join('') || '<div class="no-data">No data</div>';
+}
+
+function renderDonut(items, total) {
+  const top8 = items.slice(0,8);
+  const cx=75,cy=75,r=56,sw=20,circ=2*Math.PI*r;
+  let off=0, paths='';
+  const topPct = total>0 ? (top8[0]?.cost||0)/total*100 : 0;
+  top8.forEach((d,i)=>{
+    const share = total>0 ? d.cost/total : 0;
+    const col   = typeColor(d.name);
+    const dash  = (share*circ).toFixed(2);
+    const gap   = (circ-share*circ).toFixed(2);
+    const doff  = (-(off*circ)+(circ/4)).toFixed(2);
+    paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}"
+      stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${doff}" style="transition:stroke-dasharray .7s ease"/>`;
+    off += share;
+  });
+  document.getElementById('donut-svg').innerHTML = paths +
+    `<text x="${cx}" y="${cy-6}" text-anchor="middle" dominant-baseline="middle"
+       fill="#E2EDF5" font-size="17" font-weight="700" font-family="IBM Plex Mono">${topPct.toFixed(0)}%</text>
+     <text x="${cx}" y="${cy+10}" text-anchor="middle" dominant-baseline="middle"
+       fill="#3D6880" font-size="8" font-family="IBM Plex Sans">TOP TYPE</text>`;
+  document.getElementById('donut-legend').innerHTML = top8.map((d,i)=>{
+    const pct = total>0 ? (d.cost/total*100).toFixed(1) : '0.0';
+    return `<div class="leg-row">
+      <div class="leg-dot" style="background:${typeColor(d.name)}"></div>
+      <span class="leg-name" title="${d.name}">${d.name}</span>
+      <span class="leg-val">${fmtK(d.cost)}</span>
+      <span class="leg-pct">${pct}%</span>
+    </div>`;
+  }).join('');
+}
+
+function renderTreemap(items, total) {
+  document.getElementById('treemap').innerHTML = items.slice(0,20).map(d=>{
+    const pct = total>0 ? d.cost/total : 0;
+    const col = typeColor(d.name);
+    const w   = Math.max(60, Math.min(220, pct*1800));
+    const h   = Math.max(40, pct*1000);
+    return `<div class="tm-cell" style="width:${w.toFixed(0)}px;height:${h.toFixed(0)}px;background:${col}22;border:1px solid ${col}55" title="${d.name}: ${fmt(d.cost)}">
+      <span class="tm-label">${d.name}</span>
+      <span class="tm-val">${fmtK(d.cost)}</span>
+    </div>`;
+  }).join('') || '<div class="no-data">No data</div>';
+}
+
+function renderEqSummary(items, total) {
+  document.getElementById('eq-summary-body').innerHTML = items.map((d,i)=>{
+    const pct = total>0 ? (d.cost/total*100).toFixed(1) : '0.0';
+    const avg = d.count>0 ? d.cost/d.count : 0;
+    const fw  = total>0 ? (d.cost/total*44).toFixed(0) : 0;
+    const col = typeColor(d.name);
+    return `<tr>
+      <td class="dim r">${i+1}</td>
+      <td class="first" style="color:${col}">${d.name}</td>
+      <td class="r">${fmt(d.cost)}</td>
+      <td class="r dim">${d.count}</td>
+      <td class="r">${fmt(avg)}</td>
+      <td class="r"><div class="mini-bar-wrap">
+        <div class="mini-bar"><div class="mini-fill" style="width:${fw}px;background:${col}"></div></div>
+        ${pct}%
+      </div></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" class="no-data">No data</td></tr>';
+}
+
+function renderVnSummary(items, total) {
+  document.getElementById('vn-summary-body').innerHTML = items.map((d,i)=>{
+    const pct = total>0 ? (d.cost/total*100).toFixed(1) : '0.0';
+    const avg = d.count>0 ? d.cost/d.count : 0;
+    const fw  = total>0 ? (d.cost/total*44).toFixed(0) : 0;
+    const col = vendorColor(i);
+    return `<tr>
+      <td class="dim r">${i+1}</td>
+      <td class="first">${d.name}</td>
+      <td class="r">${fmt(d.cost)}</td>
+      <td class="r dim">${d.count}</td>
+      <td class="r">${fmt(avg)}</td>
+      <td class="r"><div class="mini-bar-wrap">
+        <div class="mini-bar"><div class="mini-fill" style="width:${fw}px;background:${col}"></div></div>
+        ${pct}%
+      </div></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" class="no-data">No data</td></tr>';
+}
+
+function renderDetailTable() {
+  const q = (document.getElementById('searchInp').value||'').toLowerCase();
+  const rows = q ? _filtered.filter(r=>
+    r.desc.toLowerCase().includes(q)||r.type.toLowerCase().includes(q)||r.vendor.toLowerCase().includes(q)
+  ) : _filtered;
+  const vendorList = [...new Set(ACTIVE_DATA.map(r=>r.vendor))].sort();
+  document.getElementById('detail-count-badge').textContent = rows.length + ' records';
+  document.getElementById('detail-body').innerHTML = rows.slice(0,400).map((r,i)=>{
+    const vi  = vendorList.indexOf(r.vendor);
+    const col = typeColor(r.type);
+    return `<tr>
+      <td class="dim r">${i+1}</td>
+      <td class="first">${r.desc}</td>
+      <td style="color:${col};font-size:10px;font-weight:600">${r.type}</td>
+      <td><span class="pill ${pillClass(vi)}">${r.vendor}</span></td>
+      <td class="r">${r.cost>0?fmt(r.cost):'<span style="color:var(--t3)">—</span>'}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="5" class="no-data">No matching records</td></tr>';
+}
+
+// ════════════════════════════════════════════════════════════
+// MASTER RENDER
+// ════════════════════════════════════════════════════════════
+function render() {
+  const data    = getFiltered();
+  _filtered     = data;
+  const total   = data.reduce((s,r)=>s+r.cost,0);
+  const count   = data.length;
+  const byType   = agg(data,'type');
+  const byVendor = agg(data,'vendor');
+  const vColorMap = Object.fromEntries(byVendor.map((d,i)=>[d.name, vendorColor(i)]));
+
+  // KPIs
+  document.getElementById('k-cost').textContent     = fmt(total);
+  document.getElementById('k-avg').textContent      = count>0 ? fmt(total/count) : '—';
+  document.getElementById('k-count').textContent    = count.toLocaleString();
+  document.getElementById('k-pct').textContent      = GRAND_COUNT>0 ? (count/GRAND_COUNT*100).toFixed(0)+'%' : '—%';
+  document.getElementById('k-types').textContent    = byType.length;
+  document.getElementById('k-vendors').textContent  = byVendor.length;
+  document.getElementById('k-top-vendor').textContent = byVendor[0]?.name || '—';
+  document.getElementById('badge-type-count').textContent   = byType.length+' types';
+  document.getElementById('badge-vendor-count').textContent = byVendor.length+' vendors';
+
+  // Charts
+  renderBars('chart-type',        byType,   total, typeColor,         10);
+  renderBars('chart-vendor',      byVendor, total, (_,i)=>vendorColor(byVendor.findIndex(d=>d===byVendor[byVendor.findIndex(x=>x.name===_)])));
+  renderBars('chart-vendor',      byVendor, total, n=>vColorMap[n]);
+  renderDonut(byType, total);
+  renderTreemap(byType, total);
+  renderBars('chart-type-full',   byType,   total, typeColor);
+  renderEqSummary(byType, total);
+  renderBars('chart-vendor-full', byVendor, total, n=>vColorMap[n]);
+  renderVnSummary(byVendor, total);
+  renderDetailTable();
+}
+
+// ════════════════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════════════════
+function switchTab(id,el) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+rebuildFilters();
+render();
+</script>
+</body>
+</html>
