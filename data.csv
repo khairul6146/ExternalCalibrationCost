@@ -51,8 +51,6 @@ Infrared Thermometer,THERMOMETER,Sendi Mahir,216.0,2025-05-23,Test Lab,Active,Ca
 Thermometer with thermocouple,THERMOMETER,Sendi Mahir,118.8,2025-05-23,Test Lab,Active,Calibration
 Torque Driver,TORQUE DRIVER,Sendi Mahir,156.6,2025-05-26,Safety,Active,Calibration
 Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-05-28,Safety,Active,Calibration
-Salt Spray Machine,OTHERS,Trescal,410.4,2025-05-29,Test Lab,Active,Calibration
-Stopwatch with countdown,STOPWATCH,Trescal,116.64,2025-05-29,Test Lab,Active,Calibration
 Taper Gauge,TAPER GAUGE,Trescal,89.64,2025-06-03,PDI,Active,Calibration
 Taper Gauge,TAPER GAUGE,Trescal,89.64,2025-06-03,PDI,Active,Calibration
 Standard Scale 50mm,OTHERS,Trescal,451.44,2025-06-04,SRS,Active,Calibration
@@ -488,3 +486,5 @@ Weighing Scale,BALANCE,Multitech,108.0,2026-05-06,SRS,Active,Calibration
 Weighing Scale,BALANCE,Multitech,108.0,2026-05-06,SRS,Active,Calibration
 Weighing Scale,BALANCE,Multitech,108.0,2026-05-06,SRS,Active,Calibration
 Granite Surface Plate,OTHERS,Sendi Mahir,345.6,2026-05-11,Test Lab,Active,Calibration
+Stopwatch with countdown,STOPWATCH,Trescal,116.64,2026-05-21,Test Lab,Active,Calibration
+Salt Spray Machine,OTHERS,Trescal,410.4,2026-05-26,Test Lab,Active,Calibration
