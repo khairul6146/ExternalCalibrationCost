@@ -1,7 +1,6 @@
 description,equipment_type,vendor,cost,last_cal_date,area,status,source
 N 09,PRESSURE,Multitech,72.9,,Safety,p.gauge,Pressure Gauge
 N 15,PRESSURE,Multitech,72.9,,Safety,p.gauge,Pressure Gauge
-Test1,THERMOMETER,Sendi Mahir,118.8,,SRS,Active,Calibration
 Thermometer with thermocouple,THERMOMETER,Sendi Mahir,118.8,,SRS,Active,Calibration
 Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2023-12-06,Test Lab,Active,Calibration
 Time Output Module,DATA ACQUISITION,DTS,5700.0,2023-12-06,Test Lab,Active,Calibration
