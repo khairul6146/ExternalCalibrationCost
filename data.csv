@@ -1,0 +1,490 @@
+description,equipment_type,vendor,cost,last_cal_date,area,status,source
+N 09,PRESSURE,Multitech,72.9,,Safety,p.gauge,Pressure Gauge
+N 15,PRESSURE,Multitech,72.9,,Safety,p.gauge,Pressure Gauge
+Thermometer with thermocouple,THERMOMETER,Sendi Mahir,118.8,,SRS,Active,Calibration
+Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2023-12-06,Test Lab,Active,Calibration
+Time Output Module,DATA ACQUISITION,DTS,5700.0,2023-12-06,Test Lab,Active,Calibration
+Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2024-02-27,Test Lab,Active,Calibration
+Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2024-02-27,Test Lab,Active,Calibration
+Rack System,DATA ACQUISITION,DTS,1700.0,2024-02-27,Test Lab,Active,Calibration
+Time Output Module,DATA ACQUISITION,DTS,5700.0,2024-03-04,Test Lab,Active,Calibration
+Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-05-22,Test Lab,Active,Calibration
+Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-05-22,Test Lab,Active,Calibration
+Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-07-30,Test Lab,Active,Calibration
+Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-07-30,Test Lab,Active,Calibration
+Crane Scale,BALANCE,Multitech,1272.0,2024-07-31,Test Lab,Active,Calibration
+Micro Meter,OTHERS,Sendi Mahir,54.0,2024-08-02,Test Lab,Active,Calibration
+TL 12 (Dust),PRESSURE,Multitech,72.9,2024-08-21,Safety,p.gauge,Pressure Gauge
+TL 18 (P.Gauge at Salt Spray),PRESSURE,Multitech,72.9,2024-08-21,Safety,p.gauge,Pressure Gauge
+Surface Resistance Checker,OTHERS,Sendi Mahir,259.2,2024-09-12,SRS,Active,Calibration
+Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-09-24,Test Lab,Active,Calibration
+VC Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-09-24,Test lab,Active,Calibration
+Stopwatch #3,STOPWATCH,Trescal,91.8,2024-11-14,SRS,Active,Calibration
+Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2024-11-18,Test Lab,Active,Calibration
+Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2024-11-18,Test Lab,Active,Calibration
+Laser Based Speed Meter,OTHERS,SABO,845.0,2024-11-29,Test Lab,Active,Calibration
+Multimeter,MULTIMETER,Sendi Mahir,259.2,2025-01-06,Test Lab,Active,Calibration
+Resistance Meter (Resistance Transducer),ELECTRICAL TEST,Sendi Mahir,259.2,2025-01-13,SRS,Active,Calibration
+Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2025-01-17,Test Lab,Active,Calibration
+VC Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2025-01-17,Test Lab,Active,Calibration
+VC Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2025-01-17,Test Lab,Active,Calibration
+6 1/2 Digital Precision Multimeter,MULTIMETER,Sendi Mahir,259.2,2025-01-28,Test Lab,Active,Calibration
+Sound Measurement (Mic),OTHERS,First Instrument,2730.0,2025-03-03,Test Lab,Active,Calibration
+Uniaxial Accelerometer,ACCELEROMETER,WEST CALDWELL,1360.0,2025-03-03,Test Lab,Active,Calibration
+Uniaxial Accelerometer,ACCELEROMETER,WEST CALDWELL,1360.0,2025-03-03,Test Lab,Active,Calibration
+Impact Hammer,OTHERS,WEST CALDWELL,6040.0,2025-03-12,Test Lab,Active,Calibration
+CAL500 Tension Gauge & Meter,OTHERS,Micro Precision,1947.0,2025-04-07,SRS,Active,Calibration
+Sound Measurement (DA),DATA ACQUISITION,First Instrument,6330.0,2025-05-06,Test Lab,Active,Calibration
+Multimeter,MULTIMETER,Sendi Mahir,118.8,2025-05-20,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-05-20,PDI,Active,Calibration
+Screw Ring Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
+Screw Ring Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
+Screw Ring Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
+Thread Plug Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
+Thread Plug Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
+Thread Plug Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
+Digital Hardness Tester Type A,HARDNESS TESTER,Sendi Mahir,149.04,2025-05-21,SRS,Active,Calibration
+Hardness Tester Type A,HARDNESS TESTER,Sendi Mahir,149.04,2025-05-21,SRS,Active,Calibration
+Hardness Tester Type C,HARDNESS TESTER,Sendi Mahir,149.04,2025-05-21,SRS,Active,Calibration
+Center 309 Datalogger,THERMOMETER,Sendi Mahir,97.2,2025-05-23,SRS,Active,Calibration
+Infrared Thermometer,THERMOMETER,Sendi Mahir,216.0,2025-05-23,Test Lab,Active,Calibration
+Thermometer with thermocouple,THERMOMETER,Sendi Mahir,118.8,2025-05-23,Test Lab,Active,Calibration
+Torque Driver,TORQUE DRIVER,Sendi Mahir,156.6,2025-05-26,Safety,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-05-28,Safety,Active,Calibration
+Salt Spray Machine,OTHERS,Trescal,410.4,2025-05-29,Test Lab,Active,Calibration
+Stopwatch with countdown,STOPWATCH,Trescal,116.64,2025-05-29,Test Lab,Active,Calibration
+Taper Gauge,TAPER GAUGE,Trescal,89.64,2025-06-03,PDI,Active,Calibration
+Taper Gauge,TAPER GAUGE,Trescal,89.64,2025-06-03,PDI,Active,Calibration
+Standard Scale 50mm,OTHERS,Trescal,451.44,2025-06-04,SRS,Active,Calibration
+Torque Meter,TORQUE METER,Sendi Mahir,432.0,2025-06-12,SRS,Active,Calibration
+Melt Flow Indexer,OTHERS,Sendi Mahir,421.2,2025-06-13,Test Lab,Active,Calibration
+Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-06-13,Test Lab,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-06-16,Safety,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-06-16,Safety,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-06-16,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-16,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-16,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-17,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-17,SRS,Active,Calibration
+Digital Indicator (depth),DEPTH GAUGE,Sendi Mahir,54.0,2025-06-23,SRS,Active,Calibration
+Profile Projector,OTHERS,Mitutoyo,551.0,2025-06-30,Test Lab,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-30,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-30,SRS,Active,Calibration
+Torque Tightening Tools,TORQUE TOOL,Indpro,2160.0,2025-06-30,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-07-01,SRS,Active,Calibration
+Digimatic Indicator (depth gauge),DEPTH GAUGE,Sendi Mahir,54.0,2025-07-02,SRS,Active,Calibration
+Electrical Test Station,ELECTRICAL TEST,Sendi Mahir,259.2,2025-07-02,SRS,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-07-02,Safety,Active,Calibration
+Hardness Tester,HARDNESS TESTER,Sendi Mahir,702.0,2025-07-02,Test Lab,Active,Calibration
+Off Center Load Cell,BALANCE,Sendi Mahir,162.0,2025-07-02,SRS,Active,Calibration
+Off Center Load Cell,BALANCE,Sendi Mahir,162.0,2025-07-02,SRS,Active,Calibration
+Source Meter,RESISTANCE METER,Sendi Mahir,259.2,2025-07-02,SRS,Active,Calibration
+Source Meter,RESISTANCE METER,Sendi Mahir,259.2,2025-07-02,SRS,Active,Calibration
+Source Meter,RESISTANCE METER,Sendi Mahir,259.2,2025-07-02,SRS,Active,Calibration
+Source Meter,RESISTANCE METER,Sendi Mahir,259.2,2025-07-02,SRS,Active,Calibration
+CAL500 Tension Gauge & Meter,OTHERS,Micro Precision,1947.0,2025-07-03,SRS,Active,Calibration
+Hot Chamber,OVEN,Trescal,430.92,2025-07-04,Test Lab,Active,Calibration
+BFL 05,LOAD CELL,Multitech,466.56,2025-07-07,Safety,load cell,Pressure Gauge
+BFL 05,LOAD CELL,Multitech,466.56,2025-07-07,Safety,load cell,Pressure Gauge
+Cover Assy,PRESSURE,Multitech,72.9,2025-07-07,Safety,p.switch,Pressure Gauge
+Cover Assy,PRESSURE,Multitech,72.9,2025-07-07,SRS,p.switch,Pressure Gauge
+Cover Assy,PRESSURE,Multitech,72.9,2025-07-07,Safety,p.switch,Pressure Gauge
+Cushion Folding,PRESSURE,Multitech,72.9,2025-07-07,SRS,p.switch,Pressure Gauge
+Cushion Folding,PRESSURE,Multitech,72.9,2025-07-07,Safety,p.switch,Pressure Gauge
+Damper Crimping,PRESSURE,Multitech,72.9,2025-07-07,Safety,p.switch,Pressure Gauge
+G15,LOAD CELL,Multitech,466.56,2025-07-07,Safety,load cell,Pressure Gauge
+G16,LOAD CELL,Multitech,466.56,2025-07-07,Safety,load cell,Pressure Gauge
+G17,LOAD CELL,Multitech,466.56,2025-07-07,Safety,load cell,Pressure Gauge
+Horn Spring Assy,PRESSURE,Multitech,72.9,2025-07-07,Safety,p.switch,Pressure Gauge
+Inflator & Deflector Harness Assy,PRESSURE,Multitech,72.9,2025-07-07,SRS,p.switch,Pressure Gauge
+Inflator & Deflector Harness Assy,PRESSURE,Multitech,72.9,2025-07-07,SRS,p.gauge,Pressure Gauge
+Inflator & Deflector Harness Assy,PRESSURE,Multitech,72.9,2025-07-07,SRS,p.switch,Pressure Gauge
+Inflator & Deflector Harness Assy,PRESSURE,Multitech,72.9,2025-07-07,SRS,p.switch,Pressure Gauge
+L22,PRESSURE,Multitech,72.9,2025-07-07,Safety,p.switch,Pressure Gauge
+MPC 11,LOAD CELL,Multitech,466.56,2025-07-07,Safety,load cell,Pressure Gauge
+Vaccum & Double Pin Cleaning,PRESSURE,Multitech,72.9,2025-07-07,SRS,p.switch,Pressure Gauge
+Band-It Ring Clamping,PRESSURE,Multitech,72.9,2025-07-08,Test Lab,p.switch,Pressure Gauge
+Band-It Ring Clamping,PRESSURE,Multitech,72.9,2025-07-08,Test Lab,p.switch,Pressure Gauge
+Counting Scale,BALANCE,Multitech,108.0,2025-07-08,R&D,Active,Calibration
+Counting Scale,BALANCE,Multitech,108.0,2025-07-08,Test Lab,Active,Calibration
+Cover Assy,PRESSURE,Multitech,72.9,2025-07-08,SRS,p.switch,Pressure Gauge
+Cover Assy,PRESSURE,Multitech,72.9,2025-07-08,SRS,p.switch,Pressure Gauge
+Cover Assy,PRESSURE,Multitech,72.9,2025-07-08,Safety,p.switch,Pressure Gauge
+Platform Scale,BALANCE,Multitech,1378.0,2025-07-08,Store,Active,Calibration
+Rack System,DATA ACQUISITION,DTS,1700.0,2025-07-08,Test Lab,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-07-14,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-07-14,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2025-07-14,SRS,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-07-15,Safety,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-07-15,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-07-24,Safety,Active,Calibration
+Torque Meter,TORQUE METER,Trescal,536.76,2025-07-30,SRS,Active,Calibration
+G17,LOAD CELL,Multitech,466.56,2025-07-31,Safety,load cell,Pressure Gauge
+L 14,LOAD CELL,Multitech,466.56,2025-07-31,Safety,load cell,Pressure Gauge
+Hardness Tester (Type-C),HARDNESS TESTER,Sendi Mahir,149.04,2025-08-01,SRS,Active,Calibration
+Rubber Hardness Tester,HARDNESS TESTER,Sendi Mahir,149.04,2025-08-01,PDI,Active,Calibration
+Dansa Gauge,DANSA GAUGE,Sendi Mahir,64.8,2025-08-05,QA,Active,Calibration
+Digital Dansa Gauge,DANSA GAUGE,Sendi Mahir,64.8,2025-08-05,QA,Active,Calibration
+Digital Dansa Gauge,DANSA GAUGE,Sendi Mahir,64.8,2025-08-05,PDI,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-08-05,QA,Active,Calibration
+Radius Gauge,RADIUS GAUGE,Sendi Mahir,83.16,2025-08-05,PDI,Active,Calibration
+Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-08-05,QA,Active,Calibration
+Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-08-06,Test Lab,Active,Calibration
+Torque Wrench (Dial),TORQUE WRENCH,Sendi Mahir,156.6,2025-08-06,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,183.6,2025-08-07,PDI,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-08-07,QA,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-08-13,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-08-13,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-08-14,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-08-14,Safety,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-08-15,Test Lab,Active,Calibration
+BFL 01,LOAD CELL,Multitech,466.56,2025-08-18,Safety,load cell,Pressure Gauge
+BFL 01,LOAD CELL,Multitech,466.56,2025-08-18,Safety,load cell,Pressure Gauge
+BFL 03,LOAD CELL,Multitech,466.56,2025-08-18,Safety,load cell,Pressure Gauge
+BFL 03,LOAD CELL,Multitech,466.56,2025-08-18,Safety,load cell,Pressure Gauge
+G16,LOAD CELL,Multitech,466.56,2025-08-18,Safety,load cell,Pressure Gauge
+Horn Test,LOAD CELL,Multitech,466.56,2025-08-18,SRS,load cell,Pressure Gauge
+Inflator & Deflector Harness Assy,PRESSURE,Multitech,72.9,2025-08-18,SRS,p.gauge,Pressure Gauge
+Inflator & Deflector Harness Assy,PRESSURE,Multitech,72.9,2025-08-18,SRS,p.gauge,Pressure Gauge
+Inflator & Deflector Harness Assy,LOAD CELL,Multitech,466.56,2025-08-18,SRS,load cell,Pressure Gauge
+TLW 35,PRESSURE,Multitech,72.9,2025-08-18,Safety,p.gauge,Pressure Gauge
+TLW 44,LOAD CELL,Multitech,466.56,2025-08-18,Safety,load cell,Pressure Gauge
+TLW 44,LOAD CELL,Multitech,466.56,2025-08-18,Safety,load cell,Pressure Gauge
+Colour Tank,PRESSURE,Multitech,72.9,2025-08-19,Safety,p.gauge,Pressure Gauge
+Colour Tank,PRESSURE,Multitech,72.9,2025-08-19,Safety,p.gauge,Pressure Gauge
+Colour Tank,PRESSURE,Multitech,72.9,2025-08-19,Safety,p.gauge,Pressure Gauge
+Colour Tank,PRESSURE,Multitech,72.9,2025-08-19,SRS,p.gauge,Pressure Gauge
+Iso Tank,PRESSURE,Multitech,72.9,2025-08-19,SRS,p.gauge,Pressure Gauge
+Max Air Inlet,PRESSURE,Multitech,72.9,2025-08-19,Safety,p.gauge,Pressure Gauge
+Poly Tank,PRESSURE,Multitech,72.9,2025-08-19,Safety,p.gauge,Pressure Gauge
+Poly Tank,PRESSURE,Multitech,72.9,2025-08-19,Safety,p.gauge,Pressure Gauge
+Poly Tank,PRESSURE,Multitech,72.9,2025-08-19,Safety,p.gauge,Pressure Gauge
+Poly Tank,PRESSURE,Multitech,72.9,2025-08-19,SRS,p.gauge,Pressure Gauge
+Power Pack,PRESSURE,Multitech,72.9,2025-08-19,SRS,p.gauge,Pressure Gauge
+Power Pack,PRESSURE,Multitech,72.9,2025-08-19,SRS,p.gauge,Pressure Gauge
+Sewing (A),PRESSURE,Multitech,72.9,2025-08-19,SRS,p.gauge,Pressure Gauge
+Sewing (B),PRESSURE,Multitech,72.9,2025-08-19,SRS,p.gauge,Pressure Gauge
+Sewing (C),PRESSURE,Multitech,72.9,2025-08-19,SRS,p.gauge,Pressure Gauge
+Sewing (D),PRESSURE,Multitech,72.9,2025-08-19,SRS,p.gauge,Pressure Gauge
+Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-08-19,Test Lab,Active,Calibration
+Taper Gauge,TAPER GAUGE,Trescal,89.64,2025-08-20,PDI,Active,Calibration
+Taper Gauge,TAPER GAUGE,Trescal,89.64,2025-08-20,PDI,Active,Calibration
+BFL 04,LOAD CELL,Multitech,466.56,2025-09-02,Test Lab,load cell,Pressure Gauge
+Balance Scale,BALANCE,Multitech,108.0,2025-09-02,Test Lab,Active,Calibration
+Band-It Ring Clamping,PRESSURE,Multitech,72.9,2025-09-02,SRS,p.switch,Pressure Gauge
+Band-It Ring Clamping,PRESSURE,Multitech,72.9,2025-09-02,SRS,p.switch,Pressure Gauge
+Cover Assy,PRESSURE,Multitech,72.9,2025-09-02,Safety,p.switch,Pressure Gauge
+Emblem Assy (Cover Assy),PRESSURE,Multitech,72.9,2025-09-02,SRS,p.switch,Pressure Gauge
+Horn Spring,PRESSURE,Multitech,72.9,2025-09-02,SRS,p.switch,Pressure Gauge
+Platform Scale,BALANCE,Multitech,108.0,2025-09-02,SRS,Active,Calibration
+Platform Scale,BALANCE,Multitech,296.8,2025-09-02,Store,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2025-09-02,SRS,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2025-09-02,SRS,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2025-09-02,PDI,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2025-09-02,SRS,Active,Calibration
+Off Center Load Cell,BALANCE,Sendi Mahir,162.0,2025-09-04,SRS,Active,Calibration
+Digital Light Meter,OTHERS,Micro Precision,594.0,2025-09-09,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-09-11,Safety,Active,Calibration
+Leather Softness Tester,OTHERS,GMA International,1250.0,2025-09-17,SRS,Active,Calibration
+Digital Caliper,CALIPER,Sendi Mahir,37.8,2025-09-22,Test Lab,Active,Calibration
+Gauge Block,GAUGE BLOCK,Sendi Mahir,151.2,2025-09-22,Test Lab,Active,Calibration
+Gauge Block,GAUGE BLOCK,Sendi Mahir,108.0,2025-09-23,Test Lab,Active,Calibration
+Digital protractor,PROTRACTOR,Trescal,173.88,2025-09-25,Test Lab,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-09-25,Safety,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-09-25,Safety,Active,Calibration
+Digital Pressure Indicator,OTHERS,Sendi Mahir,183.6,2025-09-26,Test Lab,Active,Calibration
+Pressure Sensor,OTHERS,Autoliv Sweden AB,500.0,2025-09-26,Test Lab,Active,Calibration
+Pressure Sensor,OTHERS,Autoliv Sweden AB,500.0,2025-09-26,Test Lab,Active,Calibration
+Torque Driver,TORQUE DRIVER,Trescal,132.84,2025-09-26,Safety,Active,Calibration
+Taper Gauge,TAPER GAUGE,Trescal,89.64,2025-09-27,QA,Active,Calibration
+Torque Tester,TORQUE METER,Trescal,536.76,2025-09-27,SRS,Active,Calibration
+Digital Phosphor Oscilloscope,OTHERS,Trescal,714.96,2025-09-29,R&D,Active,Calibration
+Weighing Scale,BALANCE,Sendi Mahir,162.0,2025-10-02,SRS,Active,Calibration
+Weighing Scale,BALANCE,Sendi Mahir,162.0,2025-10-02,SRS,Active,Calibration
+Data Logger,OTHERS,Sendi Mahir,140.4,2025-10-08,Test Lab,Active,Calibration
+Depth Gauge,DEPTH GAUGE,Sendi Mahir,64.8,2025-10-08,SRS,Active,Calibration
+Radius Gauge,RADIUS GAUGE,Sendi Mahir,83.16,2025-10-08,QA,Active,Calibration
+Dansa Gauge,DANSA GAUGE,Sendi Mahir,64.8,2025-10-11,QA,Active,Calibration
+Dansa Gauge,DANSA GAUGE,Sendi Mahir,64.8,2025-10-11,PDI,Active,Calibration
+Resistance Meter,RESISTANCE METER,Sendi Mahir,259.2,2025-10-13,QA,Active,Calibration
+Torque Tightening Tools,TORQUE TOOL,Indpro,216.0,2025-10-14,SRS,Active,Calibration
+Torque Tightening Tools,TORQUE TOOL,Indpro,216.0,2025-10-14,SRS,Active,Calibration
+Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-10-14,QA,Active,Calibration
+Torque Wrench (Dial),TORQUE WRENCH,Sendi Mahir,156.6,2025-10-14,Safety,Active,Calibration
+Multimeter,MULTIMETER,Sendi Mahir,118.8,2025-10-17,Test Lab,Active,Calibration
+Horn Test,LOAD CELL,Multitech,466.56,2025-10-21,SRS,load cell,Pressure Gauge
+Load Cell,LOAD CELL,Trescal,402.84,2025-10-21,Test Lab,Active,Calibration
+Load Cell S-Type,LOAD CELL,Trescal,1354.32,2025-10-21,Test Lab,Active,Calibration
+Tensile Machine (5-Ton Load Cell),TENSILE,Trescal,471.96,2025-10-21,Test Lab,Active,Calibration
+Temp. & Humid. Chamber (S),HUMIDITY CHAMBER,Trescal,1117.8,2025-10-22,Test Lab,Active,Calibration
+Steel Ruler,RULER,Sendi Mahir,54.0,2025-10-28,Test Lab,Active,Calibration
+Digital Caliper,CALIPER,Sendi Mahir,37.8,2025-10-29,Test Lab,Active,Calibration
+Digital Caliper,CALIPER,Sendi Mahir,37.8,2025-10-29,Test Lab,Active,Calibration
+Measuring Tape,MEASURING TAPE,Sendi Mahir,54.0,2025-10-29,Test Lab,Active,Calibration
+Standard Weights,OTHERS,Sendi Mahir,464.4,2025-10-29,Test Lab,Active,Calibration
+Bending & Torsional Fatique Test Machine No. 1,PRESSURE,Multitech,72.9,2025-10-31,Safety,p.gauge,Pressure Gauge
+Bending & Torsional Fatique Test Machine No. 2,PRESSURE,Multitech,72.9,2025-10-31,Safety,p.switch,Pressure Gauge
+Bending & Torsional Fatique Test Machine No. 3,PRESSURE,Multitech,72.9,2025-10-31,Safety,p.switch,Pressure Gauge
+Buckle Load Durability,PRESSURE,Multitech,72.9,2025-10-31,Safety,p.gauge,Pressure Gauge
+Cover Assy,PRESSURE,Multitech,72.9,2025-10-31,Test Lab,p.switch,Pressure Gauge
+Cover Assy,PRESSURE,Multitech,72.9,2025-10-31,Safety,p.switch,Pressure Gauge
+G-Lock (Lab acceleration sled),PRESSURE,Multitech,72.9,2025-10-31,Safety,p.switch,Pressure Gauge
+Load Durability Test,PRESSURE,Multitech,72.9,2025-10-31,Safety,p.gauge,Pressure Gauge
+Load Durability Test,PRESSURE,Multitech,72.9,2025-10-31,Safety,p.gauge,Pressure Gauge
+Rapid Durability Test Machine,PRESSURE,Multitech,72.9,2025-10-31,Safety,p.gauge,Pressure Gauge
+Weighing Scale,BALANCE,Multitech,108.0,2025-10-31,SRS,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2025-10-31,SRS,Active,Calibration
+Micro Tri-Gloss,OTHERS,Plasmost,788.4,2025-11-04,QA,Active,Calibration
+Off Center Load Cell,BALANCE,Sendi Mahir,162.0,2025-11-05,SRS,Active,Calibration
+Steel Ruler,RULER,Sendi Mahir,54.0,2025-11-05,Test Lab,Active,Calibration
+Digital Caliper,CALIPER,Sendi Mahir,37.8,2025-11-07,Test Lab,Active,Calibration
+Measuring Tape,MEASURING TAPE,Sendi mahir,54.0,2025-11-10,Test Lab,Active,Calibration
+Measuring Tape,MEASURING TAPE,Sendi Mahir,54.0,2025-11-10,Test Lab,Active,Calibration
+Stopwatch #2,STOPWATCH,Trescal,91.8,2025-11-13,SRS,Active,Calibration
+Square Rule,OTHERS,Trescal,340.2,2025-11-17,Test Lab,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-11-21,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-11-21,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-11-24,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-11-24,SRS,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-11-26,Safety,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-11-26,Safety,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-11-26,Test Lab,Active,Calibration
+Measuring Tape,MEASURING TAPE,Sendi Mahir,54.0,2025-12-01,Test Lab,Active,Calibration
+Measuring Tape,MEASURING TAPE,Sendi Mahir,54.0,2025-12-01,Test Lab,Active,Calibration
+Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-12-01,SRS,Active,Calibration
+BFL 06,LOAD CELL,Multitech,466.56,2025-12-02,Safety,load cell,Pressure Gauge
+BFL 06,LOAD CELL,Multitech,466.56,2025-12-02,Safety,load cell,Pressure Gauge
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-12-02,Safety,Active,Calibration
+G18,LOAD CELL,Multitech,466.56,2025-12-02,Safety,load cell,Pressure Gauge
+Infrared Thermometer,THERMOMETER,Sendi Mahir,216.0,2025-12-02,SRS,Active,Calibration
+L24,PRESSURE,Multitech,72.9,2025-12-02,Safety,p.switch,Pressure Gauge
+MPC 12,LOAD CELL,Multitech,466.56,2025-12-02,Safety,load cell,Pressure Gauge
+R18,LOAD CELL,Multitech,466.56,2025-12-02,Safety,load cell,Pressure Gauge
+Thermohygrometer,OTHERS,Sendi Mahir,129.6,2025-12-02,Test Lab,Active,Calibration
+WP 15,PRESSURE,Multitech,72.9,2025-12-02,Safety,p.switch,Pressure Gauge
+Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-12-05,Test Lab,Active,Calibration
+Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-12-05,SRS,Active,Calibration
+Torque Tightening Tools,TORQUE TOOL,Indpro,2160.0,2025-12-15,Safety,Active,Calibration
+Digital Force Gauge,FORCE GAUGE,Trescal,251.64,2025-12-19,Test Lab,Active,Calibration
+BFT 05,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.switch,Pressure Gauge
+BFT 05,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.switch,Pressure Gauge
+BFT 05,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.switch,Pressure Gauge
+BFT 05,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.switch,Pressure Gauge
+BFT 05,PRESSURE,Multitech,72.9,2025-12-22,SRS,p.switch,Pressure Gauge
+BFT 05,PRESSURE,Multitech,72.9,2025-12-22,SRS,p.switch,Pressure Gauge
+BFT 06,PRESSURE,Multitech,72.9,2025-12-22,SRS,p.switch,Pressure Gauge
+BFT 06,PRESSURE,Multitech,72.9,2025-12-22,SRS,p.switch,Pressure Gauge
+BFT 06,PRESSURE,Multitech,72.9,2025-12-22,SRS,p.switch,Pressure Gauge
+BFT 06,PRESSURE,Multitech,72.9,2025-12-22,SRS,p.switch,Pressure Gauge
+BFT 06,PRESSURE,Multitech,72.9,2025-12-22,SRS,p.switch,Pressure Gauge
+BFT 06,PRESSURE,Multitech,72.9,2025-12-22,SRS,p.switch,Pressure Gauge
+CPA 01,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.gauge,Pressure Gauge
+CPA 01,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.gauge,Pressure Gauge
+CPA 01,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.gauge,Pressure Gauge
+G 07,LOAD CELL,Multitech,466.56,2025-12-22,Safety,load cell,Pressure Gauge
+G 08,LOAD CELL,Multitech,466.56,2025-12-22,Safety,load cell,Pressure Gauge
+N 01,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.gauge,Pressure Gauge
+SL 05,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.gauge,Pressure Gauge
+TL 20,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.gauge,Pressure Gauge
+TLW 16,PRESSURE,Multitech,72.9,2025-12-22,Safety,p.gauge,Pressure Gauge
+BFT 10,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+BFT 10,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+BFT 10,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+BFT 10,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+BFT 10,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+BFT 11,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+BFT 11,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+BFT 11,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+BFT 11,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+BFT 11,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.switch,Pressure Gauge
+G11,LOAD CELL,Multitech,466.56,2025-12-23,Safety,load cell,Pressure Gauge
+MPC 08,LOAD CELL,Multitech,466.56,2025-12-23,Safety,load cell,Pressure Gauge
+MPC 09,LOAD CELL,Multitech,466.56,2025-12-23,Safety,load cell,Pressure Gauge
+N 05,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.gauge,Pressure Gauge
+N 47,PRESSURE,Multitech,72.9,2025-12-23,SRS,p.gauge,Pressure Gauge
+N 48,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.gauge,Pressure Gauge
+TLW 27,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.gauge,Pressure Gauge
+TLW 28,PRESSURE,Multitech,72.9,2025-12-23,Safety,p.gauge,Pressure Gauge
+Torque Tester,TORQUE METER,Trescal,536.76,2025-12-23,SRS,Active,Calibration
+Torque Tester,TORQUE METER,Trescal,536.76,2025-12-23,SRS,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2025-12-23,SRS,Active,Calibration
+Digital Angle Protractor,PROTRACTOR,Trescal,394.2,2026-01-06,QA,Active,Calibration
+Temp. & Humid. Chamber (B),HUMIDITY CHAMBER,Trescal,1166.4,2026-01-06,Test Lab,Active,Calibration
+Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2026-01-07,Test Lab,Active,Calibration
+Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2026-01-07,Test Lab,Active,Calibration
+Electrical Test Station,ELECTRICAL TEST,Sendi mahir,259.2,2026-01-07,SRS,Active,Calibration
+Electrical Test Station,ELECTRICAL TEST,Sendi mahir,259.2,2026-01-07,SRS,Active,Calibration
+Electrical Test Station,ELECTRICAL TEST,Sendi mahir,259.2,2026-01-07,SRS,Active,Calibration
+Time Output Module,DATA ACQUISITION,DTS,5700.0,2026-01-07,Test Lab,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi Mahir,48.6,2026-01-08,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi Mahir,48.6,2026-01-08,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi Mahir,48.6,2026-01-08,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi Mahir,48.6,2026-01-08,QA,Active,Calibration
+Rack System,DATA ACQUISITION,DTS,1700.0,2026-01-08,Test Lab,Active,Calibration
+Torque Meter,TORQUE METER,Trescal,536.76,2026-01-09,SRS,Active,Calibration
+Digital Thermo-Anemometer,OTHERS,Sendi mahir,345.6,2026-01-20,SRS,Active,Calibration
+BFL 02,LOAD CELL,Multitech,466.56,2026-01-21,Safety,load cell,Pressure Gauge
+BFL 02,LOAD CELL,Multitech,466.56,2026-01-21,Safety,load cell,Pressure Gauge
+BFT 03,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 03,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 03,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 03,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 03,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 03,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 08,PRESSURE,Multitech,72.9,2026-01-21,SRS,p.switch,Pressure Gauge
+BFT 08,PRESSURE,Multitech,72.9,2026-01-21,SRS,p.switch,Pressure Gauge
+BFT 08,PRESSURE,Multitech,72.9,2026-01-21,Test Lab,p.switch,Pressure Gauge
+BFT 08,PRESSURE,Multitech,72.9,2026-01-21,Test Lab,p.switch,Pressure Gauge
+BFT 08,PRESSURE,Multitech,72.9,2026-01-21,Test Lab,p.switch,Pressure Gauge
+BFT 08,PRESSURE,Multitech,72.9,2026-01-21,Test Lab,p.switch,Pressure Gauge
+BFT 09,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 09,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 09,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 09,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 09,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+BFT 09,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.switch,Pressure Gauge
+G 06,LOAD CELL,Multitech,466.56,2026-01-21,SRS,load cell,Pressure Gauge
+G 09,LOAD CELL,Multitech,466.56,2026-01-21,Safety,load cell,Pressure Gauge
+G 13,LOAD CELL,Multitech,466.56,2026-01-21,Safety,load cell,Pressure Gauge
+G 14,LOAD CELL,Multitech,466.56,2026-01-21,Safety,load cell,Pressure Gauge
+MPC 02,LOAD CELL,Multitech,466.56,2026-01-21,Safety,load cell,Pressure Gauge
+MPC 03,LOAD CELL,Multitech,466.56,2026-01-21,Safety,load cell,Pressure Gauge
+MPC 04,LOAD CELL,Multitech,466.56,2026-01-21,Safety,load cell,Pressure Gauge
+MPC 06,LOAD CELL,Multitech,466.56,2026-01-21,SRS,load cell,Pressure Gauge
+N 16,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.gauge,Pressure Gauge
+N 24,PRESSURE,Multitech,72.9,2026-01-21,SRS,p.gauge,Pressure Gauge
+N 27,PRESSURE,Multitech,72.9,2026-01-21,Safety,p.gauge,Pressure Gauge
+TLW 19,PRESSURE,Multitech,72.9,2026-01-21,SRS,p.gauge,Pressure Gauge
+BFT 01,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.switch,Pressure Gauge
+BFT 01,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.switch,Pressure Gauge
+BFT 01,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.switch,Pressure Gauge
+BFT 01,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.switch,Pressure Gauge
+BFT 01,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.switch,Pressure Gauge
+BFT 01,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.switch,Pressure Gauge
+TLW 08,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.gauge,Pressure Gauge
+TLW 18,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.gauge,Pressure Gauge
+TLW 23,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.gauge,Pressure Gauge
+WP 04,PRESSURE,Multitech,72.9,2026-01-22,Safety,p.switch,Pressure Gauge
+Measuring Tape,MEASURING TAPE,Sendi Mahir,54.0,2026-01-29,Test Lab,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi Mahir,270.0,2026-01-29,QA,Active,Calibration
+Spectrophotometer,OTHERS,X-Rite,6200.0,2026-01-29,QA,Active,Calibration
+Digital Caliper,CALIPER,Sendi Mahir,37.8,2026-01-30,Test Lab,Active,Calibration
+Temp. & Humidity Chamber,HUMIDITY CHAMBER,Trescal,1240.92,2026-02-04,Test Lab,Active,Calibration
+Torque Driver,TORQUE DRIVER,Sendi Mahir,156.6,2026-02-04,Safety,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2026-02-05,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,4320.0,2026-02-10,Safety,Active,Calibration
+Pen pH Meter,OTHERS,Trescal,376.92,2026-02-12,Test Lab,Active,Calibration
+A 32,PRESSURE,Multitech,72.9,2026-02-19,Test Lab,p.switch,Pressure Gauge
+L 07,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.switch,Pressure Gauge
+L 20,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.switch,Pressure Gauge
+N 39,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.gauge,Pressure Gauge
+N 41,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.gauge,Pressure Gauge
+N 46,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.gauge,Pressure Gauge
+ST 04-1,LOAD CELL,Multitech,466.56,2026-02-19,Safety,load cell,Pressure Gauge
+TL 12,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.gauge,Pressure Gauge
+TL 13,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.gauge,Pressure Gauge
+TLW 07,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.gauge,Pressure Gauge
+TLW 32,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.gauge,Pressure Gauge
+TLW 33,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.gauge,Pressure Gauge
+Temp. & Humidity Chamber,HUMIDITY CHAMBER,Trescal,1175.04,2026-02-19,Test Lab,Active,Calibration
+WP 01,PRESSURE,Multitech,72.9,2026-02-19,Test Lab,p.switch,Pressure Gauge
+WP 06,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.switch,Pressure Gauge
+WP 09,PRESSURE,Multitech,72.9,2026-02-19,Safety,p.switch,Pressure Gauge
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2026-03-02,Safety,Active,Calibration
+L 09,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+L 10,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+L 15,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+L16,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+N 03,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.gauge,Pressure Gauge
+N 13,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.gauge,Pressure Gauge
+N 21,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.gauge,Pressure Gauge
+N 31,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.gauge,Pressure Gauge
+N 33,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.gauge,Pressure Gauge
+N 38,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.gauge,Pressure Gauge
+TL 17,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.gauge,Pressure Gauge
+TL 18,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.gauge,Pressure Gauge
+TLW 20,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.gauge,Pressure Gauge
+TLW 26,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+Tongue Stopper (L17),PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+Tongue Stopper (L19),PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2026-03-02,R&D,Active,Calibration
+WP 02,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+WP 03,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+WP 05,PRESSURE,Multitech,72.9,2026-03-02,Safety,p.switch,Pressure Gauge
+Insulation Multimeter,MULTIMETER,Sendi Mahir,324.0,2026-03-03,Test Lab,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2026-03-03,Safety,Active,Calibration
+Counting Scale,BALANCE,Multitech,108.0,2026-03-04,QA,Active,Calibration
+Counting Scale,BALANCE,Multitech,108.0,2026-03-04,R&D,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,216.0,2026-03-04,SRS,Active,Calibration
+Torque Wrench,TORQUE WRENCH,Sendi mahir,156.6,2026-03-04,Test Lab,Active,Calibration
+Torque Wrench,TORQUE WRENCH,Sendi mahir,156.6,2026-03-04,SRS,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2026-03-04,SRS,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2026-03-04,PDI,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2026-03-04,SRS,Active,Calibration
+Gauge Block  (T-Carbide),GAUGE BLOCK,Sendi Mahir,237.6,2026-03-10,Test Lab,Active,Calibration
+Multimeter,MULTIMETER,Sendi Mahir,118.8,2026-03-16,Maintenance,Active,Calibration
+Multimeter,MULTIMETER,Sendi Mahir,118.8,2026-03-16,QA,Active,Calibration
+Multimeter,MULTIMETER,Sendi Mahir,118.8,2026-03-16,QA,Active,Calibration
+Multimeter,MULTIMETER,Sendi Mahir,118.8,2026-03-16,QA,Active,Calibration
+Infrared Thermometer,THERMOMETER,Sendi Mahir,216.0,2026-03-17,Maintenance,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi Mahir,183.6,2026-03-25,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi Mahir,183.6,2026-03-25,PDI,Active,Calibration
+Digital protractor,PROTRACTOR,Trescal,173.88,2026-04-01,Test Lab,Active,Calibration
+Digital protractor,PROTRACTOR,Trescal,173.88,2026-04-01,Test Lab,Active,Calibration
+Data Logger,OTHERS,Sendi Mahir,259.2,2026-04-02,Test Lab,Active,Calibration
+BFT 04,PRESSURE,Multitech,72.9,2026-04-08,SRS,p.switch,Pressure Gauge
+BFT 04,PRESSURE,Multitech,72.9,2026-04-08,SRS,p.switch,Pressure Gauge
+BFT 04,PRESSURE,Multitech,72.9,2026-04-08,SRS,p.switch,Pressure Gauge
+BFT 04,PRESSURE,Multitech,72.9,2026-04-08,SRS,p.switch,Pressure Gauge
+BFT 04,PRESSURE,Multitech,72.9,2026-04-08,SRS,p.switch,Pressure Gauge
+BFT 04,PRESSURE,Multitech,72.9,2026-04-08,SRS,p.switch,Pressure Gauge
+G 10,LOAD CELL,Multitech,466.56,2026-04-08,SRS,load cell,Pressure Gauge
+MPC 05,LOAD CELL,Multitech,466.56,2026-04-08,SRS,load cell,Pressure Gauge
+TLW 04 (pillar loop),PRESSURE,Multitech,72.9,2026-04-08,Safety,p.gauge,Pressure Gauge
+TLW 06,PRESSURE,Multitech,72.9,2026-04-08,SRS,p.gauge,Pressure Gauge
+TLW 15,PRESSURE,Multitech,72.9,2026-04-08,Safety,p.gauge,Pressure Gauge
+TLW 21,PRESSURE,Multitech,72.9,2026-04-08,Safety,p.gauge,Pressure Gauge
+Digimatic Indicator,DEPTH GAUGE,Trescal,88.56,2026-04-23,Test Lab,Active,Calibration
+Protractor,PROTRACTOR,Trescal,187.92,2026-04-23,Test Lab,Active,Calibration
+Stopwatch,STOPWATCH,Trescal,116.64,2026-04-27,Test lab,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi mahir,86.4,2026-04-29,SRS,Active,Calibration
+Radius Gauge,RADIUS GAUGE,Sendi Mahir,83.16,2026-05-04,QA,Active,Calibration
+Radius Gauge,RADIUS GAUGE,Sendi Mahir,83.16,2026-05-04,QA,Active,Calibration
+Radius Gauge,RADIUS GAUGE,Sendi Mahir,83.16,2026-05-04,QA,Active,Calibration
+Radius Gauge,RADIUS GAUGE,Sendi Mahir,83.16,2026-05-04,QA,Active,Calibration
+BFL 04,LOAD CELL,Multitech,466.56,2026-05-05,Safety,load cell,Pressure Gauge
+Emblem Assy,PRESSURE,Multitech,72.9,2026-05-05,SRS,p.switch,Pressure Gauge
+L 21,PRESSURE,Multitech,72.9,2026-05-05,Safety,p.gauge,Pressure Gauge
+L 23,PRESSURE,Multitech,72.9,2026-05-05,Safety,p.switch,Pressure Gauge
+MPC 10,LOAD CELL,Multitech,466.56,2026-05-05,Safety,load cell,Pressure Gauge
+R 17,LOAD CELL,Multitech,466.56,2026-05-05,Safety,load cell,Pressure Gauge
+R11,LOAD CELL,Multitech,466.56,2026-05-05,Safety,load cell,Pressure Gauge
+R12,LOAD CELL,Multitech,466.56,2026-05-05,Safety,load cell,Pressure Gauge
+R13,LOAD CELL,Multitech,466.56,2026-05-05,Safety,load cell,Pressure Gauge
+R16,LOAD CELL,Multitech,466.56,2026-05-05,Safety,load cell,Pressure Gauge
+WP 11,PRESSURE,Multitech,72.9,2026-05-05,Safety,p.switch,Pressure Gauge
+WP 13,PRESSURE,Multitech,72.9,2026-05-05,Safety,p.switch,Pressure Gauge
+Weighing Scale,BALANCE,Multitech,108.0,2026-05-06,SRS,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2026-05-06,SRS,Active,Calibration
+Weighing Scale,BALANCE,Multitech,108.0,2026-05-06,SRS,Active,Calibration
+Granite Surface Plate,OTHERS,Sendi Mahir,345.6,2026-05-11,Test Lab,Active,Calibration
