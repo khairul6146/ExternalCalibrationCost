@@ -1,0 +1,48 @@
+name: Build data.csv from XLSX
+
+# Trigger only when the source workbook (or this script) changes,
+# AND only on the default branch. The bot commit at the bottom uses
+# [skip ci] so the next run does not loop.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/source.xlsx'
+      - 'scripts/xlsx_to_csv.py'
+      - '.github/workflows/build-data.yml'
+  workflow_dispatch:        # also allow manual run from the Actions tab
+
+permissions:
+  contents: write           # needed to commit the generated CSV back
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install openpyxl
+        run: pip install --quiet openpyxl==3.1.5
+
+      - name: Convert XLSX to CSV
+        run: python scripts/xlsx_to_csv.py
+
+      - name: Commit data.csv if it changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data.csv
+          if git diff --cached --quiet; then
+            echo "No CSV changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(data): rebuild data.csv [skip ci]"
+          git push
