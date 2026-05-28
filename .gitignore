@@ -1,0 +1,29 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor leftovers
+.vscode/
+.idea/
+*.swp
+*~
+
+# Excel lock files (created when the workbook is open)
+~$*.xlsx
+~$*.xlsm
+
+# Python noise (only present if you run the script locally)
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Power BI artifacts (cached data inside .pbix can include sensitive info)
+*.pbix.tmp
+*.pbiBak
+
+# Build artifacts that should never be committed
+build/
+dist/
+node_modules/
