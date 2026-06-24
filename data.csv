@@ -1,7 +1,14 @@
 description,equipment_type,vendor,cost,last_cal_date,area,status,source
+Electrical Test Station,ELECTRICAL TEST,Sendi mahir,259.2,,SRS,Active,Calibration
 N 09,PRESSURE,Multitech,72.9,,Safety,p.gauge,Pressure Gauge
 N 15,PRESSURE,Multitech,72.9,,Safety,p.gauge,Pressure Gauge
-Thermometer with thermocouple,THERMOMETER,Sendi Mahir,118.8,,SRS,Active,Calibration
+Off Center Load Cell,BALANCE,Sendi Mahir,162.0,,SRS,Active,Calibration
+Off Center Load Cell,BALANCE,Sendi Mahir,162.0,,SRS,Active,Calibration
+Source Meter,RESISTANCE METER,Sendi Mahir,259.2,,SRS,Active,Calibration
+Source Meter,RESISTANCE METER,Sendi Mahir,259.2,,SRS,Active,Calibration
+Torque Tightening Tools,TORQUE TOOL,Indpro,0.0,,SRS,Active,Calibration
+Torque Tightening Tools,TORQUE TOOL,Indpro,0.0,,SRS,Active,Calibration
+Torque Tightening Tools,TORQUE TOOL,Indpro,0.0,,SRS,Active,Calibration
 Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2023-12-06,Test Lab,Active,Calibration
 Time Output Module,DATA ACQUISITION,DTS,5700.0,2023-12-06,Test Lab,Active,Calibration
 Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2024-02-27,Test Lab,Active,Calibration
@@ -9,17 +16,14 @@ Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2024-02-27,Test Lab,Active,C
 Rack System,DATA ACQUISITION,DTS,1700.0,2024-02-27,Test Lab,Active,Calibration
 Time Output Module,DATA ACQUISITION,DTS,5700.0,2024-03-04,Test Lab,Active,Calibration
 Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-05-22,Test Lab,Active,Calibration
-Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-05-22,Test Lab,Active,Calibration
 Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-07-30,Test Lab,Active,Calibration
 Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-07-30,Test Lab,Active,Calibration
 Crane Scale,BALANCE,Multitech,1272.0,2024-07-31,Test Lab,Active,Calibration
 Micro Meter,OTHERS,Sendi Mahir,54.0,2024-08-02,Test Lab,Active,Calibration
 TL 12 (Dust),PRESSURE,Multitech,72.9,2024-08-21,Safety,p.gauge,Pressure Gauge
 TL 18 (P.Gauge at Salt Spray),PRESSURE,Multitech,72.9,2024-08-21,Safety,p.gauge,Pressure Gauge
-Surface Resistance Checker,OTHERS,Sendi Mahir,259.2,2024-09-12,SRS,Active,Calibration
 Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-09-24,Test Lab,Active,Calibration
 VC Accelerometer,ACCELEROMETER,Autoliv Sweden AB,500.0,2024-09-24,Test lab,Active,Calibration
-Stopwatch #3,STOPWATCH,Trescal,91.8,2024-11-14,SRS,Active,Calibration
 Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2024-11-18,Test Lab,Active,Calibration
 Data Acquisition Module,DATA ACQUISITION,DTS,5800.0,2024-11-18,Test Lab,Active,Calibration
 Laser Based Speed Meter,OTHERS,SABO,845.0,2024-11-29,Test Lab,Active,Calibration
@@ -33,40 +37,13 @@ Sound Measurement (Mic),OTHERS,First Instrument,2730.0,2025-03-03,Test Lab,Activ
 Uniaxial Accelerometer,ACCELEROMETER,WEST CALDWELL,1360.0,2025-03-03,Test Lab,Active,Calibration
 Uniaxial Accelerometer,ACCELEROMETER,WEST CALDWELL,1360.0,2025-03-03,Test Lab,Active,Calibration
 Impact Hammer,OTHERS,WEST CALDWELL,6040.0,2025-03-12,Test Lab,Active,Calibration
-CAL500 Tension Gauge & Meter,OTHERS,Micro Precision,1947.0,2025-04-07,SRS,Active,Calibration
 Sound Measurement (DA),DATA ACQUISITION,First Instrument,6330.0,2025-05-06,Test Lab,Active,Calibration
-Multimeter,MULTIMETER,Sendi Mahir,118.8,2025-05-20,QA,Active,Calibration
-Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2025-05-20,PDI,Active,Calibration
-Screw Ring Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
-Screw Ring Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
-Screw Ring Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
-Thread Plug Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
-Thread Plug Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
-Thread Plug Gauge,RING GAUGE,Sendi Mahir,43.2,2025-05-20,QA,Active,Calibration
-Digital Hardness Tester Type A,HARDNESS TESTER,Sendi Mahir,149.04,2025-05-21,SRS,Active,Calibration
-Hardness Tester Type A,HARDNESS TESTER,Sendi Mahir,149.04,2025-05-21,SRS,Active,Calibration
-Hardness Tester Type C,HARDNESS TESTER,Sendi Mahir,149.04,2025-05-21,SRS,Active,Calibration
-Center 309 Datalogger,THERMOMETER,Sendi Mahir,97.2,2025-05-23,SRS,Active,Calibration
-Infrared Thermometer,THERMOMETER,Sendi Mahir,216.0,2025-05-23,Test Lab,Active,Calibration
-Thermometer with thermocouple,THERMOMETER,Sendi Mahir,118.8,2025-05-23,Test Lab,Active,Calibration
-Torque Driver,TORQUE DRIVER,Sendi Mahir,156.6,2025-05-26,Safety,Active,Calibration
-Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-05-28,Safety,Active,Calibration
-Taper Gauge,TAPER GAUGE,Trescal,89.64,2025-06-03,PDI,Active,Calibration
-Taper Gauge,TAPER GAUGE,Trescal,89.64,2025-06-03,PDI,Active,Calibration
-Standard Scale 50mm,OTHERS,Trescal,451.44,2025-06-04,SRS,Active,Calibration
 Torque Meter,TORQUE METER,Sendi Mahir,432.0,2025-06-12,SRS,Active,Calibration
-Melt Flow Indexer,OTHERS,Sendi Mahir,421.2,2025-06-13,Test Lab,Active,Calibration
 Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-06-13,Test Lab,Active,Calibration
 Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-06-16,Safety,Active,Calibration
 Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-06-16,Safety,Active,Calibration
 Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2025-06-16,Safety,Active,Calibration
-Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-16,SRS,Active,Calibration
-Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-16,SRS,Active,Calibration
-Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-17,SRS,Active,Calibration
-Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-17,SRS,Active,Calibration
 Digital Indicator (depth),DEPTH GAUGE,Sendi Mahir,54.0,2025-06-23,SRS,Active,Calibration
-Profile Projector,OTHERS,Mitutoyo,551.0,2025-06-30,Test Lab,Active,Calibration
-Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-30,SRS,Active,Calibration
 Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-06-30,SRS,Active,Calibration
 Torque Tightening Tools,TORQUE TOOL,Indpro,2160.0,2025-06-30,SRS,Active,Calibration
 Torque Tightening,TORQUE TOOL,Indpro,2160.0,2025-07-01,SRS,Active,Calibration
@@ -466,6 +443,7 @@ Digimatic Indicator,DEPTH GAUGE,Trescal,88.56,2026-04-23,Test Lab,Active,Calibra
 Protractor,PROTRACTOR,Trescal,187.92,2026-04-23,Test Lab,Active,Calibration
 Stopwatch,STOPWATCH,Trescal,116.64,2026-04-27,Test lab,Active,Calibration
 Force Gauge,FORCE GAUGE,Sendi mahir,86.4,2026-04-29,SRS,Active,Calibration
+Thermometer with thermocouple,THERMOMETER,Sendi Mahir,118.8,2026-04-30,SRS,Active,Calibration
 Radius Gauge,RADIUS GAUGE,Sendi Mahir,83.16,2026-05-04,QA,Active,Calibration
 Radius Gauge,RADIUS GAUGE,Sendi Mahir,83.16,2026-05-04,QA,Active,Calibration
 Radius Gauge,RADIUS GAUGE,Sendi Mahir,83.16,2026-05-04,QA,Active,Calibration
@@ -486,5 +464,32 @@ Weighing Scale,BALANCE,Multitech,108.0,2026-05-06,SRS,Active,Calibration
 Weighing Scale,BALANCE,Multitech,108.0,2026-05-06,SRS,Active,Calibration
 Weighing Scale,BALANCE,Multitech,108.0,2026-05-06,SRS,Active,Calibration
 Granite Surface Plate,OTHERS,Sendi Mahir,345.6,2026-05-11,Test Lab,Active,Calibration
+CAL500 Tension Gauge & Meter,OTHERS,Micro Precision,1947.0,2026-05-14,SRS,Active,Calibration
 Stopwatch with countdown,STOPWATCH,Trescal,116.64,2026-05-21,Test Lab,Active,Calibration
+Multimeter,MULTIMETER,Sendi Mahir,118.8,2026-05-25,QA,Active,Calibration
+Pin Gauge,PIN GAUGE,Sendi mahir,48.6,2026-05-26,PDI,Active,Calibration
 Salt Spray Machine,OTHERS,Trescal,410.4,2026-05-26,Test Lab,Active,Calibration
+Screw Ring Gauge,RING GAUGE,Sendi Mahir,43.2,2026-05-26,QA,Active,Calibration
+Screw Ring Gauge,RING GAUGE,Sendi Mahir,43.2,2026-05-26,QA,Active,Calibration
+Screw Ring Gauge,RING GAUGE,Sendi Mahir,43.2,2026-05-26,QA,Active,Calibration
+Thread Plug Gauge,RING GAUGE,Sendi Mahir,43.2,2026-05-26,QA,Active,Calibration
+Thread Plug Gauge,RING GAUGE,Sendi Mahir,43.2,2026-05-26,QA,Active,Calibration
+Thread Plug Gauge,RING GAUGE,Sendi Mahir,43.2,2026-05-26,QA,Active,Calibration
+Center 309 Datalogger,THERMOMETER,Sendi Mahir,97.2,2026-05-28,SRS,Active,Calibration
+Infrared Thermometer,THERMOMETER,Sendi Mahir,216.0,2026-05-28,Test Lab,Active,Calibration
+Thermometer with thermocouple,THERMOMETER,Sendi Mahir,118.8,2026-05-28,Test Lab,Active,Calibration
+Force Gauge,FORCE GAUGE,Sendi Mahir,86.4,2026-06-03,Safety,Active,Calibration
+Taper Gauge,TAPER GAUGE,Trescal,89.64,2026-06-05,PDI,Active,Calibration
+Taper Gauge,TAPER GAUGE,Trescal,89.64,2026-06-05,PDI,Active,Calibration
+Standard Scale 50mm,OTHERS,Trescal,451.44,2026-06-08,SRS,Active,Calibration
+Torque Driver,TORQUE DRIVER,Sendi Mahir,156.6,2026-06-11,Safety,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2026-06-11,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2026-06-11,SRS,Active,Calibration
+Digital Hardness Tester Type A,HARDNESS TESTER,Sendi Mahir,149.04,2026-06-12,SRS,Active,Calibration
+Hardness Tester Type A,HARDNESS TESTER,Sendi Mahir,149.04,2026-06-12,SRS,Active,Calibration
+Hardness Tester Type C,HARDNESS TESTER,Sendi Mahir,149.04,2026-06-12,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2026-06-15,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2026-06-15,SRS,Active,Calibration
+Torque Tightening,TORQUE TOOL,Indpro,2160.0,2026-06-15,SRS,Active,Calibration
+Melt Flow Indexer,OTHERS,Sendi Mahir,421.2,2026-06-18,Test Lab,Active,Calibration
+Profile Projector,OTHERS,Mitutoyo,551.0,2026-06-18,Test Lab,Active,Calibration
