@@ -1,973 +1,1926 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calibration & Pressure — Live Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Autoliv Hirotako — Calibration Cost &amp; Distribution Study</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230891B2'/><path d='M25 65 L45 35 L60 50 L75 30' stroke='white' stroke-width='8' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='75' cy='30' r='6' fill='%23F59E0B'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ── DESIGN SYSTEM & DUAL THEME TOKENS ── */
 :root {
-  --bg:#0B1622;--surf:#111E2E;--card:#162333;--bord:#1D3047;--bord2:#244060;
-  --teal:#00B4C6;--teal2:#00D4E8;--teal-a:rgba(0,180,198,.12);
-  --amber:#F5A623;--amber-a:rgba(245,166,35,.12);
-  --violet:#9B6DFF;--violet-a:rgba(155,109,255,.12);
-  --green:#22D3A5;--green-a:rgba(34,211,165,.12);
-  --rose:#FF5C7D;--rose-a:rgba(255,92,125,.12);
-  --sky:#38BDF8;--sky-a:rgba(56,189,248,.12);
-  --t1:#E2EDF5;--t2:#7AAABE;--t3:#3D6880;
-  --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
+  /* LIGHT THEME (DEFAULT) */
+  --bg: #F8FAFC;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #FFFFFF 0%, #F1F5F9 100%);
+  --surf: #FFFFFF;
+  --card: #FFFFFF;
+  --card-hover: #F8FAFC;
+  --bord: #E2E8F0;
+  --bord-highlight: #CBD5E1;
+  
+  --teal: #0891B2;
+  --teal-dim: #0E7490;
+  --teal-a: rgba(8, 145, 178, 0.10);
+  --teal-glow: rgba(8, 145, 178, 0.20);
+  
+  --amber: #D97706;
+  --amber-dim: #B45309;
+  --amber-a: rgba(217, 119, 6, 0.10);
+  
+  --green: #059669;
+  --green-dim: #047857;
+  --green-a: rgba(5, 150, 105, 0.10);
+  
+  --rose: #E11D48;
+  --rose-dim: #BE123C;
+  --rose-a: rgba(225, 29, 72, 0.10);
+  
+  --violet: #7C3AED;
+  --violet-dim: #6D28D9;
+  --violet-a: rgba(124, 58, 237, 0.10);
+  
+  --sky: #0284C7;
+  --sky-dim: #0369A1;
+  --sky-a: rgba(2, 132, 199, 0.10);
+  
+  --t1: #0F172A;
+  --t2: #334155;
+  --t3: #64748B;
+  
+  --track-bg: #E2E8F0;
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 8px 24px -4px rgba(0, 0, 0, 0.10), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
+  --shadow-hdr: 0 2px 10px rgba(0, 0, 0, 0.04);
+  --grid-line: #E2E8F0;
+  --logo-bg: #FFFFFF;
+  --tooltip-bg: rgba(15, 23, 42, 0.96);
+  --tooltip-text: #FFFFFF;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--t1);font-family:var(--font);min-height:100vh;font-size:13px}
+
+[data-theme="dark"] {
+  /* DARK THEME */
+  --bg: #070D16;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #0F1F33 0%, #070D16 75%);
+  --surf: #0E1826;
+  --card: #132235;
+  --card-hover: #172B43;
+  --bord: #1E3550;
+  --bord-highlight: #2A4B70;
+  
+  --teal: #00D4E8;
+  --teal-dim: #00A3B3;
+  --teal-a: rgba(0, 212, 232, 0.12);
+  --teal-glow: rgba(0, 212, 232, 0.25);
+  
+  --amber: #F5A623;
+  --amber-dim: #D48806;
+  --amber-a: rgba(245, 166, 35, 0.12);
+  
+  --green: #22D3A5;
+  --green-dim: #059669;
+  --green-a: rgba(34, 211, 165, 0.12);
+  
+  --rose: #FF5C7D;
+  --rose-dim: #E11D48;
+  --rose-a: rgba(255, 92, 125, 0.12);
+  
+  --violet: #A78BFA;
+  --violet-dim: #7C3AED;
+  --violet-a: rgba(167, 139, 250, 0.12);
+  
+  --sky: #38BDF8;
+  --sky-dim: #0284C7;
+  --sky-a: rgba(56, 189, 248, 0.12);
+  
+  --t1: #F0F6FC;
+  --t2: #94AEC5;
+  --t3: #4A6B8A;
+  
+  --track-bg: rgba(7, 13, 22, 0.8);
+  --shadow-card: 0 4px 24px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(30, 53, 80, 0.6);
+  --shadow-hover: 0 8px 30px rgba(0,0,0,0.7), 0 0 0 1px var(--bord-highlight);
+  --shadow-hdr: 0 4px 20px rgba(0,0,0,0.6);
+  --grid-line: #1E3550;
+  --logo-bg: #FFFFFF;
+  --tooltip-bg: rgba(19, 34, 53, 0.96);
+  --tooltip-text: #F0F6FC;
+}
+
+:root {
+  --font-main: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--t1);
+  font-family: var(--font-main);
+  min-height: 100vh;
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
 
 /* ── HEADER ── */
-.hdr{
-  position:sticky;top:0;z-index:200;
-  background:rgba(11,22,34,.95);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--bord2);padding:0 24px;height:58px;
-  display:flex;align-items:center;justify-content:space-between;
-  box-shadow:0 2px 20px rgba(0,0,0,.5);
+.hdr {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--surf);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--bord);
+  padding: 0 28px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-hdr);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
-.hdr-left{display:flex;align-items:center;gap:14px}
-.hdr-badge{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;
-  padding:4px 10px;border-radius:4px;background:var(--teal);color:#000}
-.hdr-title{font-size:14px;font-weight:600;color:var(--t1)}
-.hdr-sub{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:1px}
-.hdr-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.filt{display:flex;align-items:center;gap:7px;background:var(--surf);border:1px solid var(--bord);
-  border-radius:7px;padding:5px 10px;transition:border-color .15s}
-.filt:hover{border-color:var(--teal)}
-.filt-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap}
-select{background:transparent;border:none;color:var(--t1);font-family:var(--font);font-size:12px;
-  font-weight:500;cursor:pointer;outline:none;padding:0 2px}
-select option{background:#162333}
-.btn{font-family:var(--font);font-size:11px;padding:5px 12px;border-radius:7px;cursor:pointer;
-  transition:all .15s;border:1px solid}
-.btn-reset{background:transparent;border-color:var(--bord2);color:var(--t2)}
-.btn-reset:hover{border-color:var(--rose);color:var(--rose)}
-.btn-upload{background:var(--teal);border-color:var(--teal);color:#000;font-weight:600}
-.btn-upload:hover{background:var(--teal2)}
-.live-chip{display:flex;align-items:center;gap:5px;font-size:9px;
-  padding:4px 8px;border-radius:20px;border:1px solid var(--bord2);color:var(--t2)}
-.dot{width:6px;height:6px;border-radius:50%}
-.dot-green{background:var(--green);animation:blink 2s infinite}
-.dot-amber{background:var(--amber)}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* ── DROP ZONE OVERLAY ── */
-.drop-overlay{
-  display:none;position:fixed;inset:0;z-index:999;
-  background:rgba(0,20,35,.92);backdrop-filter:blur(6px);
-  align-items:center;justify-content:center;flex-direction:column;gap:20px;
+.hdr-brand { display: flex; align-items: center; gap: 16px; }
+.hdr-logo-box {
+  background: var(--logo-bg);
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--bord);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
-.drop-overlay.active{display:flex}
-.drop-box{
-  border:2px dashed var(--teal);border-radius:16px;
-  padding:60px 80px;text-align:center;
-  background:rgba(0,180,198,.06);
-  animation:pulse-border 1.5s infinite;
+.hdr-logo-img {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
-@keyframes pulse-border{0%,100%{border-color:var(--teal)}50%{border-color:var(--teal2)}}
-.drop-icon{font-size:56px;margin-bottom:16px}
-.drop-title{font-size:22px;font-weight:700;color:var(--teal2);margin-bottom:8px}
-.drop-sub{font-size:13px;color:var(--t2)}
-.drop-close{font-size:11px;color:var(--t3);cursor:pointer;padding:8px 16px;
-  border:1px solid var(--bord2);border-radius:6px;transition:all .15s}
-.drop-close:hover{color:var(--rose);border-color:var(--rose)}
-
-/* ── UPLOAD PANEL (collapsed bar) ── */
-.upload-bar{
-  background:var(--surf);border-bottom:1px solid var(--bord);
-  padding:10px 24px;display:flex;align-items:center;justify-content:space-between;
-  gap:12px;
+.hdr-titles { display: flex; flex-direction: column; }
+.hdr-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.01em;
 }
-.upload-bar.hidden{display:none}
-.upload-steps{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.step{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t2)}
-.step-num{width:20px;height:20px;border-radius:50%;background:var(--teal);color:#000;
-  font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.step-arrow{color:var(--t3);font-size:10px}
-.upload-status{font-size:11px;color:var(--t3);font-family:var(--mono)}
-.upload-status.ok{color:var(--green)}
-.upload-status.err{color:var(--rose)}
-
-/* ── FILE INPUT ── */
-#fileInput{display:none}
-
-/* ── MAIN ── */
-.main{padding:20px 24px;display:flex;flex-direction:column;gap:18px}
-
-/* ── KPI ROW ── */
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.kpi{background:var(--card);border:1px solid var(--bord);border-radius:10px;
-  padding:18px;position:relative;overflow:hidden;
-  transition:transform .2s,box-shadow .2s;cursor:default;animation:fadeUp .4s ease both}
-.kpi:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4)}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:10px 10px 0 0}
-.kpi.c-teal::before{background:var(--teal)}
-.kpi.c-amber::before{background:var(--amber)}
-.kpi.c-violet::before{background:var(--violet)}
-.kpi.c-green::before{background:var(--green)}
-.kpi-icon{font-size:20px;margin-bottom:10px}
-.kpi-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
-.kpi-val{font-size:26px;font-weight:700;color:var(--t1);line-height:1;font-family:var(--mono);margin-bottom:7px}
-.kpi-sub{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.chip{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px}
-.chip-teal{background:var(--teal-a);color:var(--teal2)}
-.chip-green{background:var(--green-a);color:var(--green)}
-.chip-amber{background:var(--amber-a);color:var(--amber)}
-
-/* ── DATA-SOURCE BANNER ── */
-.source-banner{
-  display:flex;align-items:center;justify-content:space-between;
-  background:var(--surf);border:1px solid var(--bord);border-radius:8px;
-  padding:10px 16px;font-size:11px;
+.hdr-sub {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
-.source-info{display:flex;align-items:center;gap:10px;color:var(--t2)}
-.source-file{font-family:var(--mono);color:var(--teal2);font-weight:500}
-.source-actions{display:flex;gap:8px}
+.hdr-controls { display: flex; align-items: center; gap: 10px; }
+
+/* ── ACTION BUTTONS ── */
+.btn {
+  font-family: var(--font-main);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid transparent;
+  outline: none;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--teal);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.25);
+}
+.btn-primary:hover {
+  background: var(--teal-dim);
+  box-shadow: 0 4px 14px rgba(8, 145, 178, 0.35);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  background: var(--card);
+  border-color: var(--bord);
+  color: var(--t2);
+}
+.btn-ghost:hover {
+  border-color: var(--teal);
+  color: var(--t1);
+  background: var(--card-hover);
+}
+.btn-theme {
+  background: var(--card);
+  border: 1px solid var(--bord);
+  color: var(--t1);
+  font-weight: 600;
+}
+.btn-theme:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+.btn-print {
+  background: var(--violet-a);
+  border-color: rgba(124, 58, 237, 0.3);
+  color: var(--violet);
+}
+.btn-print:hover {
+  background: var(--violet);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+.segmented-toggle {
+  display: flex; background: var(--track-bg); border-radius: 6px; padding: 2px; gap: 2px;
+}
+.seg-btn {
+  font-family: var(--font-main); font-size: 10px; font-weight: 600; padding: 3px 8px;
+  border: none; background: transparent; color: var(--t3); border-radius: 4px; cursor: pointer;
+  transition: all 0.15s ease;
+}
+.seg-btn.active {
+  background: var(--card); color: var(--t1); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.live-indicator {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10px; font-family: var(--font-mono); font-weight: 500;
+  padding: 5px 12px; border-radius: 20px;
+  background: var(--card); border: 1px solid var(--bord);
+  color: var(--t2);
+}
+.pulse-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s infinite ease-in-out;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  background: var(--surf);
+  border-bottom: 1px solid var(--bord);
+  padding: 10px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+.filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.filter-select-wrap {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--card); border: 1px solid var(--bord);
+  border-radius: 6px; padding: 4px 10px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.filter-select-wrap:hover, .filter-select-wrap:focus-within {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px var(--teal-a);
+}
+.filter-label {
+  font-size: 9px; font-weight: 700; color: var(--t3);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+select {
+  background: transparent; border: none; color: var(--t1);
+  font-family: var(--font-main); font-size: 11px; font-weight: 600;
+  cursor: pointer; outline: none; padding: 2px 0;
+}
+select option { background: var(--surf); color: var(--t1); }
+.search-box {
+  position: relative; min-width: 230px;
+}
+.search-input {
+  width: 100%; background: var(--card); border: 1px solid var(--bord);
+  border-radius: 6px; padding: 6px 10px 6px 30px;
+  color: var(--t1); font-family: var(--font-main); font-size: 11px;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px var(--teal-a);
+}
+.search-icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: var(--t3); font-size: 11px; pointer-events: none;
+}
+
+/* ── MAIN CONTAINER ── */
+.main { padding: 24px 28px; display: flex; flex-direction: column; gap: 22px; max-width: 1680px; margin: 0 auto; width: 100%; }
+
+/* ── KPI HERO STRIP ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--bord-highlight);
+  box-shadow: var(--shadow-hover);
+}
+.kpi-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.kpi-teal::before   { background: linear-gradient(90deg, var(--teal), var(--sky)); }
+.kpi-amber::before  { background: linear-gradient(90deg, var(--amber), #FF9800); }
+.kpi-violet::before { background: linear-gradient(90deg, var(--violet), #8B5CF6); }
+.kpi-green::before  { background: linear-gradient(90deg, var(--green), #10B981); }
+.kpi-rose::before   { background: linear-gradient(90deg, var(--rose), #F43F5E); }
+
+.kpi-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+}
+.kpi-tag {
+  font-size: 9px; font-weight: 700; color: var(--t3);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.kpi-icon-wrap {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.kpi-teal .kpi-icon-wrap   { background: var(--teal-a); color: var(--teal); }
+.kpi-amber .kpi-icon-wrap  { background: var(--amber-a); color: var(--amber); }
+.kpi-violet .kpi-icon-wrap { background: var(--violet-a); color: var(--violet); }
+.kpi-green .kpi-icon-wrap  { background: var(--green-a); color: var(--green); }
+.kpi-rose .kpi-icon-wrap   { background: var(--rose-a); color: var(--rose); }
+
+.kpi-value {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--t1);
+  line-height: 1.1;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.kpi-caption {
+  font-size: 10px; color: var(--t2); display: flex; align-items: center; gap: 4px;
+}
+.kpi-caption strong { font-weight: 600; color: var(--t1); font-family: var(--font-mono); }
+
+/* ── EXECUTIVE INSIGHTS CALLOUT BANNER ── */
+.insight-banner {
+  background: var(--card);
+  border: 1px solid var(--bord);
+  border-left: 4px solid var(--teal);
+  border-radius: 12px;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: var(--shadow-card);
+}
+.insight-content { display: flex; align-items: center; gap: 14px; }
+.insight-icon {
+  font-size: 22px; flex-shrink: 0;
+  width: 42px; height: 42px; border-radius: 10px;
+  background: var(--teal-a); display: flex; align-items: center; justify-content: center;
+}
+.insight-title { font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--t1); margin-bottom: 2px; }
+.insight-text { font-size: 11px; color: var(--t2); line-height: 1.5; }
+.insight-highlight { color: var(--teal); font-weight: 700; font-family: var(--font-mono); }
+.insight-badges { display: flex; gap: 8px; flex-shrink: 0; }
+.pill-badge {
+  font-size: 10px; font-weight: 600; font-family: var(--font-mono);
+  padding: 4px 10px; border-radius: 20px;
+}
+.pill-teal  { background: var(--teal-a); color: var(--teal); border: 1px solid rgba(8,145,178,0.3); }
+.pill-amber { background: var(--amber-a); color: var(--amber); border: 1px solid rgba(217,119,6,0.3); }
+.pill-green { background: var(--green-a); color: var(--green); border: 1px solid rgba(5,150,105,0.3); }
 
 /* ── TABS ── */
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--bord)}
-.tab{padding:8px 18px;font-size:12px;font-weight:500;color:var(--t3);
-  border-bottom:2px solid transparent;cursor:pointer;transition:all .15s;margin-bottom:-1px}
-.tab.active{color:var(--teal);border-color:var(--teal)}
-.tab:hover:not(.active){color:var(--t2)}
-.tab-content{display:none}
-.tab-content.active{display:block}
+.tabs-nav {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--bord);
+  padding-bottom: 2px;
+}
+.tab-btn {
+  padding: 9px 18px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--t3);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab-btn:hover { color: var(--t2); }
+.tab-btn.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+  font-weight: 700;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ── CHART GRID ── */
-.chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.chart-grid-3{display:grid;grid-template-columns:1fr 1fr 300px;gap:14px}
+/* ── GRID LAYOUTS ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-2-1 { display: grid; grid-template-columns: 1.35fr 1.25fr; gap: 20px; }
 
-/* ── CARD ── */
-.card{background:var(--card);border:1px solid var(--bord);border-radius:10px;overflow:hidden;animation:fadeUp .4s ease both}
-.card-hdr{padding:14px 18px 10px;border-bottom:1px solid var(--bord);
-  display:flex;justify-content:space-between;align-items:flex-start}
-.card-title{font-size:12px;font-weight:600;color:var(--t1)}
-.card-sub{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
-.card-body{padding:16px 18px}
-.badge{font-size:9px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap}
-.badge-teal{background:var(--teal-a);color:var(--teal2)}
-.badge-amber{background:var(--amber-a);color:var(--amber)}
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+}
+.card:hover {
+  box-shadow: var(--shadow-hover);
+}
+.card-hdr {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--bord);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-hover);
+}
+.card-title-group { display: flex; flex-direction: column; }
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: 0.01em;
+}
+.card-desc {
+  font-size: 10px;
+  color: var(--t3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 1px;
+}
+.card-body { padding: 18px 20px; position: relative; }
 
-/* ── BAR CHART ── */
-.bars{display:flex;flex-direction:column;gap:9px}
-.bar-row{display:flex;flex-direction:column;gap:3px}
-.bar-meta{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.bar-name{font-size:11px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:50%}
-.bar-nums{display:flex;align-items:baseline;gap:7px}
-.bar-val{font-size:11px;font-weight:600;color:var(--t1);font-family:var(--mono)}
-.bar-cnt{font-size:9px;color:var(--t3);font-family:var(--mono)}
-.bar-pct{font-size:9px;color:var(--t3)}
-.bar-track{height:6px;background:var(--surf);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;transition:width .7s cubic-bezier(.34,1.56,.64,1)}
+/* ── PARETO BARS ── */
+.pareto-list { display: flex; flex-direction: column; gap: 12px; }
+.pareto-row { display: flex; flex-direction: column; gap: 4px; }
+.pareto-meta {
+  display: flex; justify-content: space-between; align-items: baseline; font-size: 11px;
+}
+.pareto-label {
+  font-weight: 600; color: var(--t1);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55%;
+}
+.pareto-stats {
+  display: flex; align-items: baseline; gap: 10px; font-family: var(--font-mono);
+}
+.pareto-cost { font-weight: 700; color: var(--t1); font-size: 12px; }
+.pareto-count { font-size: 10px; color: var(--t3); }
+.pareto-pct { font-size: 10px; font-weight: 700; color: var(--teal); min-width: 38px; text-align: right; }
+.pareto-track {
+  height: 8px; background: var(--track-bg);
+  border-radius: 4px; overflow: hidden;
+}
+.pareto-fill {
+  height: 100%; border-radius: 4px;
+  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
-/* ── DONUT ── */
-.donut-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
-.donut-svg{overflow:visible}
-.legend{display:flex;flex-direction:column;gap:7px;width:100%}
-.leg-row{display:flex;align-items:center;justify-content:space-between;gap:6px}
-.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-.leg-name{font-size:10px;color:var(--t2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.leg-val{font-size:10px;font-weight:600;color:var(--t1);font-family:var(--mono)}
-.leg-pct{font-size:9px;color:var(--t3);min-width:30px;text-align:right}
+/* ── 100% COMPLETE HIGH-INTERACTION DONUT ── */
+.donut-layout { display: flex; align-items: center; gap: 18px; }
+.donut-svg-wrap { position: relative; flex-shrink: 0; width: 175px; height: 175px; }
+.donut-segment {
+  cursor: pointer;
+  transition: stroke-width 0.2s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+.donut-segment:hover {
+  stroke-width: 27px !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+}
+.donut-legend { display: flex; flex-direction: column; gap: 6px; flex: 1; max-height: 270px; overflow-y: auto; }
+.donut-leg-row {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 6px 10px; border-radius: 8px; cursor: pointer;
+  border: 1px solid transparent; background: transparent;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+}
+.donut-leg-row:hover {
+  background: var(--card-hover);
+  border-color: var(--bord-highlight);
+  transform: translateX(2px);
+}
+.donut-leg-row.active-vendor {
+  border-color: var(--teal);
+  background: var(--teal-a);
+}
+.donut-leg-main { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.donut-leg-left { display: flex; align-items: center; gap: 8px; overflow: hidden; }
+.donut-leg-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+.donut-leg-name { color: var(--t1); font-weight: 700; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.donut-leg-unit-tag {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 600;
+  color: var(--t3); background: var(--track-bg); padding: 1px 5px; border-radius: 4px; flex-shrink: 0;
+}
+.donut-leg-right { display: flex; align-items: baseline; gap: 8px; flex-shrink: 0; }
+.donut-leg-cost { font-family: var(--font-mono); font-weight: 700; color: var(--t1); font-size: 11.5px; }
+.donut-leg-pct { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--teal); min-width: 35px; text-align: right; }
+.donut-leg-sub {
+  display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: var(--t3); padding-left: 17px;
+}
+.donut-leg-specialty { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
+.donut-leg-avg { font-family: var(--font-mono); }
 
-/* ── TABLE ── */
-.tbl-wrap{overflow-y:auto;max-height:320px}
-.tbl-wrap::-webkit-scrollbar{width:3px}
-.tbl-wrap::-webkit-scrollbar-thumb{background:var(--bord2);border-radius:2px}
-table{width:100%;border-collapse:collapse}
-thead th{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;
-  padding:8px 12px;border-bottom:1px solid var(--bord);white-space:nowrap;
-  position:sticky;top:0;background:var(--card);z-index:1}
-thead th.r{text-align:right}
-tbody tr{border-bottom:1px solid rgba(29,48,71,.5);transition:background .12s}
-tbody tr:hover{background:rgba(0,180,198,.04)}
-tbody tr:last-child{border-bottom:none}
-td{padding:8px 12px;font-size:11px;color:var(--t2);vertical-align:middle}
-td.first{color:var(--t1);font-weight:500}
-td.r{text-align:right;font-family:var(--mono)}
-td.dim{color:var(--t3)}
-.pill{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;letter-spacing:.03em}
-.mini-bar-wrap{display:flex;align-items:center;gap:5px;justify-content:flex-end}
-.mini-bar{width:44px;height:3px;background:var(--surf);border-radius:2px;overflow:hidden}
-.mini-fill{height:100%;border-radius:2px}
+/* ── CHART TOOLTIP ── */
+.chart-tooltip {
+  position: absolute; display: none; z-index: 100;
+  background: var(--tooltip-bg); color: var(--tooltip-text);
+  padding: 10px 14px; border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 0 1px var(--bord-highlight);
+  pointer-events: none; font-size: 11px;
+  transform: translate(-50%, -120%);
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+}
+.chart-tooltip-hdr { font-family: var(--font-heading); font-weight: 700; font-size: 12px; margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 3px; color: #FFFFFF; }
+.chart-tooltip-row { display: flex; justify-content: space-between; gap: 14px; margin-top: 3px; font-size: 10.5px; }
+.chart-tooltip-label { color: #94A3B8; }
+.chart-tooltip-val { font-family: var(--font-mono); font-weight: 700; }
 
-/* ── TREEMAP ── */
-.treemap{display:flex;flex-wrap:wrap;gap:3px;padding:14px 18px;min-height:160px}
-.tm-cell{border-radius:5px;display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:2px;cursor:pointer;transition:opacity .15s;overflow:hidden;padding:6px}
-.tm-cell:hover{opacity:.8}
-.tm-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.9);text-align:center;line-height:1.2}
-.tm-val{font-size:8px;color:rgba(255,255,255,.6);font-family:var(--mono)}
+/* ── SPEND TIERING MATRIX CARDS ── */
+.tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+.tier-card {
+  background: var(--card); border: 1px solid var(--bord); border-radius: 10px; padding: 16px;
+  position: relative; overflow: hidden; box-shadow: var(--shadow-card);
+}
+.tier-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+.tier-1::before { background: var(--rose); }
+.tier-2::before { background: var(--amber); }
+.tier-3::before { background: var(--teal); }
+.tier-title { font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--t1); margin-bottom: 4px; }
+.tier-criteria { font-size: 10px; color: var(--t3); margin-bottom: 12px; }
+.tier-cost { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--t1); margin-bottom: 4px; }
+.tier-meta { font-size: 10px; color: var(--t2); display: flex; justify-content: space-between; }
 
-/* ── SEARCH ── */
-.search-wrap{padding:10px 18px;border-bottom:1px solid var(--bord)}
-.search-inp{width:100%;background:var(--surf);border:1px solid var(--bord);color:var(--t1);
-  font-family:var(--font);font-size:11px;padding:6px 10px;border-radius:6px;outline:none}
-.search-inp:focus{border-color:var(--teal)}
-.search-inp::placeholder{color:var(--t3)}
+/* ── RECOMMENDATIONS GRID ── */
+.rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.rec-card {
+  background: var(--card); border: 1px solid var(--bord); border-radius: 12px; padding: 20px;
+  display: flex; flex-direction: column; gap: 10px;
+  box-shadow: var(--shadow-card);
+}
+.rec-badge-row { display: flex; justify-content: space-between; align-items: center; }
+.rec-title { font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--t1); }
+.rec-desc { font-size: 11px; color: var(--t2); line-height: 1.6; }
+.rec-financial-impact {
+  background: var(--card-hover); border: 1px solid var(--bord);
+  border-radius: 8px; padding: 10px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.rec-saving-label { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: 0.06em; }
+.rec-saving-value { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--green); }
 
-/* ── COLUMN MAP MODAL ── */
-.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.7);
-  backdrop-filter:blur(4px);align-items:center;justify-content:center}
-.modal-bg.active{display:flex}
-.modal{background:var(--card);border:1px solid var(--bord2);border-radius:12px;
-  padding:28px;max-width:480px;width:90%}
-.modal-title{font-size:15px;font-weight:700;color:var(--t1);margin-bottom:6px}
-.modal-sub{font-size:11px;color:var(--t3);margin-bottom:20px}
-.map-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.map-lbl{font-size:11px;color:var(--t2);width:120px;flex-shrink:0}
-.map-select{flex:1;background:var(--surf);border:1px solid var(--bord2);color:var(--t1);
-  font-family:var(--font);font-size:11px;padding:6px 8px;border-radius:6px;outline:none}
-.map-select:focus{border-color:var(--teal)}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
-.btn-primary{background:var(--teal);border:1px solid var(--teal);color:#000;font-weight:600;
-  font-family:var(--font);font-size:12px;padding:7px 18px;border-radius:7px;cursor:pointer}
-.btn-primary:hover{background:var(--teal2)}
-.btn-secondary{background:transparent;border:1px solid var(--bord2);color:var(--t2);
-  font-family:var(--font);font-size:12px;padding:7px 18px;border-radius:7px;cursor:pointer}
-.btn-secondary:hover{border-color:var(--t2);color:var(--t1)}
+/* ── DATA TABLES ── */
+.table-container {
+  overflow-x: auto; max-height: 480px; overflow-y: auto;
+}
+.table-container::-webkit-scrollbar { width: 6px; height: 6px; }
+.table-container::-webkit-scrollbar-track { background: var(--bg); }
+.table-container::-webkit-scrollbar-thumb { background: var(--bord-highlight); border-radius: 3px; }
 
-/* ── NO DATA ── */
-.no-data{padding:32px;text-align:center;color:var(--t3);font-size:11px}
+table { width: 100%; border-collapse: collapse; text-align: left; }
+thead th {
+  background: var(--card-hover);
+  color: var(--t3);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--bord);
+  position: sticky; top: 0; z-index: 10;
+}
+thead th.r { text-align: right; }
+tbody tr {
+  border-bottom: 1px solid var(--bord);
+  transition: background 0.12s;
+}
+tbody tr:hover { background: var(--card-hover); }
+tbody tr:last-child { border-bottom: none; }
+td {
+  padding: 9px 14px; font-size: 11px; color: var(--t2); vertical-align: middle;
+}
+td.primary { color: var(--t1); font-weight: 600; }
+td.mono { font-family: var(--font-mono); }
+td.r { text-align: right; }
+td.dim { color: var(--t3); }
 
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.kpi:nth-child(1){animation-delay:.05s}
-.kpi:nth-child(2){animation-delay:.10s}
-.kpi:nth-child(3){animation-delay:.15s}
-.kpi:nth-child(4){animation-delay:.20s}
+.tag-badge {
+  display: inline-block; font-size: 9px; font-weight: 600;
+  padding: 2px 8px; border-radius: 4px;
+  letter-spacing: 0.04em;
+}
 
-/* ── FOOTER ── */
-.footer{padding:14px 24px;border-top:1px solid var(--bord);
-  display:flex;justify-content:space-between;align-items:center}
-.footer-txt{font-size:9px;color:var(--t3)}
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(4, 8, 14, 0.6); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+.modal-box {
+  background: var(--card); border: 1px solid var(--bord-highlight);
+  border-radius: 14px; padding: 28px; width: 90%; max-width: 520px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.modal-title { font-family: var(--font-heading); font-size: 18px; font-weight: 700; color: var(--t1); margin-bottom: 8px; }
+.modal-sub { font-size: 11px; color: var(--t2); margin-bottom: 20px; line-height: 1.5; }
 
-@media(max-width:1100px){.chart-grid-3{grid-template-columns:1fr 1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:700px){.chart-grid-2,.chart-grid-3{grid-template-columns:1fr}.kpi-row{grid-template-columns:1fr 1fr}}
+/* ── PRINT STYLES ── */
+@media print {
+  body { background: #fff !important; color: #000 !important; background-image: none !important; font-size: 10pt; }
+  .hdr, .filter-bar, .tabs-nav, .btn, #fileInput, .insight-badges { display: none !important; }
+  .main { padding: 0 !important; max-width: 100% !important; }
+  .card, .kpi-card, .rec-card, .tier-card {
+    background: #fff !important; color: #000 !important;
+    border: 1px solid #ccc !important; box-shadow: none !important; break-inside: avoid;
+  }
+  .kpi-value, .pareto-cost, .tier-cost, .card-title, .insight-title { color: #000 !important; }
+  .pareto-track { background: #eee !important; }
+  .pareto-fill { background: #444 !important; }
+  table { color: #000 !important; }
+  thead th { background: #eee !important; color: #000 !important; }
+  tbody tr { border-color: #ddd !important; }
+  td { color: #222 !important; }
+  .tab-panel { display: block !important; margin-bottom: 24px; }
+}
+
+@media (max-width: 1200px) {
+  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  .grid-2-1 { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .grid-2, .rec-grid, .tier-grid { grid-template-columns: 1fr; }
+  .hdr { padding: 0 16px; }
+  .filter-bar, .main { padding: 14px 16px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ DRAG-AND-DROP OVERLAY ═══ -->
-<div class="drop-overlay" id="dropOverlay">
-  <div class="drop-box" id="dropBox">
-    <div class="drop-icon">📂</div>
-    <div class="drop-title">Drop your CSV file here</div>
-    <div class="drop-sub">Export your Excel sheet as CSV, then drop it onto this window</div>
-    <div style="margin-top:16px;font-size:10px;color:var(--t3)">
-      Accepted format: .csv with columns — Description, Equipment Type, Cal By, Cost
-    </div>
-  </div>
-  <div class="drop-close" onclick="closeDropZone()">✕ Cancel</div>
-</div>
-
-<!-- ═══ COLUMN MAP MODAL ═══ -->
-<div class="modal-bg" id="mapModal">
-  <div class="modal">
-    <div class="modal-title">📋 Map Your Columns</div>
-    <div class="modal-sub">Your CSV has different column names. Match them to the dashboard fields below.</div>
-    <div class="map-row">
-      <span class="map-lbl">Description</span>
-      <select class="map-select" id="map-desc"></select>
-    </div>
-    <div class="map-row">
-      <span class="map-lbl">Equipment Type</span>
-      <select class="map-select" id="map-type"></select>
-    </div>
-    <div class="map-row">
-      <span class="map-lbl">Vendor (Cal By)</span>
-      <select class="map-select" id="map-vendor"></select>
-    </div>
-    <div class="map-row">
-      <span class="map-lbl">Cost</span>
-      <select class="map-select" id="map-cost"></select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
-      <button class="btn-primary" onclick="applyMapping()">Load Data →</button>
-    </div>
-  </div>
-</div>
+<!-- Global Chart Tooltip -->
+<div id="chartTooltip" class="chart-tooltip"></div>
 
 <!-- ═══ HEADER ═══ -->
 <header class="hdr">
-  <div class="hdr-left">
-    <div class="hdr-badge">CAL · PRESSURE</div>
-    <div>
-      <div class="hdr-title">Calibration &amp; Pressure Combined Dashboard</div>
-      <div class="hdr-sub" id="hdr-sub">Loading live data…</div>
+  <div class="hdr-brand">
+    <div class="hdr-logo-box">
+      <img src="Autoliv Hirotako Logo Full Colour.png" alt="Autoliv Hirotako Logo" class="hdr-logo-img">
+    </div>
+    <div class="hdr-titles">
+      <h1 class="hdr-title">Calibration Cost &amp; Distribution Study</h1>
+      <span class="hdr-sub">Executive Spend Analytics &amp; Budget Optimization</span>
     </div>
   </div>
-  <div class="hdr-right">
-    <div class="filt">
-      <span class="filt-lbl">Year</span>
-      <select id="fYr" onchange="render()"><option value="">All Years</option></select>
-    </div>
-    <div class="filt">
-      <span class="filt-lbl">Equipment Type</span>
-      <select id="fEq" onchange="render()"><option value="">All Types</option></select>
-    </div>
-    <div class="filt">
-      <span class="filt-lbl">Vendor</span>
-      <select id="fVn" onchange="render()"><option value="">All Vendors</option></select>
-    </div>
-    <button class="btn btn-reset" onclick="resetFilters()">✕ Reset</button>
 
-    <!-- LOAD CSV BUTTON -->
-    <button class="btn btn-upload" onclick="openDropZone()">⬆ Load CSV</button>
-    <input type="file" id="fileInput" accept=".csv" onchange="handleFileSelect(event)">
-
-    <div class="live-chip" id="liveChip">
-      <div class="dot dot-green" id="statusDot"></div>
-      <span id="statusText">Loading…</span>
+  <div class="hdr-controls">
+    <div class="live-indicator" id="livePill">
+      <div class="pulse-dot" id="statusDot"></div>
+      <span id="statusText">Connecting…</span>
     </div>
+
+    <!-- THEME TOGGLE BUTTON -->
+    <button class="btn btn-theme" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Light / Dark Mode">
+      ☀️ Light Mode
+    </button>
+
+    <button class="btn btn-ghost" onclick="fetchLiveData(true)" title="Fetch latest data from GitHub / SharePoint feed">
+      <span id="syncIcon">↻</span> Sync Live
+    </button>
+    <button class="btn btn-print" onclick="window.print()" title="Print Executive Brief or Save as PDF">
+      🖨️ Export PDF
+    </button>
+    <button class="btn btn-ghost" onclick="openUploadModal()" title="Load custom CSV dataset">
+      📂 CSV
+    </button>
+    <input type="file" id="fileInput" accept=".csv" style="display:none" onchange="handleFileSelect(event)">
   </div>
 </header>
 
-<!-- ═══ LIVE-DATA STATUS BAR (default) ═══ -->
-<div class="upload-bar" id="howToBar">
-  <div class="upload-steps">
-    <div class="step"><div class="step-num">●</div><span id="liveSourceLabel">Live data from GitHub</span></div>
-    <div class="step-arrow">·</div>
-    <div class="step"><span id="liveRecordCount">— records</span></div>
-    <div class="step-arrow">·</div>
-    <div class="step"><span id="liveLastFetch">just now</span></div>
+<!-- ═══ FILTER BAR ═══ -->
+<div class="filter-bar">
+  <div class="filter-group">
+    <div class="filter-select-wrap">
+      <span class="filter-label">Target Year:</span>
+      <select id="fYr" onchange="renderDashboard()"><option value="2026">2026 (Annual Study)</option></select>
+    </div>
+
+    <div class="filter-select-wrap">
+      <span class="filter-label">Timeline Model:</span>
+      <select id="fDateModel" onchange="renderDashboard()">
+        <option value="smart">🎯 Smart Unified Calendar (Actuals + Scheduled Due)</option>
+        <option value="last">🗓️ Completed Only (Last Cal Date)</option>
+        <option value="next">⏳ Scheduled Only (Next Due Date)</option>
+      </select>
+    </div>
+
+    <div class="filter-select-wrap">
+      <span class="filter-label">Plant Area:</span>
+      <select id="fArea" onchange="renderDashboard()"><option value="">All Departments</option></select>
+    </div>
+
+    <div class="filter-select-wrap">
+      <span class="filter-label">Vendor:</span>
+      <select id="fVendor" onchange="renderDashboard()"><option value="">All Vendors</option></select>
+    </div>
+
+    <div class="filter-select-wrap">
+      <span class="filter-label">Category:</span>
+      <select id="fType" onchange="renderDashboard()"><option value="">All Categories</option></select>
+    </div>
+
+    <div class="filter-select-wrap">
+      <span class="filter-label">Source:</span>
+      <select id="fSource" onchange="renderDashboard()">
+        <option value="">Combined</option>
+        <option value="Calibration">Calibration Sheet</option>
+        <option value="Pressure Gauge">Pressure Gauge Sheet</option>
+      </select>
+    </div>
+
+    <button class="btn btn-ghost" onclick="resetFilters()" style="padding: 4px 10px; font-size: 10px;">✕ Reset</button>
   </div>
-  <div class="source-actions">
-    <button class="btn btn-reset" onclick="fetchLiveData(true)" title="Re-fetch the latest CSV">↻ Refresh</button>
-    <span class="upload-status" id="uploadStatus" style="margin-left:8px"></span>
+
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInp" class="search-input" placeholder="Search equipment, vendor, ID..." oninput="renderDashboard()">
   </div>
 </div>
 
-<!-- ═══ SOURCE BANNER (shown after manual CSV upload) ═══ -->
-<div class="upload-bar hidden" id="sourceBanner">
-  <div class="source-info">
-    <span>📄 Manual file:</span>
-    <span class="source-file" id="sourceFileName">—</span>
-    <span style="color:var(--t3)">·</span>
-    <span id="sourceRecords" style="color:var(--t2)">—</span>
-    <span style="color:var(--t3)">·</span>
-    <span id="sourceLoaded" style="color:var(--green)">—</span>
-  </div>
-  <div class="source-actions">
-    <button class="btn btn-reset" onclick="reloadLive()">← Back to live data</button>
-    <button class="btn btn-upload" onclick="openDropZone()">⬆ Load new CSV</button>
-  </div>
-</div>
-
-<!-- ═══ MAIN ═══ -->
+<!-- ═══ MAIN CONTENT ═══ -->
 <main class="main">
 
-  <!-- KPIs -->
-  <div class="kpi-row">
-    <div class="kpi c-teal">
-      <div class="kpi-icon">💰</div>
-      <div class="kpi-lbl">Total Calibration Cost</div>
-      <div class="kpi-val" id="k-cost">—</div>
-      <div class="kpi-sub">Avg per record: <strong id="k-avg" style="color:var(--teal2);font-family:var(--mono)">—</strong></div>
-    </div>
-    <div class="kpi c-amber">
-      <div class="kpi-icon">🔧</div>
-      <div class="kpi-lbl">Total Records</div>
-      <div class="kpi-val" id="k-count">—</div>
-      <div class="kpi-sub"><span class="chip chip-amber" id="k-pct">—%</span> of full dataset</div>
-    </div>
-    <div class="kpi c-violet">
-      <div class="kpi-icon">📐</div>
-      <div class="kpi-lbl">Equipment Types</div>
-      <div class="kpi-val" id="k-types">—</div>
-      <div class="kpi-sub">Unique categories in selection</div>
-    </div>
-    <div class="kpi c-green">
-      <div class="kpi-icon">🏢</div>
-      <div class="kpi-lbl">Active Vendors</div>
-      <div class="kpi-val" id="k-vendors">—</div>
-      <div class="kpi-sub">Highest spend: <strong id="k-top-vendor" style="color:var(--green);font-family:var(--mono);font-size:10px">—</strong></div>
-    </div>
-  </div>
-
-  <!-- TABS -->
-  <div>
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab('overview',this)">📊 Overview</div>
-      <div class="tab" onclick="switchTab('equipment',this)">📐 By Equipment</div>
-      <div class="tab" onclick="switchTab('vendor',this)">🏢 By Vendor</div>
-      <div class="tab" onclick="switchTab('detail',this)">📋 Detail Table</div>
+  <!-- 1. KPI HERO ROW -->
+  <section class="kpi-grid">
+    <div class="kpi-card kpi-teal">
+      <div class="kpi-header">
+        <span class="kpi-tag">Total Calibration Spend</span>
+        <div class="kpi-icon-wrap">💰</div>
+      </div>
+      <div class="kpi-value" id="kpi-total-cost">RM —</div>
+      <div class="kpi-caption">Avg per instrument: <strong id="kpi-avg-cost">RM —</strong></div>
     </div>
 
-    <!-- OVERVIEW -->
-    <div id="tab-overview" class="tab-content active" style="padding-top:14px">
-      <div class="chart-grid-3">
-        <div class="card">
-          <div class="card-hdr">
-            <div><div class="card-title">Cost by Equipment Type</div><div class="card-sub">Top 10 by spend</div></div>
-            <span class="badge badge-teal" id="badge-type-count">—</span>
-          </div>
-          <div class="card-body"><div class="bars" id="chart-type"></div></div>
-        </div>
-        <div class="card">
-          <div class="card-hdr">
-            <div><div class="card-title">Cost by Vendor</div><div class="card-sub">All vendors ranked</div></div>
-            <span class="badge badge-amber" id="badge-vendor-count">—</span>
-          </div>
-          <div class="card-body"><div class="bars" id="chart-vendor"></div></div>
-        </div>
-        <div class="card">
-          <div class="card-hdr">
-            <div><div class="card-title">Cost Distribution</div><div class="card-sub">Top 8 types</div></div>
-          </div>
-          <div class="card-body">
-            <div class="donut-wrap">
-              <svg class="donut-svg" id="donut-svg" width="150" height="150" viewBox="0 0 150 150"></svg>
-              <div class="legend" id="donut-legend"></div>
-            </div>
-          </div>
-        </div>
+    <div class="kpi-card kpi-amber">
+      <div class="kpi-header">
+        <span class="kpi-tag">Pareto Concentration</span>
+        <div class="kpi-icon-wrap">📊</div>
       </div>
-      <div class="card" style="margin-top:14px">
-        <div class="card-hdr">
-          <div><div class="card-title">Spend Heatmap — Equipment Types</div><div class="card-sub">Area proportional to total cost</div></div>
-        </div>
-        <div class="treemap" id="treemap"></div>
+      <div class="kpi-value" id="kpi-pareto-pct">—%</div>
+      <div class="kpi-caption">Driven by <strong id="kpi-top5-name">Top 5 Categories</strong></div>
+    </div>
+
+    <div class="kpi-card kpi-violet">
+      <div class="kpi-header">
+        <span class="kpi-tag">Supplier Dependency</span>
+        <div class="kpi-icon-wrap">🏢</div>
       </div>
-      <div class="card" style="margin-top:14px">
-        <div class="card-hdr">
-          <div><div class="card-title">Calibration Spend Over Time</div><div class="card-sub">Monthly total RM · cumulative trend</div></div>
-          <span class="badge badge-teal" id="badge-trend-months">—</span>
-        </div>
-        <div class="card-body">
-          <svg id="trend-svg" width="100%" height="220" viewBox="0 0 800 220" preserveAspectRatio="none" style="overflow:visible"></svg>
+      <div class="kpi-value" id="kpi-vendor-share">—%</div>
+      <div class="kpi-caption">Concentrated in <strong id="kpi-top-vendor">Top 3 Vendors</strong></div>
+    </div>
+
+    <div class="kpi-card kpi-sky">
+      <div class="kpi-header">
+        <span class="kpi-tag">Annual Fleet Volume</span>
+        <div class="kpi-icon-wrap">📐</div>
+      </div>
+      <div class="kpi-value" id="kpi-total-units">—</div>
+      <div class="kpi-caption"><span id="kpi-completed-count">—</span> completed · <span id="kpi-scheduled-count">—</span> scheduled</div>
+    </div>
+
+    <div class="kpi-card kpi-green">
+      <div class="kpi-header">
+        <span class="kpi-tag">Savings Identified</span>
+        <div class="kpi-icon-wrap">💡</div>
+      </div>
+      <div class="kpi-value" id="kpi-savings-opp">RM 18.4K</div>
+      <div class="kpi-caption">Fleet SLA &amp; Volume Discounts</div>
+    </div>
+  </section>
+
+  <!-- 2. EXECUTIVE CALLOUT BANNER -->
+  <section class="insight-banner">
+    <div class="insight-content">
+      <div class="insight-icon">🎯</div>
+      <div>
+        <div class="insight-title">Executive Summary &amp; Annual Budget Trajectory</div>
+        <div class="insight-text" id="executiveSummaryText">
+          Loading comprehensive calibration expenditure breakdown…
         </div>
       </div>
     </div>
-
-    <!-- BY EQUIPMENT -->
-    <div id="tab-equipment" class="tab-content" style="padding-top:14px">
-      <div class="chart-grid-2">
-        <div class="card">
-          <div class="card-hdr"><div><div class="card-title">Equipment Type — Full Ranking</div><div class="card-sub">All types sorted by cost</div></div></div>
-          <div class="card-body" style="max-height:380px;overflow-y:auto"><div class="bars" id="chart-type-full"></div></div>
-        </div>
-        <div class="card">
-          <div class="card-hdr"><div><div class="card-title">Summary by Equipment Type</div><div class="card-sub">Cost · Count · Avg</div></div></div>
-          <div class="tbl-wrap">
-            <table><thead><tr>
-              <th>#</th><th>Equipment Type</th>
-              <th class="r">Total Cost</th><th class="r">Count</th>
-              <th class="r">Avg Cost</th><th class="r">% Share</th>
-            </tr></thead><tbody id="eq-summary-body"></tbody></table>
-          </div>
-        </div>
-      </div>
+    <div class="insight-badges">
+      <span class="pill-badge pill-teal" id="badge-active-records">— Records</span>
+      <span class="pill-badge pill-amber" id="badge-top-spend-type">—</span>
+      <span class="pill-badge pill-green" id="badge-dated-coverage">Smart Calendar Active</span>
     </div>
+  </section>
 
-    <!-- BY VENDOR -->
-    <div id="tab-vendor" class="tab-content" style="padding-top:14px">
-      <div class="chart-grid-2">
-        <div class="card">
-          <div class="card-hdr"><div><div class="card-title">Vendor Spend Ranking</div><div class="card-sub">Total cost per vendor</div></div></div>
-          <div class="card-body"><div class="bars" id="chart-vendor-full"></div></div>
-        </div>
-        <div class="card">
-          <div class="card-hdr"><div><div class="card-title">Vendor Summary</div><div class="card-sub">Records · Cost · Avg</div></div></div>
-          <div class="tbl-wrap">
-            <table><thead><tr>
-              <th>#</th><th>Vendor</th>
-              <th class="r">Total Cost</th><th class="r">Records</th>
-              <th class="r">Avg Cost</th><th class="r">% Share</th>
-            </tr></thead><tbody id="vn-summary-body"></tbody></table>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- 3. TABS NAVIGATION -->
+  <nav class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('overview', this)">📊 Executive Overview</button>
+    <button class="tab-btn" onclick="switchTab('equipment', this)">📐 Equipment Pareto</button>
+    <button class="tab-btn" onclick="switchTab('vendor', this)">🏢 Vendor Allocation</button>
+    <button class="tab-btn" onclick="switchTab('costcenters', this)">🏭 Department Cost Centers</button>
+    <button class="tab-btn" onclick="switchTab('tiering', this)">🏷️ Spend Tiering</button>
+    <button class="tab-btn" onclick="switchTab('trajectory', this)">📈 Monthly Trajectory</button>
+    <button class="tab-btn" onclick="switchTab('recommendations', this)">💡 Strategic Recommendations</button>
+    <button class="tab-btn" onclick="switchTab('audit', this)">📋 Master Audit Table</button>
+  </nav>
 
-    <!-- DETAIL TABLE -->
-    <div id="tab-detail" class="tab-content" style="padding-top:14px">
+  <!-- 4. TAB PANELS -->
+
+  <!-- TAB: OVERVIEW -->
+  <div class="tab-panel active" id="tab-overview">
+    <div class="grid-2-1" style="margin-bottom: 20px;">
+      <!-- Equipment Spend Pareto -->
       <div class="card">
         <div class="card-hdr">
-          <div><div class="card-title">Full Calibration Register</div><div class="card-sub">All records</div></div>
-          <span class="badge badge-teal" id="detail-count-badge">—</span>
+          <div class="card-title-group">
+            <span class="card-title">Top Equipment Expenditure (80/20 Pareto)</span>
+            <span class="card-desc">Ranked by Total Spend (RM) &amp; Unit Volume</span>
+          </div>
+          <span class="tag-badge" style="background: var(--teal-a); color: var(--teal);">Top 8 Categories</span>
         </div>
-        <div class="search-wrap">
-          <input class="search-inp" id="searchInp" placeholder="Search description, type or vendor…" oninput="renderDetailTable()">
+        <div class="card-body">
+          <div class="pareto-list" id="overview-pareto-list"></div>
         </div>
-        <div class="tbl-wrap" style="max-height:460px">
-          <table><thead><tr>
-            <th>#</th><th>Description</th><th>Equipment Type</th><th>Vendor</th><th>Last Cal Date</th><th class="r">Cost (RM)</th>
-          </tr></thead><tbody id="detail-body"></tbody></table>
+      </div>
+
+      <!-- 100% Complete Vendor Concentration Donut -->
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-title-group">
+            <span class="card-title">Supplier Concentration &amp; Core Specialty</span>
+            <span class="card-desc">Click slice to filter · Hover to inspect</span>
+          </div>
+          <div class="segmented-toggle">
+            <button class="seg-btn active" id="donutModeSpend" onclick="setDonutMode('spend')">💰 Spend</button>
+            <button class="seg-btn" id="donutModeVolume" onclick="setDonutMode('volume')">📦 Volume</button>
+          </div>
+        </div>
+        <div class="card-body" style="padding: 16px 20px;">
+          <div class="donut-layout">
+            <div class="donut-svg-wrap">
+              <svg id="donut-svg" width="175" height="175" viewBox="0 0 175 175"></svg>
+            </div>
+            <div class="donut-legend" id="donut-legend"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly Trend & Plant Area Split -->
+    <div class="grid-2">
+      <!-- Continuous Monthly Trajectory Combo Graph -->
+      <div class="card" id="trend-card-container">
+        <div class="card-hdr">
+          <div class="card-title-group">
+            <span class="card-title">Monthly Budget Trajectory &amp; Outflow (Jan – Dec)</span>
+            <span class="card-desc">Unified Actuals + Scheduled Due Dates (Hover bars for breakdown)</span>
+          </div>
+          <span class="tag-badge" style="background: var(--amber-a); color: var(--amber);" id="trend-months-badge">12 Calendar Months</span>
+        </div>
+        <div class="card-body" style="padding: 14px 18px;">
+          <svg id="overview-trend-svg" width="100%" height="230" viewBox="0 0 760 230" style="overflow: visible;"></svg>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-title-group">
+            <span class="card-title">Department / Plant Area Cost Absorption</span>
+            <span class="card-desc">Calibration Spend Allocated to Plant Cost Centers</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="pareto-list" id="overview-area-list"></div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- TAB: EQUIPMENT PARETO -->
+  <div class="tab-panel" id="tab-equipment">
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title-group">
+          <span class="card-title">Complete Equipment Category Pareto Distribution</span>
+          <span class="card-desc">Full Category Ranked Breakdown</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 40px;">#</th>
+                <th>Equipment Category</th>
+                <th class="r">Total Spend (RM)</th>
+                <th class="r">% Share</th>
+                <th class="r">Unit Volume</th>
+                <th class="r">Avg Cost / Unit</th>
+                <th>Spend Intensity</th>
+              </tr>
+            </thead>
+            <tbody id="full-equipment-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: VENDOR ALLOCATION -->
+  <div class="tab-panel" id="tab-vendor">
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title-group">
+          <span class="card-title">Vendor Concentration &amp; Pricing Analysis</span>
+          <span class="card-desc">External Calibration Outflow by Supplier</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 40px;">#</th>
+                <th>Supplier / Calibrator</th>
+                <th>Core Specialty</th>
+                <th class="r">Total Outflow (RM)</th>
+                <th class="r">Market Share</th>
+                <th class="r">Item Count</th>
+                <th class="r">Avg Rate / Item</th>
+                <th>Dependency Level</th>
+              </tr>
+            </thead>
+            <tbody id="full-vendor-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: DEPARTMENT COST CENTERS -->
+  <div class="tab-panel" id="tab-costcenters">
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title-group">
+          <span class="card-title">Plant Area &amp; Departmental Cost Breakdown</span>
+          <span class="card-desc">Tracking Calibration Expense Absorption by Area</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 40px;">#</th>
+                <th>Plant Area / Department</th>
+                <th class="r">Total Cost (RM)</th>
+                <th class="r">% of Plant Budget</th>
+                <th class="r">Instruments</th>
+                <th class="r">Avg Cost</th>
+                <th>Budget Impact</th>
+              </tr>
+            </thead>
+            <tbody id="full-area-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: SPEND TIERING -->
+  <div class="tab-panel" id="tab-tiering">
+    <div class="tier-grid">
+      <div class="tier-card tier-1">
+        <div class="tier-title">Tier 1: High-Value Critical</div>
+        <div class="tier-criteria">Cost &gt; RM 1,000 / calibration (Specialized Assets &amp; DAQ)</div>
+        <div class="tier-cost" id="tier1-cost">RM —</div>
+        <div class="tier-meta">
+          <span id="tier1-count">— Units</span>
+          <span id="tier1-pct">—% of Spend</span>
+        </div>
+      </div>
+
+      <div class="tier-card tier-2">
+        <div class="tier-title">Tier 2: Specialized Medium</div>
+        <div class="tier-criteria">RM 200 – RM 1,000 / calibration (Load Cells &amp; Lab QA)</div>
+        <div class="tier-cost" id="tier2-cost">RM —</div>
+        <div class="tier-meta">
+          <span id="tier2-count">— Units</span>
+          <span id="tier2-pct">—% of Spend</span>
+        </div>
+      </div>
+
+      <div class="tier-card tier-3">
+        <div class="tier-title">Tier 3: High-Volume Routine</div>
+        <div class="tier-criteria">Cost &lt; RM 200 / calibration (Pressure Gauges &amp; Calipers)</div>
+        <div class="tier-cost" id="tier3-cost">RM —</div>
+        <div class="tier-meta">
+          <span id="tier3-count">— Units</span>
+          <span id="tier3-pct">—% of Spend</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title-group">
+          <span class="card-title">Top 15 High-Value Asset Calibrations</span>
+          <span class="card-desc">Individual Instruments with the Highest Cost Impact</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Equipment Description</th>
+                <th>Category</th>
+                <th>Supplier</th>
+                <th>Area</th>
+                <th>Effective Month</th>
+                <th class="r">Cost (RM)</th>
+              </tr>
+            </thead>
+            <tbody id="top-assets-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: MONTHLY TRAJECTORY -->
+  <div class="tab-panel" id="tab-trajectory">
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title-group">
+          <span class="card-title">Detailed Monthly Budget Trajectory (Jan – Dec)</span>
+          <span class="card-desc">Smart Synthesis of Actual Completed Calibrations + Scheduled Due Dates</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom: 24px; position: relative;">
+          <svg id="detailed-trend-svg" width="100%" height="260" viewBox="0 0 900 260" style="overflow: visible;"></svg>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Month (YYYY-MM)</th>
+                <th class="r">Total Outflow (RM)</th>
+                <th class="r">Cumulative (RM)</th>
+                <th class="r">Units Completed</th>
+                <th class="r">Units Scheduled</th>
+                <th class="r">Total Fleet</th>
+                <th class="r">Avg Rate / Unit</th>
+              </tr>
+            </thead>
+            <tbody id="monthly-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: STRATEGIC RECOMMENDATIONS (100% DATA-DRIVEN FROM WORKBOOK) -->
+  <div class="tab-panel" id="tab-recommendations">
+    <div class="rec-grid">
+      <!-- REC 1: TORQUE TOOLS (INDPRO) -->
+      <div class="rec-card">
+        <div class="rec-badge-row">
+          <span class="tag-badge" style="background: var(--amber-a); color: var(--amber);">Major Fleet Negotiation</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--amber); font-weight: 700;">26.6% of Total Spend</span>
+        </div>
+        <h3 class="rec-title">1. Torque Tightening Tool Master Service Agreement (Indpro)</h3>
+        <p class="rec-desc">
+          Torque tightening tools represent <strong>39 units</strong> and <strong>RM 63,828.00</strong> in external expenditure (100% calibrated exclusively by Indpro). Establish an annual master service agreement (MSA) bundling calibration certificates with preventative maintenance to target a 10–15% fleet discount.
+        </p>
+        <div class="rec-financial-impact">
+          <span class="rec-saving-label">Potential Annual Negotiation Savings</span>
+          <span class="rec-saving-value">RM 6,300 – RM 9,500 / yr</span>
+        </div>
+      </div>
+
+      <!-- REC 2: DATA ACQUISITION (DTS) -->
+      <div class="rec-card">
+        <div class="rec-badge-row">
+          <span class="tag-badge" style="background: var(--rose-a); color: var(--rose);">Asset SLA Contract</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--rose); font-weight: 700;">26.2% of Total Spend</span>
+        </div>
+        <h3 class="rec-title">2. High-Value Data Acquisition Multi-Year SLA (DTS)</h3>
+        <p class="rec-desc">
+          The <strong>13 Data Acquisition &amp; SLICE modules</strong> represent <strong>RM 62,800.00</strong> in calibration costs (100% with DTS, averaging ~RM 4,830 per module). Consolidate multi-year calibration schedules directly with DTS to secure guaranteed turnaround times and fixed multi-year rate caps.
+        </p>
+        <div class="rec-financial-impact">
+          <span class="rec-saving-label">Direct Category Allocation</span>
+          <span class="rec-saving-value" style="color: var(--rose);">RM 62,800 Spend</span>
+        </div>
+      </div>
+
+      <!-- REC 3: PRESSURE GAUGES & LOAD CELLS (MULTITECH EXCLUSIVE SOLE VENDOR) -->
+      <div class="rec-card">
+        <div class="rec-badge-row">
+          <span class="tag-badge" style="background: var(--sky-a); color: var(--sky);">Sole Supplier · Volume Batching</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--sky); font-weight: 700;">228 Units (RM 36.3K)</span>
+        </div>
+        <h3 class="rec-title">3. Bulk Pressure Gauge &amp; Load Cell Batch Agreement (Multitech)</h3>
+        <p class="rec-desc">
+          As verified in the <code>Pressure Gauge</code> register, <strong>Multitech is the 100% sole vendor</strong> for all <strong>228 pressure sheet instruments</strong> (178 Pressure Gauges @ RM 12,976.20 + 50 Load Cells @ RM 23,328.00 = <strong>RM 36,304.20 total</strong>). Consolidate calibration dispatches into quarterly bulk batches to secure a 15–20% volume rate reduction.
+        </p>
+        <div class="rec-financial-impact">
+          <span class="rec-saving-label">Batch Volume Savings (Multitech)</span>
+          <span class="rec-saving-value">RM 5,400 – RM 7,200 / yr</span>
+        </div>
+      </div>
+
+      <!-- REC 4: DIGITAL CALIPERS (EXACT 6 UNITS) -->
+      <div class="rec-card">
+        <div class="rec-badge-row">
+          <span class="tag-badge" style="background: var(--green-a); color: var(--green);">In-House QA Verification</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--green); font-weight: 700;">6 External Units (RM 189)</span>
+        </div>
+        <h3 class="rec-title">4. Digital Caliper Verification &amp; Master Block Verification</h3>
+        <p class="rec-desc">
+          Only <strong>6 Digital Caliper units</strong> are sent externally (RM 189.00 total spend: 5 @ Sendi Mahir, 1 @ Trescal). Maintain internal quality inspection capability using certified master gauge blocks for routine shopfloor caliper verification while sending only critical reference master calipers externally.
+        </p>
+        <div class="rec-financial-impact">
+          <span class="rec-saving-label">External Caliper Fleet</span>
+          <span class="rec-saving-value">6 Units · RM 189.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: MASTER AUDIT TABLE -->
+  <div class="tab-panel" id="tab-audit">
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title-group">
+          <span class="card-title">Granular Equipment Calibration Register</span>
+          <span class="card-desc" id="audit-record-count-label">Showing filtered records</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 35px;">#</th>
+                <th>Equipment Description</th>
+                <th>Category</th>
+                <th>Calibrated By (Vendor)</th>
+                <th>Plant Area</th>
+                <th>Last Cal Date</th>
+                <th>Next Due Date</th>
+                <th>Cycle Status</th>
+                <th>Source Sheet</th>
+                <th class="r">Cost (RM)</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
-<footer class="footer">
-  <span class="footer-txt" id="footer-left">Loading data…</span>
-  <span class="footer-txt" style="font-family:var(--mono)">Dashboard v2.0 · CSV Live-Reload enabled</span>
-</footer>
+<!-- ═══ MODAL: LOAD CSV ═══ -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal-box">
+    <h3 class="modal-title">Load Custom CSV Data</h3>
+    <p class="modal-sub">Select or drag-and-drop a standardized CSV file to override the active dataset in memory.</p>
+    <div style="border: 2px dashed var(--bord-highlight); border-radius: 10px; padding: 30px; text-align: center; cursor: pointer; background: var(--card-hover);" onclick="document.getElementById('fileInput').click()">
+      <div style="font-size: 32px; margin-bottom: 8px;">📂</div>
+      <div style="font-weight: 600; color: var(--teal); margin-bottom: 4px;">Click to browse or drop file here</div>
+      <div style="font-size: 10px; color: var(--t3);">Accepts data.csv with canonical schema</div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+      <button class="btn btn-ghost" onclick="closeUploadModal()">Close</button>
+    </div>
+  </div>
+</div>
 
+<!-- ═══ APPLICATION LOGIC ═══ -->
 <script>
 // ════════════════════════════════════════════════════════════
-// BUILT-IN DATA
+// THEME SWITCHER (DEFAULT LIGHT)
 // ════════════════════════════════════════════════════════════
-const BUILTIN_DATA = []; // populated by fetch() on load — see initData() at bottom
+function initTheme() {
+  const saved = localStorage.getItem('cal_theme') || 'light';
+  applyTheme(saved);
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('cal_theme', theme);
+  const btn = document.getElementById('themeToggleBtn');
+  if (btn) {
+    btn.innerHTML = theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode';
+  }
+}
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  renderDashboard();
+}
+
+// ════════════════════════════════════════════════════════════
+// GLOBAL STATE & COLOR THEMES
+// ════════════════════════════════════════════════════════════
+let RAW_DATA = [];
+let FILTERED_DATA = [];
+let DONUT_MODE = 'spend'; // 'spend' or 'volume'
 
 const TYPE_COLORS = {
-  'DATA ACQUISITION':'#00B4C6','TORQUE TOOL':'#F5A623','OTHERS':'#9B6DFF',
-  'LOAD CELL':'#22D3A5','PRESSURE':'#38BDF8','ACCELEROMETER':'#FF5C7D',
-  'BALANCE':'#A78BFA','HUMIDITY CHAMBER':'#34D399','TORQUE METER':'#FBBF24',
-  'TORQUE WRENCH':'#60A5FA','FORCE GAUGE':'#F472B6','PIN GAUGE':'#FB923C',
-  'MULTIMETER':'#4ADE80','HARDNESS TESTER':'#E879F9','ELECTRICAL TEST':'#F87171',
-  'RESISTANCE METER':'#67E8F9','PROTRACTOR':'#A3E635','THERMOMETER':'#FDE68A',
-  'RADIUS GAUGE':'#C4B5FD','GAUGE BLOCK':'#6EE7B7','TENSILE':'#FCA5A5',
-  'TAPER GAUGE':'#93C5FD','TORQUE DRIVER':'#D8B4FE','OVEN':'#86EFAC',
-  'STOPWATCH':'#FCD34D','DANSA GAUGE':'#F9A8D4','MEASURING TAPE':'#BAE6FD',
-  'DEPTH GAUGE':'#BBF7D0','RING GAUGE':'#FEF08A','CALIPER':'#FDBA74','RULER':'#CBD5E1',
+  'DATA ACQUISITION': '#E11D48',
+  'TORQUE TOOL':      '#D97706',
+  'LOAD CELL':        '#059669',
+  'PRESSURE':         '#0284C7',
+  'ACCELEROMETER':    '#7C3AED',
+  'BALANCE':          '#6366F1',
+  'HUMIDITY CHAMBER': '#0891B2',
+  'TORQUE METER':     '#DB2777',
+  'TORQUE WRENCH':    '#EA580C',
+  'FORCE GAUGE':      '#10B981',
+  'PIN GAUGE':        '#14B8A6',
+  'ELECTRICAL TEST':  '#8B5CF6',
+  'MULTIMETER':       '#F59E0B',
+  'HARDNESS TESTER':  '#9333EA',
+  'CALIPER':          '#06B6D4',
+  'OTHERS':           '#64748B',
 };
-const VENDOR_COLORS = [
-  '#00B4C6','#F5A623','#9B6DFF','#22D3A5','#FF5C7D',
-  '#38BDF8','#A78BFA','#34D399','#FBBF24','#60A5FA',
-  '#F472B6','#FB923C','#4ADE80','#E879F9',
+
+const VENDOR_PALETTE = [
+  '#0891B2', '#D97706', '#7C3AED', '#059669', '#E11D48', 
+  '#0284C7', '#DB2777', '#F59E0B', '#6366F1', '#10B981', '#64748B'
 ];
-const PILL_CLASSES = ['pill-teal','pill-amber','pill-violet','pill-green','pill-rose','pill-sky'];
 
-// ════════════════════════════════════════════════════════════
-// STATE
-// ════════════════════════════════════════════════════════════
-let ACTIVE_DATA = [...BUILTIN_DATA];
-let GRAND_TOTAL  = ACTIVE_DATA.reduce((s,r)=>s+r.cost,0);
-let GRAND_COUNT  = ACTIVE_DATA.length;
-let _filtered    = [];
-let _csvHeaders  = [];   // raw CSV column headers for mapping modal
-let _csvRows     = [];   // raw CSV rows before mapping
+const VENDOR_SPECIALTY_MAP = {
+  'Indpro': 'Torque Tightening Tools',
+  'DTS': 'Data Acquisition & SLICE',
+  'Multitech': 'Pressure Gauges & Load Cells',
+  'Sendi Mahir': 'Lab Quality & Dimensional',
+  'Trescal': 'Precision Gauges & Electrical',
+  'First Instrument': 'Specialized QA Test Systems',
+  'West Caldwell': 'Acoustic & Vibration Sensors',
+  'X-Rite': 'Color Spectrophotometer',
+  'Micro Precision': 'Electronic Measurement',
+  'Autoliv Sweden AB': 'Proprietary Crash Sensors'
+};
 
-// ════════════════════════════════════════════════════════════
-// DRAG AND DROP
-// ════════════════════════════════════════════════════════════
-// Only react when an actual file is being dragged over the window.
-function isFileDrag(e) {
-  return e.dataTransfer && Array.from(e.dataTransfer.types || []).includes('Files');
+function getVendorSpecialty(vn) {
+  return VENDOR_SPECIALTY_MAP[vn] || (vn.startsWith('Others') ? 'Remaining Suppliers' : 'General Calibration');
 }
-window.addEventListener('dragover', e => {
-  if (!isFileDrag(e)) return;
-  e.preventDefault();
-  openDropZone();
-});
-window.addEventListener('dragleave', e => {
-  if (e.relatedTarget === null) closeDropZone();
-});
-window.addEventListener('drop', e => {
-  if (!isFileDrag(e)) return;
-  e.preventDefault();
-  closeDropZone();
-  const file = e.dataTransfer.files[0];
-  if (file) processFile(file);
-});
 
-document.getElementById('dropBox').addEventListener('dragover', e => e.preventDefault());
-document.getElementById('dropBox').addEventListener('drop', e => {
-  e.preventDefault();
-  closeDropZone();
-  const file = e.dataTransfer.files[0];
-  if (file) processFile(file);
-});
+function getTypeColor(type) {
+  return TYPE_COLORS[type] || '#0891B2';
+}
+function getVendorColor(idx) {
+  return VENDOR_PALETTE[idx % VENDOR_PALETTE.length];
+}
 
-function openDropZone()  { document.getElementById('dropOverlay').classList.add('active'); }
-function closeDropZone() { document.getElementById('dropOverlay').classList.remove('active'); }
+function fmtRM(n) {
+  return 'RM ' + Number(n || 0).toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function fmtK(n) {
+  const num = Number(n || 0);
+  return num >= 1000 ? 'RM ' + (num / 1000).toFixed(1) + 'K' : 'RM ' + num.toFixed(2);
+}
 
-// ════════════════════════════════════════════════════════════
-// FILE PICKER
-// ════════════════════════════════════════════════════════════
-function handleFileSelect(e) {
-  const file = e.target.files[0];
-  if (file) processFile(file);
-  e.target.value = ''; // reset so same file can be re-selected
+function setDonutMode(mode) {
+  DONUT_MODE = mode;
+  document.getElementById('donutModeSpend').classList.toggle('active', mode === 'spend');
+  document.getElementById('donutModeVolume').classList.toggle('active', mode === 'volume');
+  renderDonutChart(aggregateBy(FILTERED_DATA, 'vendor'), FILTERED_DATA.reduce((s, r) => s + r.cost, 0), FILTERED_DATA.length);
 }
 
 // ════════════════════════════════════════════════════════════
-// CSV PARSING
+// CSV PARSER (RFC-4180 COMPLIANT)
 // ════════════════════════════════════════════════════════════
 function parseCSV(text) {
-  // Handle BOM
   if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
-  const lines = text.split(/\r?\n/).filter(l => l.trim());
-  if (lines.length < 2) return { headers: [], rows: [] };
+  const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+  if (lines.length < 2) return [];
 
-  function splitLine(line) {
-    const result = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { result.push(cur.trim()); cur = ''; }
-      else { cur += c; }
-    }
-    result.push(cur.trim());
-    return result;
-  }
-
-  const headers = splitLine(lines[0]);
-  const rows = lines.slice(1).map(l => splitLine(l));
-  return { headers, rows };
-}
-
-function autoDetectMapping(headers) {
-  const norm = h => h.toLowerCase().replace(/[\s_\-\.]/g,'');
-  const map = {};
-  // Order matters: more specific patterns first so 'lastcaldate' matches 'date'
-  // before a generic 'desc' field accidentally claims it.
-  const targets = {
-    date:   ['lastcaldate','caldate','date','calibrationdate'],
-    desc:   ['description','desc','item','equipmentname','equipmentdesc','machineno','name'],
-    type:   ['equipmenttype','type','category','equiptype','cat'],
-    vendor: ['calby','vendor','calibratedby','supplier','contractor','by','calibrator'],
-    cost:   ['cost','price','amount','fee','rm','totalcost','calibrationcost'],
-    area:   ['area','location','plant','dept','department'],
-    status: ['itemstatus','status','itemtype'],
-    source: ['source','sheet','origin'],
-  };
-  headers.forEach((h,i) => {
-    const n = norm(h);
-    for (const [field, patterns] of Object.entries(targets)) {
-      if (map[field] === undefined && patterns.some(p => n === p || n.includes(p))) {
-        map[field] = i;
+  function splitRow(rowStr) {
+    const cells = [];
+    let cur = '', inQuotes = false;
+    for (let i = 0; i < rowStr.length; i++) {
+      const c = rowStr[i];
+      if (c === '"') {
+        if (inQuotes && rowStr[i+1] === '"') { cur += '"'; i++; }
+        else { inQuotes = !inQuotes; }
+      } else if (c === ',' && !inQuotes) {
+        cells.push(cur.trim()); cur = '';
+      } else {
+        cur += c;
       }
     }
-  });
-  return map;
-}
-
-function processFile(file) {
-  if (!file.name.toLowerCase().endsWith('.csv')) {
-    setStatus('❌ Please use a CSV file (.csv). In Excel: File → Save As → CSV UTF-8', 'err');
-    return;
+    cells.push(cur.trim());
+    return cells;
   }
-  setStatus('⏳ Reading file…', '');
-  const reader = new FileReader();
-  reader.onload = e => {
-    const { headers, rows } = parseCSV(e.target.result);
-    if (!headers.length) { setStatus('❌ Could not read CSV — file appears empty', 'err'); return; }
 
-    _csvHeaders = headers;
-    _csvRows    = rows;
+  const headers = splitRow(lines[0]).map(h => h.toLowerCase().replace(/[\s_\-\.]/g, ''));
+  const rows = [];
 
-    const autoMap = autoDetectMapping(headers);
-    const allMapped = ['desc','type','vendor','cost'].every(k => autoMap[k] !== undefined);
-
-    if (allMapped) {
-      applyData(autoMap, file.name);
-    } else {
-      openMappingModal(headers, autoMap, file.name);
-    }
-  };
-  reader.onerror = () => setStatus('❌ Could not read file', 'err');
-  reader.readAsText(file, 'UTF-8');
-}
-
-// ════════════════════════════════════════════════════════════
-// COLUMN MAPPING MODAL
-// ════════════════════════════════════════════════════════════
-let _pendingFileName = '';
-
-function openMappingModal(headers, autoMap, fileName) {
-  _pendingFileName = fileName;
-  ['desc','type','vendor','cost'].forEach(field => {
-    const sel = document.getElementById('map-'+field);
-    sel.innerHTML = headers.map((h,i) =>
-      `<option value="${i}" ${autoMap[field]===i?'selected':''}>${h}</option>`
-    ).join('');
-  });
-  document.getElementById('mapModal').classList.add('active');
-}
-
-function closeModal() { document.getElementById('mapModal').classList.remove('active'); }
-
-function applyMapping() {
-  const map = {
-    desc:   parseInt(document.getElementById('map-desc').value),
-    type:   parseInt(document.getElementById('map-type').value),
-    vendor: parseInt(document.getElementById('map-vendor').value),
-    cost:   parseInt(document.getElementById('map-cost').value),
-  };
-  closeModal();
-  applyData(map, _pendingFileName);
-}
-
-// ════════════════════════════════════════════════════════════
-// APPLY PARSED DATA TO DASHBOARD
-// ════════════════════════════════════════════════════════════
-function applyData(map, fileName) {
-  const parsed = [];
-  let skipped = 0;
-  _csvRows.forEach(row => {
-    const desc   = (row[map.desc]   || '').trim();
-    const type   = (row[map.type]   || '').trim().toUpperCase();
-    const vendor = (row[map.vendor] || '').trim();
-    // Only strip non-numeric chars (keep digit, dot, minus). Safer than [RM,\s].
-    const raw    = (row[map.cost]   || '').toString().replace(/[^\d.\-]/g,'');
-    const cost   = parseFloat(raw);
-    const date   = map.date    !== undefined ? (row[map.date]    || '').trim() : '';
-    const area   = map.area    !== undefined ? (row[map.area]    || '').trim() : '';
-    const status = map.status  !== undefined ? (row[map.status]  || '').trim() : '';
-    const source = map.source  !== undefined ? (row[map.source]  || '').trim() : '';
-    if (!desc && !type) { skipped++; return; }
-    parsed.push({
-      desc:   desc   || '(unnamed)',
-      type:   type   || 'UNKNOWN',
-      vendor: vendor || 'Unknown',
-      cost:   isNaN(cost) ? 0 : cost,
-      date:   date,                 // ISO YYYY-MM-DD or ''
-      area:   area,
-      status: status,
-      source: source,
+  for (let i = 1; i < lines.length; i++) {
+    const raw = splitRow(lines[i]);
+    const obj = {};
+    headers.forEach((h, idx) => {
+      obj[h] = raw[idx] || '';
     });
-  });
 
-  if (!parsed.length) { setStatus('❌ No valid rows found — check column mapping', 'err'); return; }
+    const desc = obj['description'] || obj['desc'] || obj['equipmentdescription'] || obj['machineno'] || '';
+    const type = (obj['equipmenttype'] || obj['type'] || 'OTHERS').toUpperCase();
+    const vendor = obj['vendor'] || obj['calby'] || 'Internal';
+    const costRaw = String(obj['cost'] || '0').replace(/[^\d.\-]/g, '');
+    const cost = parseFloat(costRaw) || 0.0;
+    const lastDate = obj['lastcaldate'] || obj['date'] || '';
+    const nextDate = obj['nextcaldate'] || obj['nextcal1date'] || obj['duedate'] || '';
+    const area = obj['area'] || obj['location'] || 'Test Lab';
+    const status = obj['status'] || obj['itemstatus'] || 'Active';
+    const source = obj['source'] || 'Calibration';
 
-  ACTIVE_DATA  = parsed;
-  GRAND_TOTAL  = parsed.reduce((s,r)=>s+r.cost,0);
-  GRAND_COUNT  = parsed.length;
+    if (desc || type) {
+      rows.push({ desc, type, vendor, cost, lastDate, nextDate, area, status, source });
+    }
+  }
+  return rows;
+}
 
-  if (fileName === 'Live data') {
-    // Show the live status bar, hide the manual upload banner.
-    document.getElementById('howToBar').classList.remove('hidden');
-    document.getElementById('sourceBanner').classList.add('hidden');
-    document.getElementById('liveSourceLabel').textContent = 'Live data from GitHub';
-    document.getElementById('liveRecordCount').textContent = parsed.length + ' records';
-    const now = new Date();
-    document.getElementById('liveLastFetch').textContent =
-      'fetched ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('hdr-sub').textContent =
-      'Live · ' + parsed.length + ' records · RM ' +
-      GRAND_TOTAL.toLocaleString('en-MY', { minimumFractionDigits: 2 });
-    document.getElementById('statusDot').className = 'dot dot-green';
-    document.getElementById('statusText').textContent = 'Live';
-    document.getElementById('footer-left').textContent =
-      'data.csv · ' + parsed.length + ' records · auto-built from source.xlsx';
-    setStatus('✓ Live data loaded', 'ok');
-  } else {
-    // Manual CSV upload path.
-    document.getElementById('howToBar').classList.add('hidden');
-    document.getElementById('sourceBanner').classList.remove('hidden');
-    document.getElementById('sourceFileName').textContent = fileName;
-    document.getElementById('sourceRecords').textContent  = parsed.length + ' records';
-    document.getElementById('sourceLoaded').textContent   = '✓ Loaded ' + new Date().toLocaleTimeString();
-    document.getElementById('hdr-sub').textContent        = fileName + ' · ' + parsed.length + ' records';
-    document.getElementById('statusDot').className        = 'dot dot-amber';
-    document.getElementById('statusText').textContent     = 'CSV loaded';
-    document.getElementById('footer-left').textContent    = fileName + ' · ' + parsed.length + ' records · RM ' + GRAND_TOTAL.toLocaleString('en-MY',{minimumFractionDigits:2});
-    if (skipped) setStatus(`⚠ Loaded ${parsed.length} records (${skipped} rows skipped)`, 'ok');
-    else setStatus(`✓ Loaded ${parsed.length} records from ${fileName}`, 'ok');
+// ════════════════════════════════════════════════════════════
+// DATA FETCHING & SYNC
+// ════════════════════════════════════════════════════════════
+const DATA_FEED_URLS = [
+  './data.csv',
+  'https://khairul6146.github.io/ExternalCalibrationCost/data.csv'
+];
+
+async function fetchLiveData(showSpinner) {
+  const statusDot = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+  const syncIcon = document.getElementById('syncIcon');
+
+  if (showSpinner) {
+    statusDot.className = 'pulse-dot';
+    statusDot.style.background = 'var(--amber)';
+    statusText.textContent = 'Syncing…';
+    syncIcon.style.display = 'inline-block';
+    syncIcon.style.animation = 'spin 1s linear infinite';
   }
 
-  rebuildFilters();
-  render();
-}
+  let loaded = false;
+  for (const url of DATA_FEED_URLS) {
+    try {
+      const bust = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+      const resp = await fetch(bust, { cache: 'no-store' });
+      if (!resp.ok) continue;
+      const text = await resp.text();
+      const rows = parseCSV(text);
+      if (rows.length > 0) {
+        RAW_DATA = rows;
+        populateFilterOptions();
+        renderDashboard();
+        loaded = true;
 
-function reloadLive() {
-  // After a manual CSV upload, this puts the dashboard back on the live feed.
-  document.getElementById('howToBar').classList.remove('hidden');
-  document.getElementById('sourceBanner').classList.add('hidden');
-  fetchLiveData(true);
-}
+        statusDot.style.background = 'var(--green)';
+        statusText.textContent = `${rows.length} Records Live`;
+        document.getElementById('badge-active-records').textContent = `${rows.length} Records`;
+        break;
+      }
+    } catch (e) {
+      console.warn('Failed loading feed from', url, e);
+    }
+  }
 
-function setStatus(msg, cls) {
-  const el = document.getElementById('uploadStatus');
-  el.textContent = msg;
-  el.className   = 'upload-status' + (cls ? ' '+cls : '');
+  if (showSpinner) {
+    syncIcon.style.animation = '';
+  }
+
+  if (!loaded) {
+    statusDot.style.background = 'var(--rose)';
+    statusText.textContent = 'Offline (Load CSV)';
+  }
 }
 
 // ════════════════════════════════════════════════════════════
-// FILTERS
+// FILTER MANAGEMENT & SMART SCHEDULING RESOLVER
 // ════════════════════════════════════════════════════════════
-function rebuildFilters() {
-  const types   = [...new Set(ACTIVE_DATA.map(r=>r.type))].sort();
-  const vendors = [...new Set(ACTIVE_DATA.map(r=>r.vendor))].sort();
-  const years   = [...new Set(ACTIVE_DATA.map(r=>(r.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
-  const eq = document.getElementById('fEq');
-  const vn = document.getElementById('fVn');
-  const yr = document.getElementById('fYr');
-  eq.innerHTML = '<option value="">All Types</option>'   + types.map(t=>`<option value="${t}">${t}</option>`).join('');
-  vn.innerHTML = '<option value="">All Vendors</option>' + vendors.map(v=>`<option value="${v}">${v}</option>`).join('');
-  if (yr) yr.innerHTML = '<option value="">All Years</option>' + years.map(y=>`<option value="${y}">${y}</option>`).join('');
-}
+function populateFilterOptions() {
+  const years = new Set(['2026', '2025']);
+  const areas = new Set();
+  const vendors = new Set();
+  const types = new Set();
 
-function getFiltered() {
-  const eq = document.getElementById('fEq').value;
-  const vn = document.getElementById('fVn').value;
+  RAW_DATA.forEach(r => {
+    if (r.lastDate && r.lastDate.length >= 4) years.add(r.lastDate.slice(0, 4));
+    if (r.nextDate && r.nextDate.length >= 4) years.add(r.nextDate.slice(0, 4));
+    if (r.area) areas.add(r.area);
+    if (r.vendor) vendors.add(r.vendor);
+    if (r.type) types.add(r.type);
+  });
+
+  fillSelect('fYr', Array.from(years).sort().reverse(), 'All Years');
+  // Default to 2026 if available
   const yrEl = document.getElementById('fYr');
-  const yr = yrEl ? yrEl.value : '';
-  return ACTIVE_DATA.filter(r =>
-    (eq==='' || r.type===eq) &&
-    (vn==='' || r.vendor===vn) &&
-    (yr==='' || (r.date||'').startsWith(yr))
-  );
+  if (years.has('2026') && !yrEl.value) yrEl.value = '2026';
+
+  fillSelect('fArea', Array.from(areas).sort(), 'All Departments');
+  fillSelect('fVendor', Array.from(vendors).sort(), 'All Vendors');
+  fillSelect('fType', Array.from(types).sort(), 'All Categories');
+}
+
+function fillSelect(elemId, items, defaultLabel) {
+  const el = document.getElementById(elemId);
+  const cur = el.value;
+  el.innerHTML = `<option value="">${defaultLabel}</option>` + 
+    items.map(it => `<option value="${it}">${it}</option>`).join('');
+  if (items.includes(cur)) el.value = cur;
+}
+
+function selectVendor(vendorName) {
+  if (vendorName.startsWith('Others')) return;
+  const fVendor = document.getElementById('fVendor');
+  if (fVendor.value === vendorName) {
+    fVendor.value = '';
+  } else {
+    fVendor.value = vendorName;
+  }
+  renderDashboard();
 }
 
 function resetFilters() {
-  document.getElementById('fEq').value = '';
-  document.getElementById('fVn').value = '';
-  const yr = document.getElementById('fYr'); if (yr) yr.value = '';
+  document.getElementById('fYr').value = '2026';
+  document.getElementById('fDateModel').value = 'smart';
+  document.getElementById('fArea').value = '';
+  document.getElementById('fVendor').value = '';
+  document.getElementById('fType').value = '';
+  document.getElementById('fSource').value = '';
   document.getElementById('searchInp').value = '';
-  render();
+  renderDashboard();
 }
 
-// ════════════════════════════════════════════════════════════
-// HELPERS
-// ════════════════════════════════════════════════════════════
-function agg(data,key){
-  const m={};
-  data.forEach(r=>{ if(!m[r[key]]) m[r[key]]={cost:0,count:0}; m[r[key]].cost+=r.cost; m[r[key]].count++; });
-  return Object.entries(m).map(([k,v])=>({name:k,...v})).sort((a,b)=>b.cost-a.cost);
-}
-function fmt(n)  { return 'RM '+n.toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function fmtK(n) { return n>=1000 ? 'RM '+(n/1000).toFixed(1)+'K' : 'RM '+n.toFixed(2); }
-function typeColor(name) { return TYPE_COLORS[name] || '#00B4C6'; }
-function vendorColor(idx) { return VENDOR_COLORS[idx % VENDOR_COLORS.length]; }
-function pillClass(idx)   { return PILL_CLASSES[idx % PILL_CLASSES.length]; }
+/**
+ * SMART CALIBRATION SCHEDULER ENGINE:
+ * Resolves the effective calendar month and cycle status for an item in a given target year.
+ */
+function resolveItemSchedule(item, targetYear, dateModel) {
+  const lastY = item.lastDate && item.lastDate.length >= 4 ? item.lastDate.slice(0, 4) : '';
+  const nextY = item.nextDate && item.nextDate.length >= 4 ? item.nextDate.slice(0, 4) : '';
 
-// ════════════════════════════════════════════════════════════
-// RENDERERS
-// ════════════════════════════════════════════════════════════
-function renderBars(id, items, total, colorFn, limit) {
-  const el = document.getElementById(id);
-  const shown = limit ? items.slice(0,limit) : items;
-  const maxV  = shown[0]?.cost || 1;
-  el.innerHTML = shown.map(d=>{
-    const pct = total>0 ? (d.cost/total*100).toFixed(1) : '0.0';
-    const w   = (d.cost/maxV*100).toFixed(1);
-    const col = colorFn(d.name);
-    return `<div class="bar-row">
-      <div class="bar-meta">
-        <span class="bar-name" title="${d.name}">${d.name}</span>
-        <div class="bar-nums">
-          <span class="bar-val">${fmtK(d.cost)}</span>
-          <span class="bar-cnt">(${d.count})</span>
-          <span class="bar-pct">${pct}%</span>
-        </div>
-      </div>
-      <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${col}"></div></div>
-    </div>`;
-  }).join('') || '<div class="no-data">No data</div>';
+  if (!targetYear) {
+    // All Years Mode
+    const effectiveDate = item.lastDate || item.nextDate || '';
+    return {
+      inScope: true,
+      effectiveMonth: effectiveDate ? effectiveDate.slice(0, 7) : 'Undated',
+      cycleStatus: item.lastDate ? 'Completed' : 'Scheduled'
+    };
+  }
+
+  if (dateModel === 'last') {
+    // Completed Only
+    if (lastY === targetYear) {
+      return { inScope: true, effectiveMonth: item.lastDate.slice(0, 7), cycleStatus: 'Completed' };
+    }
+    return { inScope: false, effectiveMonth: '', cycleStatus: '' };
+  }
+
+  if (dateModel === 'next') {
+    // Due Dates Only
+    if (nextY === targetYear) {
+      return { inScope: true, effectiveMonth: item.nextDate.slice(0, 7), cycleStatus: 'Scheduled' };
+    }
+    return { inScope: false, effectiveMonth: '', cycleStatus: '' };
+  }
+
+  // SMART UNIFIED MODEL (Default):
+  // 1. If calibrated in targetYear -> Completed in that month
+  // 2. Else if due in targetYear (from prior year cycle) -> Scheduled in that month
+  if (lastY === targetYear) {
+    return { inScope: true, effectiveMonth: item.lastDate.slice(0, 7), cycleStatus: 'Completed' };
+  } else if (nextY === targetYear) {
+    return { inScope: true, effectiveMonth: item.nextDate.slice(0, 7), cycleStatus: 'Scheduled' };
+  }
+
+  return { inScope: false, effectiveMonth: '', cycleStatus: '' };
 }
 
-function renderDonut(items, total) {
-  const top8 = items.slice(0,8);
-  const cx=75,cy=75,r=56,sw=20,circ=2*Math.PI*r;
-  let off=0, paths='';
-  const topPct = total>0 ? (top8[0]?.cost||0)/total*100 : 0;
-  top8.forEach((d,i)=>{
-    const share = total>0 ? d.cost/total : 0;
-    const col   = typeColor(d.name);
-    const dash  = (share*circ).toFixed(2);
-    const gap   = (circ-share*circ).toFixed(2);
-    const doff  = (-(off*circ)+(circ/4)).toFixed(2);
-    paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}"
-      stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${doff}" style="transition:stroke-dasharray .7s ease"/>`;
-    off += share;
+function getFilteredData() {
+  const yr = document.getElementById('fYr').value;
+  const dateModel = document.getElementById('fDateModel').value;
+  const area = document.getElementById('fArea').value;
+  const vendor = document.getElementById('fVendor').value;
+  const type = document.getElementById('fType').value;
+  const source = document.getElementById('fSource').value;
+  const query = (document.getElementById('searchInp').value || '').trim().toLowerCase();
+
+  const results = [];
+  RAW_DATA.forEach(r => {
+    const schedule = resolveItemSchedule(r, yr, dateModel);
+    if (!schedule.inScope) return;
+
+    if (area && r.area !== area) return;
+    if (vendor && r.vendor !== vendor) return;
+    if (type && r.type !== type) return;
+    if (source && r.source !== source) return;
+    if (query) {
+      const match = r.desc.toLowerCase().includes(query) ||
+                    r.type.toLowerCase().includes(query) ||
+                    r.vendor.toLowerCase().includes(query) ||
+                    r.area.toLowerCase().includes(query);
+      if (!match) return;
+    }
+
+    results.push({
+      ...r,
+      effectiveMonth: schedule.effectiveMonth,
+      cycleStatus: schedule.cycleStatus
+    });
   });
-  document.getElementById('donut-svg').innerHTML = paths +
-    `<text x="${cx}" y="${cy-6}" text-anchor="middle" dominant-baseline="middle"
-       fill="#E2EDF5" font-size="17" font-weight="700" font-family="IBM Plex Mono">${topPct.toFixed(0)}%</text>
-     <text x="${cx}" y="${cy+10}" text-anchor="middle" dominant-baseline="middle"
-       fill="#3D6880" font-size="8" font-family="IBM Plex Sans">TOP TYPE</text>`;
-  document.getElementById('donut-legend').innerHTML = top8.map((d,i)=>{
-    const pct = total>0 ? (d.cost/total*100).toFixed(1) : '0.0';
-    return `<div class="leg-row">
-      <div class="leg-dot" style="background:${typeColor(d.name)}"></div>
-      <span class="leg-name" title="${d.name}">${d.name}</span>
-      <span class="leg-val">${fmtK(d.cost)}</span>
-      <span class="leg-pct">${pct}%</span>
-    </div>`;
-  }).join('');
+
+  return results;
 }
 
-function renderTreemap(items, total) {
-  document.getElementById('treemap').innerHTML = items.slice(0,20).map(d=>{
-    const pct = total>0 ? d.cost/total : 0;
-    const col = typeColor(d.name);
-    const w   = Math.max(60, Math.min(220, pct*1800));
-    const h   = Math.max(40, pct*1000);
-    return `<div class="tm-cell" style="width:${w.toFixed(0)}px;height:${h.toFixed(0)}px;background:${col}22;border:1px solid ${col}55" title="${d.name}: ${fmt(d.cost)}">
-      <span class="tm-label">${d.name}</span>
-      <span class="tm-val">${fmtK(d.cost)}</span>
-    </div>`;
-  }).join('') || '<div class="no-data">No data</div>';
-}
-
-function renderEqSummary(items, total) {
-  document.getElementById('eq-summary-body').innerHTML = items.map((d,i)=>{
-    const pct = total>0 ? (d.cost/total*100).toFixed(1) : '0.0';
-    const avg = d.count>0 ? d.cost/d.count : 0;
-    const fw  = total>0 ? (d.cost/total*44).toFixed(0) : 0;
-    const col = typeColor(d.name);
-    return `<tr>
-      <td class="dim r">${i+1}</td>
-      <td class="first" style="color:${col}">${d.name}</td>
-      <td class="r">${fmt(d.cost)}</td>
-      <td class="r dim">${d.count}</td>
-      <td class="r">${fmt(avg)}</td>
-      <td class="r"><div class="mini-bar-wrap">
-        <div class="mini-bar"><div class="mini-fill" style="width:${fw}px;background:${col}"></div></div>
-        ${pct}%
-      </div></td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="6" class="no-data">No data</td></tr>';
-}
-
-function renderVnSummary(items, total) {
-  document.getElementById('vn-summary-body').innerHTML = items.map((d,i)=>{
-    const pct = total>0 ? (d.cost/total*100).toFixed(1) : '0.0';
-    const avg = d.count>0 ? d.cost/d.count : 0;
-    const fw  = total>0 ? (d.cost/total*44).toFixed(0) : 0;
-    const col = vendorColor(i);
-    return `<tr>
-      <td class="dim r">${i+1}</td>
-      <td class="first">${d.name}</td>
-      <td class="r">${fmt(d.cost)}</td>
-      <td class="r dim">${d.count}</td>
-      <td class="r">${fmt(avg)}</td>
-      <td class="r"><div class="mini-bar-wrap">
-        <div class="mini-bar"><div class="mini-fill" style="width:${fw}px;background:${col}"></div></div>
-        ${pct}%
-      </div></td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="6" class="no-data">No data</td></tr>';
-}
-
-function renderTrend(data) {
-  // Aggregate by YYYY-MM. Rows without dates get bucketed as 'Undated' and shown as a small annotation.
-  const svg = document.getElementById('trend-svg');
-  if (!svg) return;
-  const byMonth = {};
-  let undated = 0;
+// ════════════════════════════════════════════════════════════
+// AGGREGATION & TIMELINE UTILS
+// ════════════════════════════════════════════════════════════
+function aggregateBy(data, field) {
+  const map = {};
   data.forEach(r => {
-    if (!r.date || r.date.length < 7) { undated += r.cost; return; }
-    const m = r.date.slice(0,7);
-    if (!byMonth[m]) byMonth[m] = 0;
-    byMonth[m] += r.cost;
+    const key = r[field] || 'Unassigned';
+    if (!map[key]) map[key] = { name: key, cost: 0, count: 0 };
+    map[key].cost += r.cost;
+    map[key].count += 1;
   });
-  const months = Object.keys(byMonth).sort();
-  document.getElementById('badge-trend-months').textContent = months.length + ' months';
+  return Object.values(map).sort((a, b) => b.cost - a.cost);
+}
 
-  if (!months.length) {
-    svg.innerHTML = '<text x="400" y="110" text-anchor="middle" fill="#3D6880" font-size="12">No dated records in this selection</text>';
+// Generates continuous chronological 12-month calendar range
+function generateContinuousMonthRange(data, selectedYear) {
+  if (selectedYear) {
+    const list = [];
+    for (let m = 1; m <= 12; m++) {
+      list.push(`${selectedYear}-${String(m).padStart(2, '0')}`);
+    }
+    return list;
+  }
+
+  const validMonths = data.map(r => r.effectiveMonth).filter(m => m && m.length >= 7 && m !== 'Undated').sort();
+  if (!validMonths.length) return [];
+
+  const startStr = validMonths[0];
+  const endStr = validMonths[validMonths.length - 1];
+
+  const [startYear, startMonth] = startStr.split('-').map(Number);
+  const [endYear, endMonth] = endStr.split('-').map(Number);
+
+  const list = [];
+  let curY = startYear;
+  let curM = startMonth;
+
+  while (curY < endYear || (curY === endYear && curM <= endMonth)) {
+    list.push(`${curY}-${String(curM).padStart(2, '0')}`);
+    curM++;
+    if (curM > 12) {
+      curM = 1;
+      curY++;
+    }
+  }
+  return list;
+}
+
+// ════════════════════════════════════════════════════════════
+// MAIN RENDER ENGINE
+// ════════════════════════════════════════════════════════════
+function renderDashboard() {
+  FILTERED_DATA = getFilteredData();
+  const data = FILTERED_DATA;
+  const totalCost = data.reduce((s, r) => s + r.cost, 0);
+  const totalCount = data.length;
+  const avgCost = totalCount > 0 ? totalCost / totalCount : 0;
+  
+  const completedCount = data.filter(r => r.cycleStatus === 'Completed').length;
+  const scheduledCount = data.filter(r => r.cycleStatus === 'Scheduled').length;
+
+  const byType = aggregateBy(data, 'type');
+  const byVendor = aggregateBy(data, 'vendor');
+  const byArea = aggregateBy(data, 'area');
+
+  // Top 5 Pareto Calculation
+  const top5Cost = byType.slice(0, 5).reduce((s, d) => s + d.cost, 0);
+  const paretoPct = totalCost > 0 ? (top5Cost / totalCost * 100) : 0;
+
+  // Top 3 Vendor Concentration
+  const top3VendorCost = byVendor.slice(0, 3).reduce((s, d) => s + d.cost, 0);
+  const vendorSharePct = totalCost > 0 ? (top3VendorCost / totalCost * 100) : 0;
+
+  // 1. KPI STRIP
+  document.getElementById('kpi-total-cost').textContent = fmtRM(totalCost);
+  document.getElementById('kpi-avg-cost').textContent = fmtRM(avgCost);
+  document.getElementById('kpi-pareto-pct').textContent = paretoPct.toFixed(1) + '%';
+  document.getElementById('kpi-vendor-share').textContent = vendorSharePct.toFixed(1) + '%';
+  document.getElementById('kpi-total-units').textContent = totalCount.toLocaleString();
+  document.getElementById('kpi-completed-count').textContent = `${completedCount} completed`;
+  document.getElementById('kpi-scheduled-count').textContent = `${scheduledCount} scheduled`;
+
+  if (byVendor.length > 0) {
+    document.getElementById('kpi-top-vendor').textContent = byVendor.slice(0, 3).map(v => v.name).join(', ');
+  }
+  if (byType.length > 0) {
+    document.getElementById('badge-top-spend-type').textContent = `Top: ${byType[0].name} (${fmtK(byType[0].cost)})`;
+  }
+
+  // 2. EXECUTIVE NARRATIVE SUMMARY
+  const topType = byType[0] || { name: 'N/A', cost: 0 };
+  const topVendor = byVendor[0] || { name: 'N/A', cost: 0 };
+  const topArea = byArea[0] || { name: 'N/A', cost: 0 };
+  
+  document.getElementById('executiveSummaryText').innerHTML = 
+    `Annual calibration requirement stands at <span class="insight-highlight">${fmtRM(totalCost)}</span> across <strong>${totalCount} instruments</strong> ` +
+    `(${completedCount} completed actuals + ${scheduledCount} scheduled upcoming). ` +
+    `Top category <strong>${topType.name}</strong> accounts for <strong>${fmtRM(topType.cost)}</strong> (${totalCost > 0 ? (topType.cost/totalCost*100).toFixed(1) : 0}%), ` +
+    `primary supplier <strong>${topVendor.name}</strong> holds <strong>${totalCost > 0 ? (topVendor.cost/totalCost*100).toFixed(1) : 0}%</strong> of outflow, ` +
+    `and <strong>${topArea.name}</strong> represents the primary cost center.`;
+
+  // 3. PARETO BARS (OVERVIEW)
+  renderParetoList('overview-pareto-list', byType.slice(0, 8), totalCost, getTypeColor);
+  renderParetoList('overview-area-list', byArea.slice(0, 6), totalCost, () => 'var(--sky)');
+
+  // 4. 100% COMPLETE HIGH-INTERACTION DONUT CHART (OVERVIEW)
+  renderDonutChart(byVendor, totalCost, totalCount);
+
+  // 5. CONTINUOUS COMBO GRAPH (OVERVIEW & DETAILED)
+  const selectedYear = document.getElementById('fYr').value;
+  renderTrendChart('overview-trend-svg', data, 760, 230, selectedYear);
+  renderTrendChart('detailed-trend-svg', data, 900, 260, selectedYear);
+
+  // 6. TABLES
+  renderFullEquipmentTable(byType, totalCost);
+  renderFullVendorTable(byVendor, totalCost);
+  renderFullAreaTable(byArea, totalCost);
+  renderTieringSection(data, totalCost);
+  renderMonthlyTable(data, selectedYear);
+  renderAuditTable(data);
+}
+
+// ════════════════════════════════════════════════════════════
+// VISUALIZATION RENDERERS
+// ════════════════════════════════════════════════════════════
+function renderParetoList(containerId, items, totalCost, colorFn) {
+  const el = document.getElementById(containerId);
+  if (!items.length) {
+    el.innerHTML = '<div style="color: var(--t3); padding: 20px; text-align: center;">No records matching selection</div>';
     return;
   }
 
-  const W = 800, H = 220, pad = { l: 56, r: 24, t: 18, b: 36 };
+  const maxCost = items[0]?.cost || 1;
+  el.innerHTML = items.map(d => {
+    const pct = totalCost > 0 ? (d.cost / totalCost * 100).toFixed(1) : '0.0';
+    const barW = (d.cost / maxCost * 100).toFixed(1);
+    const col = colorFn(d.name);
+    const avg = d.count > 0 ? d.cost / d.count : 0;
+
+    return `
+      <div class="pareto-row">
+        <div class="pareto-meta">
+          <span class="pareto-label" title="${d.name}">${d.name}</span>
+          <div class="pareto-stats">
+            <span class="pareto-cost">${fmtRM(d.cost)}</span>
+            <span class="pareto-count">(${d.count} units · avg ${fmtRM(avg)})</span>
+            <span class="pareto-pct">${pct}%</span>
+          </div>
+        </div>
+        <div class="pareto-track">
+          <div class="pareto-fill" style="width: ${barW}%; background: ${col};"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════════
+// 100% COMPLETE & INTERACTIVE DONUT CHART
+// ════════════════════════════════════════════════════════════
+function renderDonutChart(vendors, totalCost, totalUnits) {
+  const svg = document.getElementById('donut-svg');
+  const legend = document.getElementById('donut-legend');
+  const activeVendor = document.getElementById('fVendor').value;
+
+  const metricTotal = DONUT_MODE === 'spend' ? totalCost : totalUnits;
+  
+  if (!vendors.length || metricTotal <= 0) {
+    svg.innerHTML = '';
+    legend.innerHTML = '<div style="color: var(--t3); padding: 10px;">No vendor data available</div>';
+    return;
+  }
+
+  // Construct complete 100% segments list (Top 5 + Others remainder)
+  const topSliceLimit = 5;
+  const topVendors = vendors.slice(0, topSliceLimit);
+  const remainderVendors = vendors.slice(topSliceLimit);
+
+  const displayVendors = [...topVendors];
+  if (remainderVendors.length > 0) {
+    const otherCost = remainderVendors.reduce((s, d) => s + d.cost, 0);
+    const otherCount = remainderVendors.reduce((s, d) => s + d.count, 0);
+    displayVendors.push({
+      name: `Others (${remainderVendors.length} Suppliers)`,
+      cost: otherCost,
+      count: otherCount
+    });
+  }
+
+  const cx = 87.5, cy = 87.5, r = 62, sw = 22, circ = 2 * Math.PI * r;
+  let offset = 0;
+  let paths = '';
+
+  displayVendors.forEach((d, idx) => {
+    const val = DONUT_MODE === 'spend' ? d.cost : d.count;
+    const share = val / metricTotal;
+    const col = idx === displayVendors.length - 1 && d.name.startsWith('Others') ? '#64748B' : getVendorColor(idx);
+    const dash = (share * circ).toFixed(2);
+    const gap = (circ - (share * circ)).toFixed(2);
+    const doff = (-(offset * circ) + (circ / 4)).toFixed(2);
+    const pct = (share * 100).toFixed(1);
+
+    paths += `<circle class="donut-segment" id="donut-slice-${idx}" cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}"
+      stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${doff}"
+      onmouseenter="hoverDonutSlice('${d.name}', '${fmtRM(d.cost)}', ${d.count}, '${pct}%', '${getVendorSpecialty(d.name)}', ${idx})"
+      onmouseleave="resetDonutCenter()"
+      onclick="selectVendor('${d.name}')"
+    />`;
+    offset += share;
+  });
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const textColor = isDark ? '#F0F6FC' : '#0F172A';
+  const defaultCenterVal = DONUT_MODE === 'spend' ? fmtK(totalCost) : `${totalUnits} Units`;
+  const defaultCenterSub = DONUT_MODE === 'spend' ? 'TOTAL SPEND' : 'TOTAL FLEET';
+
+  svg.innerHTML = paths + `
+    <g id="donut-center-group" style="pointer-events: none;">
+      <text id="donut-center-pct" x="${cx}" y="${cy - 6}" text-anchor="middle" dominant-baseline="middle"
+        fill="${textColor}" font-size="18" font-weight="700" font-family="IBM Plex Mono">${defaultCenterVal}</text>
+      <text id="donut-center-label" x="${cx}" y="${cy + 13}" text-anchor="middle" dominant-baseline="middle"
+        fill="var(--teal)" font-size="8.5" font-weight="700" font-family="Outfit" letter-spacing="0.08em">${defaultCenterSub}</text>
+    </g>
+  `;
+
+  // Rich Multi-Metric Legend
+  legend.innerHTML = displayVendors.map((d, idx) => {
+    const val = DONUT_MODE === 'spend' ? d.cost : d.count;
+    const pct = (val / metricTotal * 100).toFixed(1);
+    const col = idx === displayVendors.length - 1 && d.name.startsWith('Others') ? '#64748B' : getVendorColor(idx);
+    const specialty = getVendorSpecialty(d.name);
+    const avg = d.count > 0 ? (d.cost / d.count) : 0;
+    const isSelected = activeVendor === d.name;
+
+    return `
+      <div class="donut-leg-row ${isSelected ? 'active-vendor' : ''}" id="donut-leg-row-${idx}"
+        onmouseenter="hoverDonutSlice('${d.name}', '${fmtRM(d.cost)}', ${d.count}, '${pct}%', '${specialty}', ${idx})"
+        onmouseleave="resetDonutCenter()"
+        onclick="selectVendor('${d.name}')"
+        title="${d.name.startsWith('Others') ? 'Consolidated remaining suppliers' : 'Click to filter by ' + d.name}"
+      >
+        <div class="donut-leg-main">
+          <div class="donut-leg-left">
+            <div class="donut-leg-dot" style="background: ${col};"></div>
+            <span class="donut-leg-name">${d.name}</span>
+            <span class="donut-leg-unit-tag">${d.count} units</span>
+          </div>
+          <div class="donut-leg-right">
+            <span class="donut-leg-cost">${fmtK(d.cost)}</span>
+            <span class="donut-leg-pct">${pct}%</span>
+          </div>
+        </div>
+        <div class="donut-leg-sub">
+          <span class="donut-leg-specialty">${specialty}</span>
+          <span class="donut-leg-avg">avg ${fmtRM(avg)}/u</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function hoverDonutSlice(name, costStr, count, pct, specialty, idx) {
+  const centerPct = document.getElementById('donut-center-pct');
+  const centerLabel = document.getElementById('donut-center-label');
+  if (centerPct) centerPct.textContent = pct;
+  if (centerLabel) centerLabel.textContent = name.length > 13 ? name.slice(0, 12).toUpperCase() + '…' : name.toUpperCase();
+
+  const slice = document.getElementById(`donut-slice-${idx}`);
+  if (slice) {
+    slice.style.strokeWidth = '27px';
+  }
+}
+
+function resetDonutCenter() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const centerPct = document.getElementById('donut-center-pct');
+  const centerLabel = document.getElementById('donut-center-label');
+  const totalCost = FILTERED_DATA.reduce((s, r) => s + r.cost, 0);
+  const totalUnits = FILTERED_DATA.length;
+
+  if (centerPct && centerLabel) {
+    const defaultCenterVal = DONUT_MODE === 'spend' ? fmtK(totalCost) : `${totalUnits} Units`;
+    const defaultCenterSub = DONUT_MODE === 'spend' ? 'TOTAL SPEND' : 'TOTAL FLEET';
+    centerPct.textContent = defaultCenterVal;
+    centerLabel.textContent = defaultCenterSub;
+  }
+
+  document.querySelectorAll('.donut-segment').forEach(s => s.style.strokeWidth = '22px');
+}
+
+// ════════════════════════════════════════════════════════════
+// CONTINUOUS CHRONOLOGICAL COMBO GRAPH (SMART MONTHS)
+// ════════════════════════════════════════════════════════════
+function renderTrendChart(svgId, data, W, H, selectedYear) {
+  const svg = document.getElementById(svgId);
+  if (!svg) return;
+
+  const byMonth = {};
+  const actualCounts = {};
+  const schedCounts = {};
+  let undatedCost = 0;
+  let undatedCount = 0;
+
+  data.forEach(r => {
+    const m = r.effectiveMonth;
+    if (!m || m === 'Undated') { 
+      undatedCost += r.cost; 
+      undatedCount++; 
+      return; 
+    }
+    byMonth[m] = (byMonth[m] || 0) + r.cost;
+    if (r.cycleStatus === 'Completed') {
+      actualCounts[m] = (actualCounts[m] || 0) + 1;
+    } else {
+      schedCounts[m] = (schedCounts[m] || 0) + 1;
+    }
+  });
+
+  // Generate continuous 12-month timeline
+  const months = generateContinuousMonthRange(data, selectedYear);
+  const monthsBadge = document.getElementById('trend-months-badge');
+  if (monthsBadge) monthsBadge.textContent = `${months.length} Calendar Months`;
+
+  if (!months.length) {
+    svg.innerHTML = `<text x="${W/2}" y="${H/2}" text-anchor="middle" fill="var(--t3)" font-size="12">No records matching selection</text>`;
+    return;
+  }
+
+  const pad = { l: 65, r: 25, t: 30, b: 35 };
   const innerW = W - pad.l - pad.r;
   const innerH = H - pad.t - pad.b;
-  const values = months.map(m => byMonth[m]);
-  const maxV = Math.max(...values);
+  const values = months.map(m => byMonth[m] || 0);
+  const maxV = Math.max(...values, 1000);
   const niceMax = niceCeil(maxV);
 
-  // Cumulative line
+  // Cumulative line calculation (monotonic continuous)
   let cum = 0;
   const cumValues = values.map(v => (cum += v));
   const cumMax = cumValues[cumValues.length - 1] || 1;
@@ -977,196 +1930,366 @@ function renderTrend(data) {
   const yBar = v => pad.t + innerH - (v / niceMax) * innerH;
   const yCum = v => pad.t + innerH - (v / cumMax) * innerH;
 
-  // Gridlines (4 horizontal)
+  // Gridlines
   let grid = '';
   for (let g = 0; g <= 4; g++) {
     const y = pad.t + (innerH * g / 4);
     const val = niceMax * (1 - g / 4);
-    grid += `<line x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}" stroke="#1D3047" stroke-width="1"/>`;
-    grid += `<text x="${pad.l - 6}" y="${y + 3}" text-anchor="end" fill="#3D6880" font-size="9" font-family="IBM Plex Mono">${fmtK(val)}</text>`;
+    grid += `<line x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}" stroke="var(--grid-line)" stroke-width="1" stroke-dasharray="2 2"/>`;
+    grid += `<text x="${pad.l - 8}" y="${y + 3}" text-anchor="end" fill="var(--t3)" font-size="9" font-family="IBM Plex Mono">${fmtK(val)}</text>`;
   }
 
-  // Bars
-  const barW = months.length > 1 ? Math.max(4, xStep * 0.55) : 28;
-  const bars = months.map((m, i) => {
-    const v = byMonth[m];
+  // Monthly Bars & Interactive Hover Overlay
+  const barW = months.length > 1 ? Math.max(8, Math.min(26, xStep * 0.55)) : 32;
+  let bars = '';
+  let hoverZones = '';
+
+  months.forEach((m, i) => {
+    const v = byMonth[m] || 0;
+    const act = actualCounts[m] || 0;
+    const sch = schedCounts[m] || 0;
+    const totUnits = act + sch;
+    const cVal = cumValues[i];
     const x = xAt(i) - barW / 2;
     const y = yBar(v);
-    const h = pad.t + innerH - y;
-    return `<rect x="${x}" y="${y}" width="${barW}" height="${h}" fill="#00B4C6" opacity="0.55" rx="2">
-      <title>${m}: ${fmt(v)}</title>
-    </rect>`;
-  }).join('');
+    const h = Math.max(v > 0 ? 3 : 0, pad.t + innerH - y);
+    const avgM = totUnits > 0 ? (v / totUnits) : 0;
 
-  // Cumulative line
+    // Distinguish months with completed actuals vs scheduled upcoming
+    const barFill = sch > 0 && act === 0 ? 'var(--sky)' : 'var(--teal)';
+
+    if (v > 0) {
+      bars += `<rect id="${svgId}-bar-${i}" x="${x}" y="${y}" width="${barW}" height="${h}" fill="${barFill}" opacity="0.88" rx="3" style="transition: fill 0.15s, opacity 0.15s;"></rect>`;
+    } else {
+      bars += `<circle cx="${xAt(i)}" cy="${pad.t + innerH}" r="2" fill="var(--bord-highlight)"/>`;
+    }
+
+    // Wide hover target
+    const hx = xAt(i) - (xStep > 0 ? xStep / 2 : barW);
+    const hw = xStep > 0 ? xStep : barW * 2;
+    hoverZones += `<rect x="${hx}" y="${pad.t}" width="${hw}" height="${innerH}" fill="transparent" style="cursor: pointer;"
+      onmousemove="showChartTooltip(event, '${m}', ${v}, ${act}, ${sch}, ${cVal}, ${avgM}, '${svgId}-bar-${i}')"
+      onmouseleave="hideChartTooltip('${svgId}-bar-${i}', '${barFill}')"
+    />`;
+  });
+
+  // Cumulative Trajectory Line
   const linePts = cumValues.map((v, i) => `${xAt(i)},${yCum(v)}`).join(' ');
-  const line = `<polyline points="${linePts}" fill="none" stroke="#F5A623" stroke-width="2"/>` +
-    cumValues.map((v, i) => `<circle cx="${xAt(i)}" cy="${yCum(v)}" r="2.5" fill="#F5A623"><title>Cumulative ${months[i]}: ${fmt(v)}</title></circle>`).join('');
+  const line = `<polyline points="${linePts}" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round"/>` +
+    cumValues.map((v, i) => `<circle cx="${xAt(i)}" cy="${yCum(v)}" r="${values[i]>0?3:2}" fill="var(--amber)"></circle>`).join('');
 
-  // X labels (show every Nth so it stays readable)
-  const stride = Math.ceil(months.length / 12);
+  // Continuous X Axis Labels
+  const stride = months.length > 12 ? Math.ceil(months.length / 12) : 1;
   const xLabels = months.map((m, i) =>
-    i % stride === 0 ? `<text x="${xAt(i)}" y="${H - 16}" text-anchor="middle" fill="#7AAABE" font-size="9" font-family="IBM Plex Mono">${m}</text>` : ''
+    i % stride === 0 ? `<text x="${xAt(i)}" y="${H - 10}" text-anchor="middle" fill="var(--t2)" font-size="9" font-family="IBM Plex Mono">${m}</text>` : ''
   ).join('');
 
   // Legend
-  const legend =
-    `<rect x="${pad.l}" y="2" width="10" height="10" fill="#00B4C6" opacity="0.55" rx="2"/>` +
-    `<text x="${pad.l + 14}" y="11" fill="#7AAABE" font-size="10">Monthly spend</text>` +
-    `<line x1="${pad.l + 110}" y1="7" x2="${pad.l + 130}" y2="7" stroke="#F5A623" stroke-width="2"/>` +
-    `<text x="${pad.l + 134}" y="11" fill="#7AAABE" font-size="10">Cumulative</text>` +
-    (undated > 0 ? `<text x="${W - pad.r}" y="11" text-anchor="end" fill="#3D6880" font-size="9">+ ${fmt(undated)} undated</text>` : '');
+  const legend = `
+    <rect x="${pad.l}" y="8" width="10" height="10" fill="var(--teal)" opacity="0.88" rx="2"/>
+    <text x="${pad.l + 14}" y="17" fill="var(--t2)" font-size="10">Actual Completed</text>
+    <rect x="${pad.l + 115}" y="8" width="10" height="10" fill="var(--sky)" opacity="0.88" rx="2"/>
+    <text x="${pad.l + 129}" y="17" fill="var(--t2)" font-size="10">Scheduled Due</text>
+    <line x1="${pad.l + 225}" y1="13" x2="${pad.l + 245}" y2="13" stroke="var(--amber)" stroke-width="2.5"/>
+    <text x="${pad.l + 251}" y="17" fill="var(--t2)" font-size="10">Cumulative Spend</text>
+    ${undatedCost > 0 ? `<text x="${W - pad.r}" y="17" text-anchor="end" fill="var(--t3)" font-size="9">+ ${fmtRM(undatedCost)} Undated (${undatedCount} u)</text>` : ''}
+  `;
 
-  svg.innerHTML = grid + bars + line + xLabels + legend;
+  svg.innerHTML = grid + bars + line + xLabels + legend + hoverZones;
+}
+
+// ════════════════════════════════════════════════════════════
+// INTERACTIVE TOOLTIP HANDLERS
+// ════════════════════════════════════════════════════════════
+function showChartTooltip(e, month, cost, act, sch, cumulative, avgCost, barId) {
+  const tooltip = document.getElementById('chartTooltip');
+  if (!tooltip) return;
+
+  const bar = document.getElementById(barId);
+  if (bar) {
+    bar.setAttribute('fill', 'var(--amber)');
+    bar.setAttribute('opacity', '1');
+  }
+
+  const totUnits = act + sch;
+  tooltip.innerHTML = `
+    <div class="chart-tooltip-hdr">📅 ${month} Calibration Outflow</div>
+    <div class="chart-tooltip-row">
+      <span class="chart-tooltip-label">Monthly Spend:</span>
+      <span class="chart-tooltip-val" style="color: var(--teal);">${fmtRM(cost)}</span>
+    </div>
+    <div class="chart-tooltip-row">
+      <span class="chart-tooltip-label">Fleet Distribution:</span>
+      <span class="chart-tooltip-val" style="color: #FFFFFF;">${totUnits} units (${act} actual / ${sch} scheduled)</span>
+    </div>
+    <div class="chart-tooltip-row">
+      <span class="chart-tooltip-label">Average / Unit:</span>
+      <span class="chart-tooltip-val" style="color: #FFFFFF;">${fmtRM(avgCost)}</span>
+    </div>
+    <div class="chart-tooltip-row" style="border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 4px; margin-top: 5px;">
+      <span class="chart-tooltip-label">Cumulative to Date:</span>
+      <span class="chart-tooltip-val" style="color: var(--amber);">${fmtRM(cumulative)}</span>
+    </div>
+  `;
+
+  tooltip.style.display = 'block';
+  tooltip.style.left = e.pageX + 'px';
+  tooltip.style.top = e.pageY + 'px';
+}
+
+function hideChartTooltip(barId, originalFill) {
+  const tooltip = document.getElementById('chartTooltip');
+  if (tooltip) tooltip.style.display = 'none';
+
+  const bar = document.getElementById(barId);
+  if (bar) {
+    bar.setAttribute('fill', originalFill || 'var(--teal)');
+    bar.setAttribute('opacity', '0.88');
+  }
 }
 
 function niceCeil(v) {
-  if (v <= 0) return 1;
+  if (v <= 0) return 1000;
   const exp = Math.pow(10, Math.floor(Math.log10(v)));
   const n = v / exp;
-  let nice;
+  let nice = 10;
   if (n <= 1) nice = 1;
   else if (n <= 2) nice = 2;
   else if (n <= 5) nice = 5;
-  else nice = 10;
   return nice * exp;
 }
 
-function renderDetailTable() {
-  const q = (document.getElementById('searchInp').value||'').toLowerCase();
-  const rows = q ? _filtered.filter(r=>
-    r.desc.toLowerCase().includes(q)||r.type.toLowerCase().includes(q)||r.vendor.toLowerCase().includes(q)||(r.area||'').toLowerCase().includes(q)
-  ) : _filtered;
-  const vendorList = [...new Set(ACTIVE_DATA.map(r=>r.vendor))].sort();
-  document.getElementById('detail-count-badge').textContent = rows.length + ' records';
-  // No more 400-row cap — render all rows. Browser handles 500-1000 fine.
-  document.getElementById('detail-body').innerHTML = rows.map((r,i)=>{
-    const vi  = vendorList.indexOf(r.vendor);
-    const col = typeColor(r.type);
-    const dateCell = r.date ? `<td class="dim">${r.date}</td>` : `<td class="dim">—</td>`;
-    return `<tr>
-      <td class="dim r">${i+1}</td>
-      <td class="first">${r.desc}</td>
-      <td style="color:${col};font-size:10px;font-weight:600">${r.type}</td>
-      <td><span class="pill ${pillClass(vi)}">${r.vendor}</span></td>
-      ${dateCell}
-      <td class="r">${r.cost>0?fmt(r.cost):'<span style="color:var(--t3)">—</span>'}</td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="6" class="no-data">No matching records</td></tr>';
-}
-
 // ════════════════════════════════════════════════════════════
-// MASTER RENDER
+// TABLE RENDERERS
 // ════════════════════════════════════════════════════════════
-function render() {
-  const data    = getFiltered();
-  _filtered     = data;
-  const total   = data.reduce((s,r)=>s+r.cost,0);
-  const count   = data.length;
-  const byType   = agg(data,'type');
-  const byVendor = agg(data,'vendor');
-  const vColorMap = Object.fromEntries(byVendor.map((d,i)=>[d.name, vendorColor(i)]));
-
-  // KPIs
-  document.getElementById('k-cost').textContent     = fmt(total);
-  document.getElementById('k-avg').textContent      = count>0 ? fmt(total/count) : '—';
-  document.getElementById('k-count').textContent    = count.toLocaleString();
-  document.getElementById('k-pct').textContent      = GRAND_COUNT>0 ? (count/GRAND_COUNT*100).toFixed(0)+'%' : '—%';
-  document.getElementById('k-types').textContent    = byType.length;
-  document.getElementById('k-vendors').textContent  = byVendor.length;
-  document.getElementById('k-top-vendor').textContent = byVendor[0]?.name || '—';
-  document.getElementById('badge-type-count').textContent   = byType.length+' types';
-  document.getElementById('badge-vendor-count').textContent = byVendor.length+' vendors';
-
-  // Charts
-  renderBars('chart-type',        byType,   total, typeColor,         10);
-  renderBars('chart-vendor',      byVendor, total, n=>vColorMap[n]);
-  renderDonut(byType, total);
-  renderTreemap(byType, total);
-  renderBars('chart-type-full',   byType,   total, typeColor);
-  renderEqSummary(byType, total);
-  renderBars('chart-vendor-full', byVendor, total, n=>vColorMap[n]);
-  renderVnSummary(byVendor, total);
-  renderTrend(data);
-  renderDetailTable();
-}
-
-// ════════════════════════════════════════════════════════════
-// TABS
-// ════════════════════════════════════════════════════════════
-function switchTab(id,el) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('tab-'+id).classList.add('active');
-}
-
-// ════════════════════════════════════════════════════════════
-// LIVE DATA FETCH
-// ════════════════════════════════════════════════════════════
-// Where to find the auto-generated CSV. Two-step lookup:
-//   1) Same folder as the HTML (works on GitHub Pages and locally).
-//   2) Fall back to the absolute GitHub Pages URL if step 1 fails (useful
-//      if you copy the HTML somewhere else but keep the same data feed).
-const LIVE_CSV_PATHS = [
-  './data.csv',
-  'https://khairul6146.github.io/ExternalCalibrationCost/data.csv',
-];
-
-async function fetchLiveData(showSpinner) {
-  if (showSpinner) setStatus('⏳ Refreshing…', '');
-  document.getElementById('statusDot').className = 'dot dot-amber';
-  document.getElementById('statusText').textContent = 'Fetching…';
-
-  let lastError = null;
-  for (const url of LIVE_CSV_PATHS) {
-    try {
-      // Cache-bust so a fresh push to GitHub is reflected on the next reload.
-      const bust = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
-      const resp = await fetch(bust, { cache: 'no-store' });
-      if (!resp.ok) { lastError = new Error('HTTP ' + resp.status); continue; }
-      const text = await resp.text();
-      const { headers, rows } = parseCSV(text);
-      if (!headers.length) { lastError = new Error('Empty CSV'); continue; }
-
-      _csvHeaders = headers;
-      _csvRows    = rows;
-      const map = autoDetectMapping(headers);
-      // Required minimum: desc, type, vendor, cost. Date is optional.
-      const ok = ['desc','type','vendor','cost'].every(k => map[k] !== undefined);
-      if (!ok) {
-        // Surface the column-mapping modal — same flow as a manual upload.
-        openMappingModal(headers, map, 'Live data');
-        return;
-      }
-
-      applyLiveData(map);
-      return;
-    } catch (err) {
-      lastError = err;
-    }
+function renderFullEquipmentTable(items, totalCost) {
+  const tbody = document.getElementById('full-equipment-table-body');
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--t3); padding: 20px;">No categories found</td></tr>';
+    return;
   }
 
-  // All sources failed.
-  console.warn('Live fetch failed:', lastError);
-  document.getElementById('statusDot').className = 'dot dot-amber';
-  document.getElementById('statusText').textContent = 'Offline';
-  document.getElementById('hdr-sub').textContent = 'No data — drop a CSV to begin';
-  document.getElementById('footer-left').textContent = 'Live data unavailable';
-  setStatus('⚠ Could not fetch live data — drag-and-drop a CSV to view', 'err');
+  tbody.innerHTML = items.map((d, i) => {
+    const pct = totalCost > 0 ? (d.cost / totalCost * 100).toFixed(1) : '0.0';
+    const avg = d.count > 0 ? d.cost / d.count : 0;
+    const col = getTypeColor(d.name);
+    const intensity = pct >= 10 ? 'High Budget Impact' : pct >= 3 ? 'Medium Impact' : 'Routine Standard';
+    const badgeCol = pct >= 10 ? 'var(--rose)' : pct >= 3 ? 'var(--amber)' : 'var(--teal)';
+
+    return `
+      <tr>
+        <td class="dim mono">${i + 1}</td>
+        <td class="primary" style="color: ${col}; font-weight: 700;">${d.name}</td>
+        <td class="r mono primary">${fmtRM(d.cost)}</td>
+        <td class="r mono" style="color: var(--teal); font-weight: 700;">${pct}%</td>
+        <td class="r mono">${d.count}</td>
+        <td class="r mono">${fmtRM(avg)}</td>
+        <td><span class="tag-badge" style="background: var(--card-hover); color: ${badgeCol}; border: 1px solid var(--bord);">${intensity}</span></td>
+      </tr>
+    `;
+  }).join('');
 }
 
-function applyLiveData(map) {
-  // applyData() handles all UI updates when fileName === 'Live data'.
-  applyData(map, 'Live data');
+function renderFullVendorTable(items, totalCost) {
+  const tbody = document.getElementById('full-vendor-table-body');
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--t3); padding: 20px;">No vendor records</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = items.map((d, i) => {
+    const pct = totalCost > 0 ? (d.cost / totalCost * 100).toFixed(1) : '0.0';
+    const avg = d.count > 0 ? d.cost / d.count : 0;
+    const specialty = getVendorSpecialty(d.name);
+    const risk = pct >= 25 ? 'Primary Dependency' : pct >= 10 ? 'Key Partner' : 'Secondary Supplier';
+    const riskCol = pct >= 25 ? 'var(--rose)' : pct >= 10 ? 'var(--amber)' : 'var(--teal)';
+
+    return `
+      <tr>
+        <td class="dim mono">${i + 1}</td>
+        <td class="primary">${d.name}</td>
+        <td style="color: var(--t2); font-weight: 500;">${specialty}</td>
+        <td class="r mono primary">${fmtRM(d.cost)}</td>
+        <td class="r mono" style="color: var(--teal); font-weight: 700;">${pct}%</td>
+        <td class="r mono">${d.count}</td>
+        <td class="r mono">${fmtRM(avg)}</td>
+        <td><span class="tag-badge" style="background: var(--card-hover); color: ${riskCol}; border: 1px solid var(--bord);">${risk}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderFullAreaTable(items, totalCost) {
+  const tbody = document.getElementById('full-area-table-body');
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--t3); padding: 20px;">No area records</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = items.map((d, i) => {
+    const pct = totalCost > 0 ? (d.cost / totalCost * 100).toFixed(1) : '0.0';
+    const avg = d.count > 0 ? d.cost / d.count : 0;
+
+    return `
+      <tr>
+        <td class="dim mono">${i + 1}</td>
+        <td class="primary">${d.name}</td>
+        <td class="r mono primary">${fmtRM(d.cost)}</td>
+        <td class="r mono" style="color: var(--sky); font-weight: 700;">${pct}%</td>
+        <td class="r mono">${d.count}</td>
+        <td class="r mono">${fmtRM(avg)}</td>
+        <td><span class="tag-badge" style="background: var(--sky-a); color: var(--sky); border: 1px solid rgba(2,132,199,0.2);">Cost Center</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderTieringSection(data, totalCost) {
+  let t1Cost = 0, t1Count = 0;
+  let t2Cost = 0, t2Count = 0;
+  let t3Cost = 0, t3Count = 0;
+
+  data.forEach(r => {
+    if (r.cost >= 1000) { t1Cost += r.cost; t1Count++; }
+    else if (r.cost >= 200) { t2Cost += r.cost; t2Count++; }
+    else { t3Cost += r.cost; t3Count++; }
+  });
+
+  document.getElementById('tier1-cost').textContent = fmtRM(t1Cost);
+  document.getElementById('tier1-count').textContent = `${t1Count} Instruments`;
+  document.getElementById('tier1-pct').textContent = totalCost > 0 ? (t1Cost / totalCost * 100).toFixed(1) + '%' : '0%';
+
+  document.getElementById('tier2-cost').textContent = fmtRM(t2Cost);
+  document.getElementById('tier2-count').textContent = `${t2Count} Instruments`;
+  document.getElementById('tier2-pct').textContent = totalCost > 0 ? (t2Cost / totalCost * 100).toFixed(1) + '%' : '0%';
+
+  document.getElementById('tier3-cost').textContent = fmtRM(t3Cost);
+  document.getElementById('tier3-count').textContent = `${t3Count} Instruments`;
+  document.getElementById('tier3-pct').textContent = totalCost > 0 ? (t3Cost / totalCost * 100).toFixed(1) + '%' : '0%';
+
+  // Top 15 Assets
+  const topAssets = [...data].sort((a, b) => b.cost - a.cost).slice(0, 15);
+  const tbody = document.getElementById('top-assets-table-body');
+  tbody.innerHTML = topAssets.map((r, i) => `
+    <tr>
+      <td class="dim mono">${i + 1}</td>
+      <td class="primary">${r.desc}</td>
+      <td><span class="tag-badge" style="background: var(--card-hover); color: ${getTypeColor(r.type)}; border: 1px solid var(--bord); font-weight: 700;">${r.type}</span></td>
+      <td>${r.vendor}</td>
+      <td>${r.area}</td>
+      <td class="mono dim">${r.effectiveMonth || '—'}</td>
+      <td class="r mono primary" style="color: var(--rose); font-weight: 700;">${fmtRM(r.cost)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderMonthlyTable(data, selectedYear) {
+  const byMonth = {};
+  data.forEach(r => {
+    const m = r.effectiveMonth || 'Undated';
+    if (!byMonth[m]) byMonth[m] = { month: m, cost: 0, actualCount: 0, schedCount: 0 };
+    byMonth[m].cost += r.cost;
+    if (r.cycleStatus === 'Completed') {
+      byMonth[m].actualCount += 1;
+    } else {
+      byMonth[m].schedCount += 1;
+    }
+  });
+
+  const continuousMonths = generateContinuousMonthRange(data, selectedYear);
+  const allMonths = [...continuousMonths];
+  if (byMonth['Undated']) allMonths.push('Undated');
+
+  let cumulative = 0;
+  const tbody = document.getElementById('monthly-table-body');
+
+  tbody.innerHTML = allMonths.map(m => {
+    const d = byMonth[m] || { month: m, cost: 0, actualCount: 0, schedCount: 0 };
+    cumulative += d.cost;
+    const totUnits = d.actualCount + d.schedCount;
+    const avg = totUnits > 0 ? d.cost / totUnits : 0;
+    return `
+      <tr>
+        <td class="primary mono">${d.month}</td>
+        <td class="r mono primary">${fmtRM(d.cost)}</td>
+        <td class="r mono" style="color: var(--amber); font-weight: 600;">${fmtRM(cumulative)}</td>
+        <td class="r mono" style="color: var(--teal); font-weight: 600;">${d.actualCount}</td>
+        <td class="r mono" style="color: var(--sky); font-weight: 600;">${d.schedCount}</td>
+        <td class="r mono font-weight-700">${totUnits}</td>
+        <td class="r mono">${fmtRM(avg)}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderAuditTable(data) {
+  const tbody = document.getElementById('audit-table-body');
+  document.getElementById('audit-record-count-label').textContent = `Showing ${data.length} records`;
+
+  tbody.innerHTML = data.slice(0, 300).map((r, i) => {
+    const isCompleted = r.cycleStatus === 'Completed';
+    const statusCol = isCompleted ? 'var(--teal)' : 'var(--sky)';
+    const statusBg = isCompleted ? 'var(--teal-a)' : 'var(--sky-a)';
+
+    return `
+      <tr>
+        <td class="dim mono">${i + 1}</td>
+        <td class="primary">${r.desc}</td>
+        <td><span class="tag-badge" style="background: var(--card-hover); color: ${getTypeColor(r.type)}; border: 1px solid var(--bord); font-weight: 700;">${r.type}</span></td>
+        <td>${r.vendor}</td>
+        <td>${r.area}</td>
+        <td class="mono dim">${r.lastDate || '—'}</td>
+        <td class="mono dim">${r.nextDate || '—'}</td>
+        <td><span class="tag-badge" style="background: ${statusBg}; color: ${statusCol}; border: 1px solid var(--bord);">${r.cycleStatus || r.status}</span></td>
+        <td class="dim">${r.source}</td>
+        <td class="r mono primary">${r.cost > 0 ? fmtRM(r.cost) : '<span style="color:var(--t3)">—</span>'}</td>
+      </tr>
+    `;
+  }).join('');
 }
 
 // ════════════════════════════════════════════════════════════
-// INIT
+// TABS & MODALS
 // ════════════════════════════════════════════════════════════
-rebuildFilters();
-render();
-fetchLiveData(false);
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tabId).classList.add('active');
+}
+
+function openUploadModal() {
+  document.getElementById('uploadModal').classList.add('active');
+}
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('active');
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const text = evt.target.result;
+    const rows = parseCSV(text);
+    if (rows.length > 0) {
+      RAW_DATA = rows;
+      populateFilterOptions();
+      renderDashboard();
+      closeUploadModal();
+      document.getElementById('statusText').textContent = `Manual: ${file.name} (${rows.length})`;
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ════════════════════════════════════════════════════════════
+// INITIALIZATION
+// ════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  fetchLiveData(true);
+});
 </script>
 </body>
 </html>
