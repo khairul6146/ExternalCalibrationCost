@@ -1,112 +1,68 @@
-# Calibration Cost Dashboard
+# Calibration Cost Dashboard Study
 
-Live dashboard for external calibration spending at Autoliv Hirotako.
-**Public URL:** https://khairul6146.github.io/ExternalCalibrationCost/
+Automated external calibration expenditure tracking and interactive executive analytics for Autoliv Hirotako.
 
----
-
-## How it works
-
-```
-data/source.xlsx              you edit this one
-        |
-        v
-.github/workflows/build-data.yml      runs on every push
-        |
-        v
-data.csv                      auto-generated, do not edit by hand
-        |
-        v
-index.html                    fetches data.csv on page load
-```
-
-You only ever touch `data/source.xlsx`. Everything else is automatic.
+**Public Live Dashboard:** [https://khairul6146.github.io/ExternalCalibrationCost/](https://khairul6146.github.io/ExternalCalibrationCost/)
 
 ---
 
-## To update the data
+## 🚀 Key Features
 
-1. Open `data/source.xlsx` in Excel.
-2. Edit either the **Calibration** sheet or the **Pressure Gauge** sheet.
-3. Save and close.
-4. Open PowerShell in this folder and run:
-
-   ```powershell
-   git add data/source.xlsx
-   git commit -m "data update YYYY-MM-DD"
-   git push
-   ```
-
-5. Wait ~30 seconds. Visit the dashboard URL above and click **Refresh**.
-
-The GitHub Actions workflow does the XLSX-to-CSV conversion in the cloud, commits the result, and the GitHub Pages site picks it up on the next page load.
+- **One-Click Sync**: Ingests multi-sheet records (`Calibration` + `Pressure Gauge`) from Excel and publishes to GitHub Pages in seconds.
+- **High Data Accuracy**: Handles Excel serial dates (`openpyxl.utils.datetime.from_excel`), standard Malaysian/UK date strings (`DD/MM/YYYY`), ISO dates, and non-breaking space trimming.
+- **Automated Health Audits**: Flags missing dates, external vendor zero-cost records, and validates schema integrity automatically before publishing.
+- **Local Preview Engine**: Launch an instant local web server with `.\update-live.cmd -Preview`.
+- **Dual Client Analytics**: Feeds both a responsive dark-theme Vanilla JS web dashboard (`index.html`) and Power BI semantic model (`Calibration Cost.pbix`).
 
 ---
 
-## To use it in Power BI
-
-1. Open `Calibration Cost.pbix` in Power BI Desktop.
-2. **Home -> Transform data -> New Source -> Web**
-3. Paste: `https://khairul6146.github.io/ExternalCalibrationCost/data.csv`
-4. Replace the existing local-Excel source with this Web source.
-5. Publish to Power BI Service.
-6. In the Service: **Dataset -> Settings -> Scheduled refresh** -> daily.
-
-Both reports now share one source of truth.
-
----
-
-## Repository layout
-
-| Path | Purpose | Edit by hand? |
-|---|---|---|
-| `data/source.xlsx` | Source workbook with two sheets | YES |
-| `data.csv` | Combined output, sorted by date | no — auto-generated |
-| `index.html` | The dashboard | rarely |
-| `scripts/xlsx_to_csv.py` | The converter the Action runs | rarely |
-| `.github/workflows/build-data.yml` | The automation | rarely |
-
----
-
-## Local preview
-
-Need to test the dashboard before pushing? Open a terminal in this folder and run:
+## 🛠️ CLI Quick Reference
 
 ```powershell
-python -m http.server 8765
+# 1. Publish latest Excel changes to GitHub Pages
+.\update-live.cmd
+
+# 2. Rebuild data and preview dashboard locally (http://localhost:8765)
+.\update-live.cmd -Preview
+
+# 3. Run regression and data integrity assertions only
+.\update-live.cmd -ValidateOnly
 ```
 
-Then open http://localhost:8765/index.html in your browser. The page fetches `./data.csv` from the same server.
+---
 
-If `python -m http.server` says "Python was not found", use the Microsoft Store version, or run `uv run python -m http.server 8765` if you have uv installed.
+## 📂 Repository Layout
+
+```
+Calibration Cost Dashboard Study/
+├── .agents/
+│   └── AGENTS.md                                # Local agent router & skill rules
+├── src/
+│   └── scripts/
+│       ├── xlsx_to_csv.py                       # Canonical Excel-to-CSV converter
+│       └── validate_pipeline.py                 # Pipeline test suite
+├── Icon/                                        # Dashboard icons & logos
+├── Reference/                                   # Archived historical documents & templates
+├── Calibration Cost.pbix                        # Power BI report
+├── Calibration_External_Distribution.xlsx       # Primary source workbook
+├── data.csv                                     # Published canonical data feed
+├── index.html                                   # Web dashboard application
+├── update-live.cmd                              # Double-click launcher
+├── update-live.ps1                              # PowerShell automation worker
+└── MANUAL.md                                    # Operational manual
+```
 
 ---
 
-## Schema of `data.csv`
+## 📊 Data Schema (`data.csv`)
 
-| Column | Type | Notes |
+| Field | Type | Description |
 |---|---|---|
-| description | text | Instrument name (Calibration sheet) or Machine No (Pressure Gauge sheet) |
-| equipment_type | text | UPPER-cased category: CALIPER, PRESSURE, etc. |
-| vendor | text | Cal-by party. "Internal" for in-house cals (cost = 0). |
-| cost | number | RM, two decimals |
-| last_cal_date | date | ISO YYYY-MM-DD; empty if not recorded |
-| area | text | Plant area / department |
-| status | text | Item Status (Calibration) or Item Type (Pressure Gauge) |
-| source | text | "Calibration" or "Pressure Gauge" — which sheet the row came from |
-
----
-
-## Troubleshooting
-
-**Dashboard shows "Offline" in the corner.**
-The fetch to `data.csv` failed. Common causes: the file is opened directly from disk (`file://` blocks fetch), or you are offline. Use the **Load CSV** button to drag-and-drop a file as a fallback.
-
-**The Action runs but `data.csv` does not change.**
-The XLSX content was identical after parsing. The "git diff" check at the end of the workflow short-circuits — this is correct behavior.
-
-**The Action fails with "sheet 'Calibration' not in workbook".**
-Excel renamed your tab. Either rename it back, or update the sheet names in `scripts/xlsx_to_csv.py`.
-
-**Power BI cannot refresh the Web source on schedule.**
-Power BI Service requires the data to be public OR the gateway to be configured. Since this CSV is on GitHub Pages (public), no gateway is needed — but the dataset's **Data source credentials** must be set to **Anonymous** access.
+| `description` | String | Equipment Description (Calibration) or Machine No (Pressure Gauge) |
+| `equipment_type` | String | Uppercase standardized category (CALIPER, PRESSURE, etc.) |
+| `vendor` | String | Calibrated party (Sendi Mahir, Trescal, Internal, etc.) |
+| `cost` | Float | Cost in RM (MYR), 2 decimal places |
+| `last_cal_date` | String | ISO Date `YYYY-MM-DD` (empty if unrecorded) |
+| `area` | String | Plant area / department |
+| `status` | String | Item Status / Type |
+| `source` | String | Origin sheet (`Calibration` or `Pressure Gauge`) |
