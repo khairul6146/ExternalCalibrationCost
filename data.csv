@@ -173,6 +173,7 @@ Thermohygrometer,OTHERS,Sendi Mahir,129.6,2025-12-02,2026-12-02,Test Lab,Active,
 WP 15,PRESSURE,Multitech,72.9,2025-12-02,2026-12-02,Safety,p.switch,Pressure Gauge
 Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-12-05,2026-12-05,Test Lab,Active,Calibration
 Torque Wrench,TORQUE WRENCH,Sendi Mahir,156.6,2025-12-05,2026-12-05,SRS,Active,Calibration
+Torque Tightening Tools,TORQUE TOOL,Indpro,4320.0,2025-12-10,2026-12-10,SRS,Active,Calibration
 Torque Tightening Tools,TORQUE TOOL,Indpro,2160.0,2025-12-15,2026-12-15,Safety,Active,Calibration
 Digital Force Gauge,FORCE GAUGE,Trescal,251.64,2025-12-19,2026-12-19,Test Lab,Active,Calibration
 BFT 06,PRESSURE,Multitech,72.9,2025-12-22,2026-12-22,SRS,p.switch,Pressure Gauge
@@ -499,8 +500,7 @@ Torque Tightening,TORQUE TOOL,Indpro,1080.0,2026-08-06,2027-08-06,Safety,Active,
 Torque Tightening,TORQUE TOOL,Indpro,2160.0,2026-08-06,2027-08-06,Safety,Active,Calibration
 Torque Tightening,TORQUE TOOL,Indpro,2160.0,2026-08-06,2027-08-06,Safety,Active,Calibration
 Torque Tightening,TORQUE TOOL,Indpro,1080.0,2026-08-11,2027-08-11,Safety,Active,Calibration
-Torque Tightening Tools,TORQUE TOOL,Indpro,4320.0,2026-12-10,2027-12-10,SRS,Active,Calibration
-Angle Meter,OTHERS,Sendi Mahir,129.6,,,SRS,Active,Calibration
-Measuring Tape,TAPE,Sendi Mahir,54.0,,,SRS,Active,Calibration
+Angle Meter,OTHERS,Sendi Mahir,129.6,2026-08-13,2027-08-13,SRS,Active,Calibration
+Measuring Tape,TAPE,Sendi Mahir,54.0,2026-08-13,2027-08-13,SRS,Active,Calibration
 Measuring Tape,TAPE,Sendi Mahir,54.0,,,SRS,Active,Calibration
 Torque Tightening Tools,TORQUE TOOL,Indpro,2700.0,,,SRS,Active,Calibration
