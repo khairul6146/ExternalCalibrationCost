@@ -24,10 +24,10 @@ Automated external calibration expenditure tracking and interactive executive an
 .\Install-AutoSync.cmd
 
 # 2. Check Daily Scheduled Task Status
-pwsh .\Register-DailySyncTask.ps1 -Status
+pwsh .\automation\Register-DailySyncTask.ps1 -Status
 
 # 3. Trigger On-Demand Masterlist Refresh & Push Now
-pwsh .\Register-DailySyncTask.ps1 -RunNow
+pwsh .\automation\Register-DailySyncTask.ps1 -RunNow
 
 # 4. Rebuild data and preview dashboard locally (http://localhost:8765)
 .\update-live.cmd -Preview
@@ -38,31 +38,46 @@ pwsh .\Register-DailySyncTask.ps1 -RunNow
 
 ---
 
-## 📂 Repository Layout
+## 📂 Streamlined Repository Architecture
 
 ```
 Calibration Cost Dashboard Study/
-├── .agents/
-│   └── AGENTS.md                                # Local agent router & skill rules
-├── src/
-│   └── scripts/
-│       ├── xlsx_to_csv.py                       # Canonical Excel-to-CSV converter
-│       └── validate_pipeline.py                 # Pipeline test suite
-├── Icon/                                        # Dashboard icons & brand assets
-├── Reference/                                   # Archived historical documents & templates
-├── Autoliv Hirotako Logo Full Colour.png        # Official brand logo
-├── Calibration Cost.pbix                        # Power BI report
-├── Calibration_External_Distribution.xlsx       # Primary source workbook
-├── data.csv                                     # Published canonical data feed
-├── index.html                                   # Web dashboard application
-├── Install-AutoSync.cmd                         # Auto-sync setup wizard
-├── Refresh-CalibrationMaster.ps1                # Headless Excel Power Query refresher
-├── Register-DailySyncTask.ps1                   # Weekday 9AM Task Scheduler installer
-├── Sync-RemoteRepo.ps1                          # GitHub Pages asset sync script
-├── update-live.cmd                              # Double-click launcher
-├── update-live.ps1                              # PowerShell automation worker
-├── README.md                                    # Project documentation
-└── MANUAL.md                                    # Operational manual
+├── 📊 CORE APPLICATIONS & DATA
+│   ├── index.html                               # Executive Interactive Web Dashboard
+│   ├── data.csv                                 # Canonical 9-Column Dataset Feed
+│   ├── Calibration Cost.pbix                    # Executive Power BI Report Model
+│   ├── Calibration_External_Distribution.xlsx   # Local Master Workbook (Power Query Synced)
+│   └── Autoliv Hirotako Logo Full Colour.png   # High-Contrast Official Brand Asset
+│
+├── 🚀 1-CLICK LAUNCHERS (ROOT)
+│   ├── Install-AutoSync.cmd                     # Daily Weekday 9AM Auto-Sync Wizard
+│   └── update-live.cmd                          # 1-Click Masterlist Pull, Publish & Local Preview
+│
+├── 📁 automation/                               # Background Automation Engines & Workers
+│   ├── Refresh-CalibrationMaster.ps1            # Headless Excel Power Query Engine & COM Handler
+│   ├── Register-DailySyncTask.ps1               # Weekday 9:00 AM Scheduled Task Installer
+│   ├── Sync-RemoteRepo.ps1                      # GitHub Pages Assets Synchronizer
+│   └── update-live.ps1                          # Publisher & Local Preview Web Server
+│
+├── 📁 src/scripts/                              # Python Data Pipeline & Quality Assurance
+│   ├── xlsx_to_csv.py                           # 9-Column Canonical ETL Converter
+│   └── validate_pipeline.py                     # Automated Data Integrity & Schema Tests
+│
+├── 📁 Icon/                                     # Dashboard Vector & Raster Icons
+├── 📁 logs/                                     # Automated Pipeline Execution & Sync Logs
+│   └── daily_sync.log                           # Headless Daily Sync History
+│
+├── 📁 Reference/                                # Archived Reference Data & Historical Guides
+│   ├── Calibration_External_Distribution_Legacy.csv
+│   ├── Calibration_Dashboard.xlsx
+│   ├── Calibration_Pressure_Combined.xlsx
+│   ├── Calibration_Cost_Redesign_Guide.docx
+│   └── Dashboard_Update_Guide.docx
+│
+└── 📖 DOCUMENTATION
+    ├── README.md                                # System Overview & Developer Quick-Start
+    ├── MANUAL.md                                # Executive & Operations User Manual
+    └── .agents/AGENTS.md                        # Local AI Agent Routing & Architecture Specs
 ```
 
 ---
