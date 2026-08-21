@@ -8,11 +8,11 @@ Automated external calibration expenditure tracking and interactive executive an
 
 ## 🚀 Key Features
 
+- **100% Autonomous Daily Masterlist Sync**: Automatically queries the Department Masterlist via background Excel Power Query mashups every **Weekday at 9:00 AM** with failure auto-retry (3 attempts every 15 min), completely hands-free without opening Excel.
 - **Smart Multi-Year Calibration Scheduling**: Dynamically synthesizes **`Last Cal Date` (Actual Completed)** and **`Next Cal Date` (Scheduled Due Date)** to provide an unbroken 12-month annual budget trajectory.
 - **Continuous 12-Month Trajectory**: Visualizes annual cash flows without missing calendar months, distinguishing between completed calibrations and upcoming due work orders.
 - **100% Unbroken Interactive Donut Chart**: Seamless circle with Spend (RM) vs Unit Volume toggle, dynamic center HUD, and instant click-to-filter cross-filtering.
 - **Dual Theme System**: Professional Light Theme by default with instant 1-click Dark Theme toggle and high-contrast official brand logo container.
-- **Automated Live Sync Suite**: Supports 1-Click Interactive Console Watcher (`Start-Watcher.cmd`) and background Windows Task Scheduler (`Install-AutoSync.cmd`) with desktop toast notifications.
 - **Dual Client Analytics**: Feeds both the responsive HTML5/JS web dashboard (`index.html`) and Power BI semantic model (`Calibration Cost.pbix`).
 
 ---
@@ -20,14 +20,14 @@ Automated external calibration expenditure tracking and interactive executive an
 ## 🛠️ CLI & Automation Quick Reference
 
 ```powershell
-# 1. Background Auto-Sync Setup Menu (Install/Uninstall Scheduled Task)
+# 1. Daily Auto-Sync Setup Wizard (Weekdays 9:00 AM + Failure Retry)
 .\Install-AutoSync.cmd
 
-# 2. 1-Click Interactive Console Watcher
-.\Start-Watcher.cmd
+# 2. Check Daily Scheduled Task Status
+pwsh .\Register-DailySyncTask.ps1 -Status
 
-# 3. Publish latest Excel changes to GitHub Pages manually
-.\update-live.cmd
+# 3. Trigger On-Demand Masterlist Refresh & Push Now
+pwsh .\Register-DailySyncTask.ps1 -RunNow
 
 # 4. Rebuild data and preview dashboard locally (http://localhost:8765)
 .\update-live.cmd -Preview
@@ -56,9 +56,8 @@ Calibration Cost Dashboard Study/
 ├── data.csv                                     # Published canonical data feed
 ├── index.html                                   # Web dashboard application
 ├── Install-AutoSync.cmd                         # Auto-sync setup wizard
-├── Start-Watcher.cmd                            # 1-Click interactive watcher
-├── Watch-CalibrationMaster.ps1                  # Active FileSystemWatcher script
-├── Register-CalibrationWatcherTask.ps1          # Task Scheduler installer
+├── Refresh-CalibrationMaster.ps1                # Headless Excel Power Query refresher
+├── Register-DailySyncTask.ps1                   # Weekday 9AM Task Scheduler installer
 ├── Sync-RemoteRepo.ps1                          # GitHub Pages asset sync script
 ├── update-live.cmd                              # Double-click launcher
 ├── update-live.ps1                              # PowerShell automation worker
