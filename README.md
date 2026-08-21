@@ -40,7 +40,7 @@ pwsh .\automation\Register-DailySyncTask.ps1 -RunNow
 
 ## 📂 Streamlined Repository Architecture
 
-```
+```text
 Calibration Cost Dashboard Study/
 ├── 📊 CORE APPLICATIONS & DATA
 │   ├── index.html                               # Executive Interactive Web Dashboard
@@ -85,7 +85,7 @@ Calibration Cost Dashboard Study/
 ## 📊 Data Schema (`data.csv`)
 
 | Field | Type | Description |
-|---|---|---|
+| --- | --- | --- |
 | `description` | String | Equipment Description (Calibration) or Machine No (Pressure Gauge) |
 | `equipment_type` | String | Uppercase standardized category (CALIPER, PRESSURE, etc.) |
 | `vendor` | String | Calibrated party (Sendi Mahir, Trescal, Multitech, DTS, Indpro, etc.) |
